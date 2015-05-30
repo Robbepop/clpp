@@ -5,8 +5,9 @@
 
 namespace cl {
 	enum class LocalMemoryType : cl_device_local_mem_type {
+		none   = CL_NONE,
 		global = CL_GLOBAL,
-		local = CL_LOCAL
+		local  = CL_LOCAL
 	};
 }
 #endif

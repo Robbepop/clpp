@@ -116,7 +116,6 @@ namespace cl {
 		auto getMaxOnDeviceQueues() const       -> cl_uint;
 		auto getMaxParameterSize() const        -> size_t;
 		auto getMaxPipeArgs() const             -> cl_uint;
-		auto getMaxPipeReadImageArgs() const    -> cl_uint;
 		auto getMaxReadImageArgs() const        -> cl_uint;
 		auto getMaxReadWriteImageArgs() const   -> cl_uint;
 		auto getMaxSamplers() const             -> cl_uint;
