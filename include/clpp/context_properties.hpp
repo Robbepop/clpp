@@ -36,4 +36,5 @@ namespace cl {
 	};
 }
 
+#include "clpp/context_properties.tpp"
 #endif

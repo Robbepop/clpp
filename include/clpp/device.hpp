@@ -169,5 +169,5 @@ namespace cl {
 	};
 }
 
-#include "clpp/detail/device.tpp"
+#include "clpp/device.tpp"
 #endif

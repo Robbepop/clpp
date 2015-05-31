@@ -20,5 +20,5 @@ namespace cl {
 	};
 }
 
-#include "clpp/command_queue_properties.tpp"
+#include "clpp/affinity_domain_capabilities.tpp"
 #endif
