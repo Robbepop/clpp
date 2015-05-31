@@ -285,7 +285,7 @@ namespace cl {
 	auto getParentDevice() const -> Device {
 		const auto parentId = getInfo<cl_device_id>CL_DEVICE_PARENT_DEVICE);
 		if (parentId == 0) {
-			throw DeviceException("this device does not have a parent device.");
+			throw exception_type{"this device does not have a parent device."};
 		}
 		return {parentId};
 	}
@@ -318,31 +318,106 @@ namespace cl {
 		return {getInfo<cl_platform_id>(CL_DEVICE_PLATFORM)};
 	}
 
-	auto getPreferredGlobalAtomicAlignment() const   -> cl_uint;
-	auto hasPreferredInteropUserSync() const         -> cl_bool;
-	auto getPreferredLocalAtomicAlignment() const    -> cl_uint;
-	auto getPreferredPlatformAtomicAlignment() const -> cl_uint;
-	auto getPreferredVectorWidth(ScalarType type) const -> cl_uint;
+	auto getPreferredGlobalAtomicAlignment() const -> cl_uint {
+		return getInfo<cl_uint>(CL_DEVICE_PREFERRED_GLOBAL_ATOMIC_ALIGNMENT);
+	}
 
-	auto getPrintfBufferSize() const               -> size_t;
-	auto getProfile() const                        -> std::string;
-	auto getProfilingTimerResolution() const       -> size_t;
+	auto hasPreferredInteropUserSync() const -> cl_bool {
+		return getInfo<cl_bool>(CL_DEVICE_PREFERRED_INTEROP_USER_SYNC);
+	}
 
-	auto getQueueOnDeviceMaxSize() const           -> cl_uint;
-	auto getQueueOnDevicePreferredSize() const     -> cl_uint;
-	auto getQueueOnDeviceProperties() const        -> CommandQueueProperties;
-	auto getQueueOnHostProperties() const          -> CommandQueueProperties;
+	auto getPreferredLocalAtomicAlignment() const -> cl_uint {
+		return getInfo<cl_uint>(CL_DEVICE_PREFERRED_LOCAL_ATOMIC_ALIGNMENT);
+	}
 
-	auto getReferenceCount() const                 -> cl_uint;
+	auto getPreferredPlatformAtomicAlignment() const -> cl_uint {
+		return getInfo<cl_uint>(CL_DEVICE_PREFERRED_PLATFORM_ATOMIC_ALIGNMENT);
+	}
 
-	auto getSpirVersions() const                   -> std::vector<std::string>;
-	auto getSvmCapabilities() const                -> SvmCapabilities;
-	auto getTerminateCapabilities() const          -> TerminateCapabilities;
+	auto getPreferredVectorWidth(ScalarType type) const -> cl_uint {
+		auto id = cl_device_info{};
+		switch (type) {
+			case ScalarType::charType:   id = CL_DEVICE_PREFERRED_VECTOR_WIDTH_CHAR;   break;
+			case ScalarType::shortType:  id = CL_DEVICE_PREFERRED_VECTOR_WIDTH_SHORT;  break;
+			case ScalarType::intType:    id = CL_DEVICE_PREFERRED_VECTOR_WIDTH_INT;    break;
+			case ScalarType::longType:   id = CL_DEVICE_PREFERRED_VECTOR_WIDTH_LONG;   break;
+			case ScalarType::floatType:  id = CL_DEVICE_PREFERRED_VECTOR_WIDTH_FLOAT;  break;
+			case ScalarType::doubleType: id = CL_DEVICE_PREFERRED_VECTOR_WIDTH_DOUBLE; break;
+			case ScalarType::halfType:   id = CL_DEVICE_PREFERRED_VECTOR_WIDTH_HALF;   break;
+			default: assert(false);
+		}
+		return getInfo<cl_uint>(id);
+	}
 
-	auto getType() const                           -> DeviceType;
-	auto getVendor() const                         -> std::string;
-	auto getVendorID() const                       -> cl_uint;
-	auto getVersion() const                        -> std::string;
-	auto getDriverVersion() const                  -> std::string;
 
+	auto getPrintfBufferSize() const -> size_t {
+		return getInfo<size_t>(CL_DEVICE_PRINTF_BUFFER_SIZE);
+	}
+
+	auto getProfile() const -> std::string {
+		return getInfoString(CL_DEVICE_PROFILE);
+	}
+
+	auto getProfilingTimerResolution() const -> size_t {
+		return getInfo<size_t>(CL_DEVICE_PROFILING_TIMER_RESOLUTION);
+	}
+
+
+	auto getQueueOnDeviceMaxSize() const -> cl_uint {
+		return getInfo<cl_uint>(CL_DEVICE_QUEUE_ON_DEVICE_MAX_SIZE);
+	}
+
+	auto getQueueOnDevicePreferredSize() const -> cl_uint {
+		return getInfo<cl_uint>(CL_DEVICE_QUEUE_ON_DEVICE_PREFERRED_SIZE);
+	}
+
+	auto getQueueOnDeviceProperties() const -> CommandQueueProperties {
+		return {getInfo<cl_command_queue_properties>(CL_DEVICE_QUEUE_ON_DEVICE_PROPERTIES)};
+	}
+
+	auto getQueueOnHostProperties() const -> CommandQueueProperties {
+		return {getInfo<cl_command_queue_properties>(CL_DEVICE_QUEUE_ON_HOST_PROPERTIES)};
+	}
+
+
+	auto getReferenceCount() const -> cl_uint {
+		return getInfo<cl_uint>(CL_DEVICE_REFERENCE_COUNT);
+	}
+
+
+	auto getSpirVersions() const -> std::vector<std::string> {
+			  auto versions  = std::vector<std::string>{};
+		const auto verString = getInfoString(CL_DEVICE_SPIR_VERSIONS);
+		boost::split(versions, verString, boost::is_any_of("\t "), boost::token_compress_on);
+		return versions;
+	}
+
+	auto getSvmCapabilities() const -> SvmCapabilities {
+		return {getInfo<cl_device_svm_capabilities>(CL_DEVICE_SVM_CAPABILITIES)};
+	}
+
+	auto getTerminateCapabilities() const -> TerminateCapabilities {
+		return {getInfo<cl_device_terminate_capability_khr>(CL_DEVICE_TERMINATE_CAPABILITY_KHR)};
+	}
+
+
+	auto getType() const -> DeviceType {
+		return {getInfo<cl_device_type>(CL_DEVICE_TYPE)};
+	}
+
+	auto getVendor() const -> std::string {
+		return getInfoString(CL_DEVICE_VENDOR);
+	}
+
+	auto getVendorID() const -> cl_uint {
+		return getInfo<cl_uint>(CL_DEVICE_VENDOR_ID);
+	}
+
+	auto getVersion() const -> std::string {
+		return getInfoString(CL_DEVICE_VERSION);
+	}
+
+	auto getDriverVersion() const -> std::string {
+		return getInfoString(CL_DRIVER_VERSION);
+	}
 }
