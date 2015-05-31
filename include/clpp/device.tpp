@@ -65,19 +65,19 @@ namespace cl {
 	// getInfo helper methods
 	//====================================================================================
 
-	auto getAddressBits() const -> cl_uint {
+	auto Device::getAddressBits() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_ADDRESS_BITS);
 	}
 
-	auto isAvailable() const -> cl_bool {
+	auto Device::isAvailable() const -> cl_bool {
 		return getInfo<cl_bool>(CL_DEVICE_AVAILABLE);
 	}
 
-	auto isCompilerAvailable() const -> cl_bool {
+	auto Device::isCompilerAvailable() const -> cl_bool {
 		return getInfo<cl_bool>(CL_DEVICE_COMPILER_AVAILABLE);
 	}
 
-	auto getFpConfig(FPType type) const -> FPConfig {
+	auto Device::getFpConfig(FPType type) const -> FPConfig {
 		switch (type) {
 		case FPType::halfPrecision:
 			return {getInfo<cl_device_fp_config>(CL_DEVICE_HALF_FP_CONFIG)};
@@ -90,19 +90,19 @@ namespace cl {
 		}
 	}
 
-	auto isLittleEndian() const -> cl_bool {
+	auto Device::isLittleEndian() const -> cl_bool {
 		return getInfo<cl_bool>(CL_DEVICE_ENDIAN_LITTLE);
 	}
 
-	auto hasErrorCorrectionSupport() const -> cl_bool {
+	auto Device::hasErrorCorrectionSupport() const -> cl_bool {
 		return getInfo<cl_bool>(CL_DEVICE_ERROR_CORRECTION_SUPPORT);
 	}
 
-	auto getExecutionCapabilities() const -> ExecutionCapabilities {
+	auto Device::getExecutionCapabilities() const -> ExecutionCapabilities {
 		return {getInfo<cl_device_exec_capabilities>(CL_DEVICE_EXECUTION_CAPABILITIES)};
 	}
 
-	auto getExtensions() const -> std::vector<std::string> {
+	auto Device::getExtensions() const -> std::vector<std::string> {
 			  auto extensions = std::vector<std::string>{};
 		const auto extString  = getInfoString(CL_DEVICE_EXTENSIONS);
 		boost::split(extensions, extString, boost::is_any_of("\t "), boost::token_compress_on);
@@ -110,160 +110,160 @@ namespace cl {
 	}
 
 
-	auto getGlobalMemoryCacheSize() const -> cl_ulong {
+	auto Device::getGlobalMemoryCacheSize() const -> cl_ulong {
 		return getInfo<cl_ulong>(CL_DEVICE_GLOBAL_MEM_CACHE_SIZE);
 	}
 
-	auto getGlobalMemoryCacheType() const -> MemoryCacheType {
+	auto Device::getGlobalMemoryCacheType() const -> MemoryCacheType {
 		return static_cast<MemoryCacheType>(
 			getInfo<cl_device_mem_cache_type>(CL_DEVICE_GLOBAL_MEM_CACHE_TYPE));
 	}
 
-	auto getGlobalMemoryCachelineSize() const -> cl_uint {
+	auto Device::getGlobalMemoryCachelineSize() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_GLOBAL_MEM_CACHELINE_SIZE);
 	}
 
-	auto getGlobalMemorySize() const -> cl_ulong {
+	auto Device::getGlobalMemorySize() const -> cl_ulong {
 		return getInfo<cl_ulong>(CL_DEVICE_GLOBAL_MEM_SIZE);
 	}
 
-	auto getGlobalVariablePreferredTotalSize() const -> size_t {
+	auto Device::getGlobalVariablePreferredTotalSize() const -> size_t {
 		return getInfo<size_t>(CL_DEVICE_GLOBAL_VARIABLE_ PREFERRED_TOTAL_SIZE);
 	}
 
-	auto getImage2DMaxHeight() const -> size_t {
+	auto Device::getImage2DMaxHeight() const -> size_t {
 		return getInfo<size_t>(CL_DEVICE_IMAGE2D_MAX_HEIGHT);
 	}
 
-	auto getImage2DMaxWidth() const  -> size_t {
+	auto Device::getImage2DMaxWidth() const  -> size_t {
 		return getInfo<size_t>(CL_DEVICE_IMAGE2D_MAX_WIDTH);
 	}
 
-	auto getImage3DMaxHeight() const -> size_t {
+	auto Device::getImage3DMaxHeight() const -> size_t {
 		return getInfo<size_t>(CL_DEVICE_IMAGE3D_MAX_HEIGHT);
 	}
 
-	auto getImage3DMaxWidth() const  -> size_t {
+	auto Device::getImage3DMaxWidth() const  -> size_t {
 		return getInfo<size_t>(CL_DEVICE_IMAGE3D_MAX_WIDTH);
 	}
 
-	auto getImage3DMaxDepth() const  -> size_t {
+	auto Device::getImage3DMaxDepth() const  -> size_t {
 		return getInfo<size_t>(CL_DEVICE_IMAGE3D_MAX_DEPTH);
 	}
 
 
-	auto getImageBaseAddressAlignment() const -> cl_uint {
+	auto Device::getImageBaseAddressAlignment() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_IMAGE_BASE_ADDRESS_ALIGNMENT);
 	}
 
-	auto getImageMaxArraySize() const -> size_t {
+	auto Device::getImageMaxArraySize() const -> size_t {
 		return getInfo<size_t>(CL_DEVICE_IMAGE_MAX_ARRAY_SIZE);
 	}
 
-	auto getImageMaxBufferSize() const -> size_t {
+	auto Device::getImageMaxBufferSize() const -> size_t {
 		return getInfo<size_t>(CL_DEVICE_IMAGE_MAX_BUFFER_SIZE);
 	}
 
-	auto getImagePitchAlignment() const -> cl_uint {
+	auto Device::getImagePitchAlignment() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_IMAGE_PITCH_ALIGNMENT);
 	}
 
-	auto hasImageSupport() const -> cl_bool {
+	auto Device::hasImageSupport() const -> cl_bool {
 		return getInfo<cl_bool>(CL_DEVICE_IMAGE_SUPPORT);
 	}
 
-	auto isLinkerAvailable() const -> cl_bool {
+	auto Device::isLinkerAvailable() const -> cl_bool {
 		return getInfo<cl_bool>(CL_DEVICE_LINKER_AVAILABLE);
 	}
 
-	auto getLocalMemorySize() const -> cl_ulong {
+	auto Device::getLocalMemorySize() const -> cl_ulong {
 		return getInfo<cl_ulong>(CL_DEVICE_LOCAL_MEM_SIZE);
 	}
 
-	auto getLocalMemoryType() const  -> LocalMemoryType {
+	auto Device::getLocalMemoryType() const  -> LocalMemoryType {
 		return static_cast<LocalMemoryType>(
 			getInfo<cl_device_local_mem_type>(CL_DEVICE_LOCAL_MEM_TYPE));
 	}
 
-	auto getMaxClockFrequency() const -> cl_uint {
+	auto Device::getMaxClockFrequency() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_MAX_CLOCK_FREQUENCY);
 	}
 
-	auto getMaxComputeUnits() const -> cl_uint {
+	auto Device::getMaxComputeUnits() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_MAX_COMPUTE_UNITS);
 	}
 
-	auto getMaxConstantArgs() const -> cl_uint {
+	auto Device::getMaxConstantArgs() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_MAX_CONSTANT_ARGS);
 	}
 
-	auto getMaxConstantBufferSize() const -> cl_ulong {
+	auto Device::getMaxConstantBufferSize() const -> cl_ulong {
 		return getInfo<cl_ulong>(CL_DEVICE_MAX_CONSTANT_BUFFER_SIZE);
 	}
 
-	auto getMaxGlobalVariableSize() const -> size_t {
+	auto Device::getMaxGlobalVariableSize() const -> size_t {
 		return getInfo<size_t>(CL_DEVICE_MAX_GLOBAL_VARIABLE_SIZE);
 	}
 
-	auto getMaxMemoryAllocationSize() const -> cl_ulong {
+	auto Device::getMaxMemoryAllocationSize() const -> cl_ulong {
 		return getInfo<cl_ulong>(CL_DEVICE_MAX_MEM_ALLOC_SIZE);
 	}
 
-	auto getMaxOnDeviceEvents() const -> cl_uint {
+	auto Device::getMaxOnDeviceEvents() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_MAX_ON_DEVICE_EVENTS);
 	}
 
-	auto getMaxOnDeviceQueues() const -> cl_uint {
+	auto Device::getMaxOnDeviceQueues() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_MAX_ON_DEVICE_QUEUES);
 	}
 
-	auto getMaxParameterSize() const -> size_t {
+	auto Device::getMaxParameterSize() const -> size_t {
 		return getInfo<size_t>(CL_DEVICE_MAX_PARAMETER_SIZE);
 	}
 
-	auto getMaxPipeArgs() const -> cl_uint {
+	auto Device::getMaxPipeArgs() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_MAX_PIPE_ARGS);
 	}
 
-	auto getMaxReadImageArgs() const -> cl_uint {
+	auto Device::getMaxReadImageArgs() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_MAX_READ_IMAGE_ARGS);
 	}
 
-	auto getMaxReadWriteImageArgs() const -> cl_uint {
+	auto Device::getMaxReadWriteImageArgs() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_MAX_READ_WRITE_IMAGE_ARGS);
 	}
 
-	auto getMaxSamplers() const -> cl_uint {
+	auto Device::getMaxSamplers() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_MAX_SAMPLERS);
 	}
 
-	auto getMaxWorkGroupSize() const -> size_t {
+	auto Device::getMaxWorkGroupSize() const -> size_t {
 		return getInfo<size_t>(CL_DEVICE_MAX_WORK_GROUP_SIZE);
 	}
 
-	auto getMaxWorkItemDimensions() const -> cl_uint {
+	auto Device::getMaxWorkItemDimensions() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS);
 	}
 
-	auto getMaxWorkItemSizes() const -> std::vector<size_t> {
+	auto Device::getMaxWorkItemSizes() const -> std::vector<size_t> {
 		return getInfoVector<size_t>(CL_DEVICE_MAX_WORK_ITEM_SIZES);
 	}
 
-	auto getMaxWriteImageArgs() const -> cl_uint {
+	auto Device::getMaxWriteImageArgs() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_MAX_WRITE_IMAGE_ARGS);
 	}
 
 
-	auto getMemoryBaseAddressAlign() const -> cl_uint {
+	auto Device::getMemoryBaseAddressAlign() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_MEM_BASE_ADDR_ALIGN);
 	}
 
 
-	auto getName() const -> std::string {
+	auto Device::getName() const -> std::string {
 		return getInfoString(CL_DEVICE_NAME);
 	}
 
-	auto getNativeVectorWidth(ScalarType type) const -> cl_uint {
+	auto Device::getNativeVectorWidth(ScalarType type) const -> cl_uint {
 		auto id = cl_device_info{};
 		switch (type) {
 			case ScalarType::charType:   id = CL_DEVICE_NATIVE_VECTOR_WIDTH_CHAR;   break;
@@ -278,11 +278,11 @@ namespace cl {
 		return getInfo<cl_uint>(id);
 	}
 
-	auto getOpenCLCVersion() const -> std::string {
+	auto Device::getOpenCLCVersion() const -> std::string {
 		return getInfoString(CL_DEVICE_OPENCL_C_VERSION);
 	}
 
-	auto getParentDevice() const -> Device {
+	auto Device::getParentDevice() const -> Device {
 		const auto parentId = getInfo<cl_device_id>CL_DEVICE_PARENT_DEVICE);
 		if (parentId == 0) {
 			throw exception_type{"this device does not have a parent device."};
@@ -290,51 +290,51 @@ namespace cl {
 		return {parentId};
 	}
 
-	auto getPartitionAffinityDomain() const -> AffinityDomainCapabilities {
+	auto Device::getPartitionAffinityDomain() const -> AffinityDomainCapabilities {
 		return {getInfo<cl_device_affinity_domain>(CL_DEVICE_PARTITION_AFFINITY_DOMAIN)};
 	}
 
-	auto getPartitionMaxSubDevices() const -> cl_uint {
+	auto Device::getPartitionMaxSubDevices() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_PARTITION_MAX_SUB_DEVICES);
 	}
 
-	auto getPartitionProperties() const -> PartitionCapabilities {
+	auto Device::getPartitionProperties() const -> PartitionCapabilities {
 		return {getInfoVector<cl_device_partition_property>(CL_DEVICE_PARTITION_PROPERTIES)};
 	}
 
-	auto getParition() const -> Partition {
+	auto Device::getParition() const -> Partition {
 		return {getInfoVector<cl_device_partition_property>(CL_DEVICE_PARTITION_TYPE)};
 	}
 
-	auto getPipeMaxActiveReservations() const -> cl_uint {
+	auto Device::getPipeMaxActiveReservations() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_PIPE_MAX_ACTIVE_RESERVATIONS);
 	}
 
-	auto getPipeMaxPacketSize() const -> cl_uint {
+	auto Device::getPipeMaxPacketSize() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_PIPE_MAX_PACKET_SIZE);
 	}
 
-	auto getPlatform() const -> Platform {
+	auto Device::getPlatform() const -> Platform {
 		return {getInfo<cl_platform_id>(CL_DEVICE_PLATFORM)};
 	}
 
-	auto getPreferredGlobalAtomicAlignment() const -> cl_uint {
+	auto Device::getPreferredGlobalAtomicAlignment() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_PREFERRED_GLOBAL_ATOMIC_ALIGNMENT);
 	}
 
-	auto hasPreferredInteropUserSync() const -> cl_bool {
+	auto Device::hasPreferredInteropUserSync() const -> cl_bool {
 		return getInfo<cl_bool>(CL_DEVICE_PREFERRED_INTEROP_USER_SYNC);
 	}
 
-	auto getPreferredLocalAtomicAlignment() const -> cl_uint {
+	auto Device::getPreferredLocalAtomicAlignment() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_PREFERRED_LOCAL_ATOMIC_ALIGNMENT);
 	}
 
-	auto getPreferredPlatformAtomicAlignment() const -> cl_uint {
+	auto Device::getPreferredPlatformAtomicAlignment() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_PREFERRED_PLATFORM_ATOMIC_ALIGNMENT);
 	}
 
-	auto getPreferredVectorWidth(ScalarType type) const -> cl_uint {
+	auto Device::getPreferredVectorWidth(ScalarType type) const -> cl_uint {
 		auto id = cl_device_info{};
 		switch (type) {
 			case ScalarType::charType:   id = CL_DEVICE_PREFERRED_VECTOR_WIDTH_CHAR;   break;
@@ -350,74 +350,74 @@ namespace cl {
 	}
 
 
-	auto getPrintfBufferSize() const -> size_t {
+	auto Device::getPrintfBufferSize() const -> size_t {
 		return getInfo<size_t>(CL_DEVICE_PRINTF_BUFFER_SIZE);
 	}
 
-	auto getProfile() const -> std::string {
+	auto Device::getProfile() const -> std::string {
 		return getInfoString(CL_DEVICE_PROFILE);
 	}
 
-	auto getProfilingTimerResolution() const -> size_t {
+	auto Device::getProfilingTimerResolution() const -> size_t {
 		return getInfo<size_t>(CL_DEVICE_PROFILING_TIMER_RESOLUTION);
 	}
 
 
-	auto getQueueOnDeviceMaxSize() const -> cl_uint {
+	auto Device::getQueueOnDeviceMaxSize() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_QUEUE_ON_DEVICE_MAX_SIZE);
 	}
 
-	auto getQueueOnDevicePreferredSize() const -> cl_uint {
+	auto Device::getQueueOnDevicePreferredSize() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_QUEUE_ON_DEVICE_PREFERRED_SIZE);
 	}
 
-	auto getQueueOnDeviceProperties() const -> CommandQueueProperties {
+	auto Device::getQueueOnDeviceProperties() const -> CommandQueueProperties {
 		return {getInfo<cl_command_queue_properties>(CL_DEVICE_QUEUE_ON_DEVICE_PROPERTIES)};
 	}
 
-	auto getQueueOnHostProperties() const -> CommandQueueProperties {
+	auto Device::getQueueOnHostProperties() const -> CommandQueueProperties {
 		return {getInfo<cl_command_queue_properties>(CL_DEVICE_QUEUE_ON_HOST_PROPERTIES)};
 	}
 
 
-	auto getReferenceCount() const -> cl_uint {
+	auto Device::getReferenceCount() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_REFERENCE_COUNT);
 	}
 
 
-	auto getSpirVersions() const -> std::vector<std::string> {
+	auto Device::getSpirVersions() const -> std::vector<std::string> {
 			  auto versions  = std::vector<std::string>{};
 		const auto verString = getInfoString(CL_DEVICE_SPIR_VERSIONS);
 		boost::split(versions, verString, boost::is_any_of("\t "), boost::token_compress_on);
 		return versions;
 	}
 
-	auto getSvmCapabilities() const -> SvmCapabilities {
+	auto Device::getSvmCapabilities() const -> SvmCapabilities {
 		return {getInfo<cl_device_svm_capabilities>(CL_DEVICE_SVM_CAPABILITIES)};
 	}
 
-	auto getTerminateCapabilities() const -> TerminateCapabilities {
+	auto Device::getTerminateCapabilities() const -> TerminateCapabilities {
 		return {getInfo<cl_device_terminate_capability_khr>(CL_DEVICE_TERMINATE_CAPABILITY_KHR)};
 	}
 
 
-	auto getType() const -> DeviceType {
+	auto Device::getType() const -> DeviceType {
 		return {getInfo<cl_device_type>(CL_DEVICE_TYPE)};
 	}
 
-	auto getVendor() const -> std::string {
+	auto Device::getVendor() const -> std::string {
 		return getInfoString(CL_DEVICE_VENDOR);
 	}
 
-	auto getVendorID() const -> cl_uint {
+	auto Device::getVendorID() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_VENDOR_ID);
 	}
 
-	auto getVersion() const -> std::string {
+	auto Device::getVersion() const -> std::string {
 		return getInfoString(CL_DEVICE_VERSION);
 	}
 
-	auto getDriverVersion() const -> std::string {
+	auto Device::getDriverVersion() const -> std::string {
 		return getInfoString(CL_DRIVER_VERSION);
 	}
 }
