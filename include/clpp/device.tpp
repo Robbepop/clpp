@@ -278,62 +278,71 @@ namespace cl {
 		return getInfo<cl_uint>(id);
 	}
 
-
-	auto canPartitionEqually() const -> cl_bool {
-
+	auto getOpenCLCVersion() const -> std::string {
+		return getInfoString(CL_DEVICE_OPENCL_C_VERSION);
 	}
 
-	auto canPartitionByCounts() const -> cl_bool {
-
+	auto getParentDevice() const -> Device {
+		const auto parentId = getInfo<cl_device_id>CL_DEVICE_PARENT_DEVICE);
+		if (parentId == 0) {
+			throw DeviceException("this device does not have a parent device.");
+		}
+		return {parentId};
 	}
 
-	auto canPartitionByAffinityDomain() const -> cl_bool {
-
+	auto getPartitionAffinityDomain() const -> AffinityDomainCapabilities {
+		return {getInfo<cl_device_affinity_domain>(CL_DEVICE_PARTITION_AFFINITY_DOMAIN)};
 	}
 
+	auto getPartitionMaxSubDevices() const -> cl_uint {
+		return getInfo<cl_uint>(CL_DEVICE_PARTITION_MAX_SUB_DEVICES);
+	}
+
+	auto getPartitionProperties() const -> PartitionCapabilities {
+		return {getInfoVector<cl_device_partition_property>(CL_DEVICE_PARTITION_PROPERTIES)};
+	}
+
+	auto getParition() const -> Partition {
+		return {getInfoVector<cl_device_partition_property>(CL_DEVICE_PARTITION_TYPE)};
+	}
 
 	auto getPipeMaxActiveReservations() const -> cl_uint {
-
+		return getInfo<cl_uint>(CL_DEVICE_PIPE_MAX_ACTIVE_RESERVATIONS);
 	}
 
 	auto getPipeMaxPacketSize() const -> cl_uint {
-
+		return getInfo<cl_uint>(CL_DEVICE_PIPE_MAX_PACKET_SIZE);
 	}
 
-
-	auto getParition() const -> Partition {
-
+	auto getPlatform() const -> Platform {
+		return {getInfo<cl_platform_id>(CL_DEVICE_PLATFORM)};
 	}
 
-
-	auto getParentDevice() const -> Device {
-
-	}
-
-	auto getPartitionAffinityDomain() const        -> AffinityDomain;
-	auto getPreferredGlobalAtomicAlignment() const -> cl_uint;
-	auto hasPreferredInteropUserSync() const       -> cl_bool;
-	auto getPreferredLocalAtomicAlignment() const  -> cl_uint;
+	auto getPreferredGlobalAtomicAlignment() const   -> cl_uint;
+	auto hasPreferredInteropUserSync() const         -> cl_bool;
+	auto getPreferredLocalAtomicAlignment() const    -> cl_uint;
 	auto getPreferredPlatformAtomicAlignment() const -> cl_uint;
+	auto getPreferredVectorWidth(ScalarType type) const -> cl_uint;
+
 	auto getPrintfBufferSize() const               -> size_t;
+	auto getProfile() const                        -> std::string;
+	auto getProfilingTimerResolution() const       -> size_t;
+
 	auto getQueueOnDeviceMaxSize() const           -> cl_uint;
 	auto getQueueOnDevicePreferredSize() const     -> cl_uint;
 	auto getQueueOnDeviceProperties() const        -> CommandQueueProperties;
 	auto getQueueOnHostProperties() const          -> CommandQueueProperties;
+
 	auto getReferenceCount() const                 -> cl_uint;
+
 	auto getSpirVersions() const                   -> std::vector<std::string>;
 	auto getSvmCapabilities() const                -> SvmCapabilities;
 	auto getTerminateCapabilities() const          -> TerminateCapabilities;
-	auto getMaxSubDevices() const                  -> cl_uint;
-	auto getPlatform() const                       -> Platform;
-	auto getPreferredVectorWidth(ScalarType type) const -> cl_uint;
-	auto getProfile() const                        -> std::string;
-	auto getProfilingTimerResolution() const       -> size_t;
+
 	auto getType() const                           -> DeviceType;
 	auto getVendor() const                         -> std::string;
 	auto getVendorID() const                       -> cl_uint;
 	auto getVersion() const                        -> std::string;
-	auto getOpenCLCVersion() const                 -> std::string;
 	auto getDriverVersion() const                  -> std::string;
 
 }

@@ -131,7 +131,7 @@ namespace cl {
 		auto getOpenCLCVersion() const                 -> std::string;
 
 		auto getParentDevice() const                   -> Device;
-		auto getPartitionAffinityDomain() const        -> AffinityDomain;
+		auto getPartitionAffinityDomain() const        -> AffinityDomainCapabilities;
 		auto getPartitionMaxSubDevices() const         -> cl_uint;
 		auto getPartitionProperties() const            -> PartitionCapabilities;
 		auto getParition() const                       -> Partition;
