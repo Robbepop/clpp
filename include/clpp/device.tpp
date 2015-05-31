@@ -259,22 +259,57 @@ namespace cl {
 	}
 
 
-	auto getName() const                             -> std::string;
-	auto getNativeVectorWidth(ScalarType type) const -> cl_uint;
+	auto getName() const -> std::string {
+		return getInfoString(CL_DEVICE_NAME);
+	}
 
-	template<typename T>
-	auto getNativeVectorWith<T>() const -> cl_uint;
+	auto getNativeVectorWidth(ScalarType type) const -> cl_uint {
+		auto id = cl_device_info{};
+		switch (type) {
+			case ScalarType::charType:   id = CL_DEVICE_NATIVE_VECTOR_WIDTH_CHAR;   break;
+			case ScalarType::shortType:  id = CL_DEVICE_NATIVE_VECTOR_WIDTH_SHORT;  break;
+			case ScalarType::intType:    id = CL_DEVICE_NATIVE_VECTOR_WIDTH_INT;    break;
+			case ScalarType::longType:   id = CL_DEVICE_NATIVE_VECTOR_WIDTH_LONG;   break;
+			case ScalarType::floatType:  id = CL_DEVICE_NATIVE_VECTOR_WIDTH_FLOAT;  break;
+			case ScalarType::doubleType: id = CL_DEVICE_NATIVE_VECTOR_WIDTH_DOUBLE; break;
+			case ScalarType::halfType:   id = CL_DEVICE_NATIVE_VECTOR_WIDTH_HALF;   break;
+			default: assert(false);
+		}
+		return getInfo<cl_uint>(id);
+	}
 
-	auto canPartitionEqually() const          -> cl_bool;
-	auto canPartitionByCounts() const         -> cl_bool;
-	auto canPartitionByAffinityDomain() const -> cl_bool;
 
-	auto getPipeMaxActiveReservations() const -> cl_uint;
-	auto getPipeMaxPacketSize() const         -> cl_uint;
+	auto canPartitionEqually() const -> cl_bool {
 
-	auto getParition() const                  -> Partition;
+	}
 
-	auto getParentDevice() const                   -> Device;
+	auto canPartitionByCounts() const -> cl_bool {
+
+	}
+
+	auto canPartitionByAffinityDomain() const -> cl_bool {
+
+	}
+
+
+	auto getPipeMaxActiveReservations() const -> cl_uint {
+
+	}
+
+	auto getPipeMaxPacketSize() const -> cl_uint {
+
+	}
+
+
+	auto getParition() const -> Partition {
+
+	}
+
+
+	auto getParentDevice() const -> Device {
+
+	}
+
 	auto getPartitionAffinityDomain() const        -> AffinityDomain;
 	auto getPreferredGlobalAtomicAlignment() const -> cl_uint;
 	auto hasPreferredInteropUserSync() const       -> cl_bool;
@@ -298,7 +333,7 @@ namespace cl {
 	auto getVendor() const                         -> std::string;
 	auto getVendorID() const                       -> cl_uint;
 	auto getVersion() const                        -> std::string;
-	auto getVersionOpenCLC() const                 -> std::string;
+	auto getOpenCLCVersion() const                 -> std::string;
 	auto getDriverVersion() const                  -> std::string;
 
 }

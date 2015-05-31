@@ -128,44 +128,43 @@ namespace cl {
 
 		auto getName() const                             -> std::string;
 		auto getNativeVectorWidth(ScalarType type) const -> cl_uint;
+		auto getOpenCLCVersion() const                 -> std::string;
 
-		template<typename T>
-		auto getNativeVectorWith<T>() const -> cl_uint;
-
-		auto canPartitionEqually() const          -> cl_bool;
-		auto canPartitionByCounts() const         -> cl_bool;
-		auto canPartitionByAffinityDomain() const -> cl_bool;
+		auto getParentDevice() const                   -> Device;
+		auto getPartitionAffinityDomain() const        -> AffinityDomain;
+		auto getPartitionMaxSubDevices() const         -> cl_uint;
+		auto getPartitionProperties() const            -> PartitionCapabilities;
+		auto getParition() const                       -> Partition;
 
 		auto getPipeMaxActiveReservations() const -> cl_uint;
 		auto getPipeMaxPacketSize() const         -> cl_uint;
 
-		auto getParition() const                  -> Partition;
-
-		auto getParentDevice() const                   -> Device;
-		auto getPartitionAffinityDomain() const        -> AffinityDomain;
-		auto getPreferredGlobalAtomicAlignment() const -> cl_uint;
-		auto hasPreferredInteropUserSync() const       -> cl_bool;
-		auto getPreferredLocalAtomicAlignment() const  -> cl_uint;
+		auto getPlatform() const                         -> Platform;
+		auto getPreferredGlobalAtomicAlignment() const   -> cl_uint;
+		auto hasPreferredInteropUserSync() const         -> cl_bool;
+		auto getPreferredLocalAtomicAlignment() const    -> cl_uint;
 		auto getPreferredPlatformAtomicAlignment() const -> cl_uint;
+		auto getPreferredVectorWidth(ScalarType type) const -> cl_uint;
+
 		auto getPrintfBufferSize() const               -> size_t;
+		auto getProfile() const                        -> std::string;
+		auto getProfilingTimerResolution() const       -> size_t;
+
 		auto getQueueOnDeviceMaxSize() const           -> cl_uint;
 		auto getQueueOnDevicePreferredSize() const     -> cl_uint;
 		auto getQueueOnDeviceProperties() const        -> CommandQueueProperties;
 		auto getQueueOnHostProperties() const          -> CommandQueueProperties;
+
 		auto getReferenceCount() const                 -> cl_uint;
+
 		auto getSpirVersions() const                   -> std::vector<std::string>;
 		auto getSvmCapabilities() const                -> SvmCapabilities;
 		auto getTerminateCapabilities() const          -> TerminateCapabilities;
-		auto getMaxSubDevices() const                  -> cl_uint;
-		auto getPlatform() const                       -> Platform;
-		auto getPreferredVectorWidth(ScalarType type) const -> cl_uint;
-		auto getProfile() const                        -> std::string;
-		auto getProfilingTimerResolution() const       -> size_t;
+
 		auto getType() const                           -> DeviceType;
 		auto getVendor() const                         -> std::string;
 		auto getVendorID() const                       -> cl_uint;
 		auto getVersion() const                        -> std::string;
-		auto getVersionOpenCLC() const                 -> std::string;
 		auto getDriverVersion() const                  -> std::string;
 	};
 }
