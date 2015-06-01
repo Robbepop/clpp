@@ -44,7 +44,9 @@ set (Version "$(Version_Major).$(Version_Minor).$(Version_Patch)")
 
 include_directories (
 	$(PROJECT_SOURCE_DIR)include
-	$/opt/AMDAPP/SDK/include
 )
+
+#-L/opt/AMDAPP/SDK/lib -lOpenCL
+
 
 add_subdirectory (test)

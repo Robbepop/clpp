@@ -30,5 +30,5 @@ namespace cl {
 	}
 }
 
-//#include "clpp/detail/get_info_helper.tpp"
+#include "clpp/detail/get_info_helper.tpp"
 #endif

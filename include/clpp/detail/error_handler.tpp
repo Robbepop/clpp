@@ -7,7 +7,6 @@
 
 #include <type_traits>
 #include <map>
-#include <experimental/string_view>
 
 namespace cl {
 	namespace detail {

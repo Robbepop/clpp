@@ -17,7 +17,11 @@ find_package( Boost COMPONENTS REQUIRED )
 # Executable Definition
 #-----------------------------------------------------------------------------------------
 if(Boost_FOUND)
-     include_directories(${Boost_INCLUDE_DIRS})
-     add_executable(neuronet ${SOURCES})
-     target_link_libraries(neuronet ${Boost_LIBRARIES})
+     include_directories(${Boost_INCLUDE_DIRS} $opt/AMDAPP/SDK/include)
+		#$opt/AMDAPP/SDK/include
+		#$opt/intel/opencl-sdk/include
+     add_executable(test_01 ${SOURCES})
+     target_link_libraries(test_01 ${Boost_LIBRARIES} /opt/AMDAPP/SDK/lib/libOpenCL.so)
+		#/opt/AMDAPP/SDK/lib/libOpenCL.so
+		#/opt/intel/opencl-sdk/lib64/?.so
 endif()

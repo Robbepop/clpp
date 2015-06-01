@@ -12,7 +12,7 @@ namespace cl {
 	namespace detail {
 		class error final {
 		public:
-			using info_map = std::map<RetCode, std::experimental::string_view>;
+			using info_map = std::map<RetCode, std::string>;
 
 		private:
 			//============================================================================

@@ -22,8 +22,8 @@ namespace cl {
 			};
 			auto error = cl_int{CL_INVALID_VALUE};
 			auto info  = ReturnType{};
-			error      = get_info(m_id, info_id, sizeof(ReturnType), std::addressof(info), nullptr);
-			error::handle<Exception>(error, errors);
+			error      = get_info(p_id, info_id, sizeof(ReturnType), std::addressof(info), nullptr);
+			error::handle<typename ObjectHandler<ObjectIdType>::exception_type>(error, errors);
 			return info;
 		}
 
@@ -32,7 +32,7 @@ namespace cl {
 			ObjectIdType m_id,
 			InfoIdType info_id,
 			InfoFunc get_info,
-			bool count_element_wise = true
+			bool count_element_wise
 		)
 			-> std::vector<ReturnType>
 		{
@@ -42,11 +42,11 @@ namespace cl {
 			auto error       = cl_int{CL_INVALID_VALUE};
 			auto buffer_size = cl_uint{0};
 			error            = get_info(m_id, info_id, 0, nullptr, std::addressof(buffer_size));
-			error::handle<Exception>(error, error_map);
+			error::handle<typename ObjectHandler<ObjectIdType>::exception_type>(error, errors);
 			auto count_elems = count_element_wise ? buffer_size : buffer_size / sizeof(ReturnType);
 			auto info = std::vector<ReturnType>(count_elems);
 			error = get_info(m_id, info_id, buffer_size, info.data(), nullptr);
-			error::handle<Exception>(error, errors);
+			error::handle<typename ObjectHandler<ObjectIdType>::exception_type>(error, errors);
 			return info;
 		}
 
@@ -55,7 +55,7 @@ namespace cl {
 			ObjectIdType m_id,
 			InfoIdType info_id,
 			InfoFunc get_info,
-			bool count_element_wise = false
+			bool count_element_wise
 		)
 			-> std::string
 		{
@@ -65,5 +65,3 @@ namespace cl {
 		}
 	}
 }
-
-#endif

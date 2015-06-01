@@ -2,6 +2,8 @@
 	#error "Do not include this file directly."
 #endif
 
+#include <iostream>
+
 namespace cl {
 	//====================================================================================
 	// Copy-Assignment

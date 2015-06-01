@@ -31,31 +31,33 @@ void test_01() {
 			  << "\tCompiler available: " << device.isCompilerAvailable() << '\n'
 			  << "\tAddress bits: " << device.getAddressBits() << '\n'
 			  << "\tAvailable: " << ((device.isAvailable()) ? "true" : "false") << '\n';
+	std::cout << "\tMax Workt Item Sizes:\n";
 	for (auto&& size : device.getMaxWorkItemSizes()) {
 		std::cout << "\t\t" << size << "\n";
 	}
+	std::cout << "\tExtensions:\n";
+	for (auto&& ext : device.getExtensions()) {
+		std::cout << "\t\t" << ext << '\n';
+	}
 
-	auto usr_data = int{5};
-	auto properties = cl::ContextProperties().setPlatform(platform);
-	//auto context_id = cl::Context(properties, devices);
-	auto context = cl::Context(
-		properties,
-		devices,
-//		[](std::string const& error_info, std::vector<char> const& private_info, int user_data) {
+//	auto usr_data = int{5};
+//	auto properties = cl::ContextProperties().setPlatform(platform);
+//	auto context = cl::Context(
+//		properties,
+//		devices,
+//		[](auto&& error_info, auto&& private_info, auto&& user_data) {
 //			std::cout << "error_info: " << error_info << '\n'
 //					  << "private_info: " << '\n';
 //			for (auto&& t : private_info) std::cout << '\t' << t << '\n';
 //			std::cout << "user_data: " << user_data << '\n';		
 //		},
-		[](auto&& error_info, auto&& private_info, auto&& user_data) {
-			std::cout << "error_info: " << error_info << '\n'
-					  << "private_info: " << '\n';
-			for (auto&& t : private_info) std::cout << '\t' << t << '\n';
-			std::cout << "user_data: " << user_data << '\n';		
-		},
-		&usr_data
-	);
+//		&usr_data
+//	);
 
+	auto properties = cl::ContextProperties().setPlatform(platform);
+	std::cout << "Context properties created successfully!\n";
+
+	auto context = cl::Context(properties, cl::DeviceType::defaultType);
 	std::cout << "Context created successfully!\n";
 
 	std::ignore = context;

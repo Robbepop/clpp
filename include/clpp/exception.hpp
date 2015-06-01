@@ -5,7 +5,6 @@
 
 #include <stdexcept>
 #include <string>
-#include <experimental/string_view>
 
 namespace cl {
 	class AnyError : public std::runtime_error {
@@ -15,8 +14,6 @@ namespace cl {
 
 	public:
 		AnyError(RetCode p_code, std::string p_info);
-
-		AnyError(RetCode p_code, std::experimental::string_view p_info);
 
 		virtual auto what() const noexcept -> const char *;
 
