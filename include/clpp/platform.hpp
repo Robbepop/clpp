@@ -48,9 +48,7 @@ namespace cl {
 		// Note that move constructors and move assign operator are default generated.
 		//================================================================================
 
-		         Platform();
-		explicit Platform(cl_platform_id platform);
-		         Platform(const Platform & platform);
+		using detail::Object<cl_platform_id>::Object;
 
 		Platform& operator=(const Platform & rhs);
 
@@ -62,7 +60,7 @@ namespace cl {
 		auto getVersion() const    -> std::string;
 		auto getName() const       -> std::string;
 		auto getVendor() const     -> std::string;
-		auto getExtensions() const -> std::vector<std::string>>;
+		auto getExtensions() const -> std::vector<std::string>;
 		auto getDevices(DeviceType deviceType) const -> std::vector<Device>;
 	};
 }

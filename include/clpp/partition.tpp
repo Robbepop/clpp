@@ -2,12 +2,14 @@
 	#error "Do not include this file directly."
 #endif
 
+#include "utility/to_underlying.hpp"
+
 #include <type_traits>
 
 namespace cl {
 	auto Partition::equally(cl_uint count) -> Partition {
 		const auto properties = std::vector<cl_device_partition_property> {
-			{CL_DEVICE_PARTITION_EQUALLY, num, 0}
+			{CL_DEVICE_PARTITION_EQUALLY, count, 0}
 		};
 		return Partition(properties);
 	}
@@ -27,7 +29,7 @@ namespace cl {
 	auto Partition::byAffinityDomain(AffinityDomain domain) -> Partition {
 		const auto properties = std::vector<cl_device_partition_property>{
 			CL_DEVICE_PARTITION_BY_AFFINITY_DOMAIN,
-			static_cast<std::underlying_type<AffinityDomain>::type>(domain),
+			static_cast<cl_device_partition_property>(domain),
 			0
 		};
 		return Partition{properties.data()};
@@ -41,7 +43,7 @@ namespace cl {
 		m_properties{std::move(properties)}
 	{}
 
-	explicit Partition::Partition(const cl_device_partition_property[] properties) {
+	Partition::Partition(const cl_device_partition_property* properties) {
 		for (auto it = &properties[0]; *it != 0; ++it) {
 			m_properties.push_back(*it);
 		}
@@ -55,7 +57,7 @@ namespace cl {
 	//================================================================================
 
 	auto Partition::getKind() const -> Kind {
-		const auto head = m_properties.first();
+		const auto head = m_properties.front();
 		switch (head) {
 			case CL_DEVICE_PARTITION_EQUALLY:            return Kind::equally;
 			case CL_DEVICE_PARTITION_BY_COUNTS:          return Kind::byCounts;
@@ -64,7 +66,11 @@ namespace cl {
 		};
 	}
 
-	auto Partition::data() const -> cl_device_partition_property[] {
+	auto Partition::data() -> cl_device_partition_property * {
+		return m_properties.data();
+	}
+
+	auto Partition::data() const -> const cl_device_partition_property * {
 		return m_properties.data();
 	}
 

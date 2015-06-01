@@ -3,12 +3,13 @@
 #endif
 
 #include "clpp/detail/error_handler.hpp"
+#include "clpp/ret_code.hpp"
 
 namespace cl {
 	namespace detail {
 
 		template<typename CLType>
-		auto Object<CLType>::get() const {
+		auto Object<CLType>::get() const -> Object<CLType>::cl_type {
 			return m_object;
 		}
 
@@ -22,7 +23,12 @@ namespace cl {
 		{}
 
 		template<typename CLType>
-		Object<CLType>::Object(const Object<CLType> & rhs) :
+		Object<CLType>::Object(Object<CLType>::cl_type object):
+			m_object{object}
+		{}
+
+		template<typename CLType>
+		Object<CLType>::Object(const Object<CLType> & rhs):
 			m_object{rhs.m_object}
 		{
 			retain();
@@ -51,14 +57,11 @@ namespace cl {
 		auto Object<CLType>::getInfo(Object<CLType>::info_type p_info) const
 			-> InfoType
 		{
-			static const auto error_info = error::info_map{
-				{RetCode::invalidValue, "invalid use of getInfo function; OR invalid information queried."}
-			};
 			auto error = cl_int{CL_INVALID_VALUE};
 			auto data  = InfoType{};
 			error = ObjectHandler<CLType>::getInfo(
 				m_object, p_info, sizeof(InfoType), std::addressof(data), nullptr);
-			error::handle<Object<CLType>::exception_type>(error, error_info);
+			error::handle<Object<CLType>::exception_type>(error);
 			return data;
 		}
 
@@ -67,18 +70,15 @@ namespace cl {
 		auto Object<CLType>::getInfoVector(Object<CLType>::info_type p_info) const
 			-> std::vector<InfoType>
 		{
-			static const auto error_info = error::info_map{
-				{RetCode::invalidValue, "invalid use of getInfo function; OR invalid information queried."}
-			};
 			auto error    = cl_int{CL_INVALID_VALUE};
 			auto req_size = size_t{0};
 			error = ObjectHandler<CLType>::getInfo(
 				m_object, p_info, 0, nullptr, std::addressof(req_size));
-			error::handle<Object<CLType>::exception_type>(error, error_map);
+			error::handle<Object<CLType>::exception_type>(error);
 			const auto count_elems = req_size / sizeof(InfoType);
 				  auto info        = std::vector<InfoType>(count_elems);
 			error = ObjectHandler<CLType>::getInfo(m_object, p_info, req_size, info.data(), nullptr);
-			error::handle<Object<CLType>::exception_type>(error, error_info);
+			error::handle<Object<CLType>::exception_type>(error);
 			return info;
 		}
 
@@ -112,5 +112,3 @@ namespace cl {
 		}
 	}
 }
-
-#endif

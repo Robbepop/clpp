@@ -12,3 +12,5 @@ namespace cl {
 		doubleType
 	};
 }
+
+#endif

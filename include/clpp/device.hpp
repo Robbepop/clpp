@@ -1,24 +1,35 @@
 #ifndef CLPP_DEVICE_H
 #define CLPP_DEVICE_H
 
-#include "object.hpp"
-#include "error_handler.hpp"
+#include "clpp/detail/object.hpp"
+#include "clpp/detail/error_handler.hpp"
+
+#include "clpp/affinity_domain.hpp"
+#include "clpp/fp_type.hpp"
+#include "clpp/memory_cache_type.hpp"
+#include "clpp/local_memory_type.hpp"
+#include "clpp/scalar_type.hpp"
 
 #include <map>
 
 namespace cl {
+	class AffinityDomainCapabilities;
 	class Platform;
+	class Partition;
+	class PartitionCapabilities;
 	class FPConfig;
 	class ExecutionCapabilities;
 	class CommandQueueProperties;
 	class DeviceError;
+	class SvmCapabilities;
+	class TerminateCapabilities;
 
 	namespace detail {
 		template<>
 		struct ObjectHandler<cl_device_id> final {
-			using cl_type = cl_device_id;
-			using info_type = cl_device_info;
-			using exception_type = DeviceException;
+			using cl_type        = cl_device_id;
+			using info_type      = cl_device_info;
+			using exception_type = DeviceError;
 
 			static auto release(cl_device_id id) { clReleaseDevice(id); }
 
@@ -45,12 +56,9 @@ namespace cl {
 		// Constructor and Assignment
 		//================================================================================
 
-		Device();
-		Device(cl_type device);
-		Device(const Device & device);
+		using detail::Object<cl_device_id>::Object;
 
 		Device& operator=(const Device & rhs);
-
 		
 		//================================================================================
 		// Methods to partition the device.
@@ -66,7 +74,7 @@ namespace cl {
 		auto partitionByCounts(InputRange const& counts)
 			-> std::vector<Device>;
 
-		auto partitionByAffinityDomain(DeviceAffinityDomain domain)
+		auto partitionByAffinityDomain(AffinityDomain domain)
 			-> std::vector<Device>;
 
 		//================================================================================

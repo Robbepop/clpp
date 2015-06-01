@@ -32,7 +32,7 @@ namespace cl {
 		//================================================================================
 	public:
 
-		explicit Partition(const cl_device_partition_property[] properties);
+		explicit Partition(const cl_device_partition_property* properties);
 
 		//================================================================================
 		// Access to the underlying type of this partition.
@@ -41,7 +41,9 @@ namespace cl {
 		//================================================================================
 
 		auto getKind() const -> Kind;
-		auto data() const    -> cl_device_partition_property[];
+
+		auto data()          ->       cl_device_partition_property *;
+		auto data() const    -> const cl_device_partition_property *;
 
 		//================================================================================
 		// Methods restricted to the underlying type of partition.

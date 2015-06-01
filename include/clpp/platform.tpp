@@ -3,6 +3,7 @@
 #endif
 
 #include "clpp/detail/get_info_helper.hpp"
+#include "clpp/device.hpp"
 
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
@@ -21,10 +22,10 @@ namespace cl {
 		auto error          = cl_int{CL_INVALID_VALUE};
 		auto countPlatforms = cl_uint{0};
 		error               = clGetPlatformIDs(0, nullptr, std::addressof(countPlatforms));
-		error::handler<Platform::exception_type>(error);
-		auto platformIds    = std::vector<Platform::cl_type>(num_platforms);
+		detail::error::handle<Platform::exception_type>(error);
+		auto platformIds    = std::vector<Platform::cl_type>(countPlatforms);
 		error               = clGetPlatformIDs(countPlatforms, platformIds.data(), nullptr);
-		error::handler<Platform::exception_type>(error);
+		detail::error::handle<Platform::exception_type>(error);
 		auto platforms = std::vector<Platform>{};
 		for (auto&& id : platformIds) {
 			platforms.emplace_back(id);
@@ -33,21 +34,9 @@ namespace cl {
 	}
 
 	//================================================================================
-	// Constructos and copy assign operator.
+	// Copy assign operator.
 	// Note that move constructors and move assign operator are default generated.
 	//================================================================================
-
-	Platform::Platform():
-		detail::Object<cl_type>{}
-	{}
-
-	explicit Platform::Platform(Platform::cl_type platform):
-		m_object{object}
-	{}
-
-	Platform::Platform(const Platform & platform):
-		detail::Object<cl_type>{platform}
-	{}
 
 	Platform& Platform::operator=(const Platform & rhs)
 	{
@@ -86,7 +75,7 @@ namespace cl {
 	}
 
 	auto Platform::getExtensions() const
-		-> std::vector<std::string>>
+		-> std::vector<std::string>
 	{
 			  auto extensions = std::vector<std::string>{};
 		const auto extString  = getInfoString(CL_PLATFORM_EXTENSIONS);
@@ -110,5 +99,3 @@ namespace cl {
 		return devices;
 	}
 }
-
-#endif

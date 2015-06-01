@@ -44,6 +44,7 @@ namespace cl {
 			template <typename ExceptionType>
 			static auto handle(RetCode   code, info_map const* local_info_map) -> cl_bool;
 
+		public:
 			template <typename ExceptionType>
 			static auto handle(code_type code, info_map const& local_info_map) -> cl_bool;
 

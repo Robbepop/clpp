@@ -1,5 +1,5 @@
-#ifndef CLPP_COMMAND_QUEUE_PROPERTIES_H
-#define CLPP_COMMAND_QUEUE_PROPERTIES_H
+#ifndef CLPP_AFFINITY_DOMAIN_CAPABILITIES_H
+#define CLPP_AFFINITY_DOMAIN_CAPABILITIES_H
 
 #include "clpp/detail/common.hpp"
 #include "clpp/detail/mask_wrapper.hpp"

@@ -2,9 +2,9 @@
 #define CLPP_DETAIL_COMMON_H
 
 #if defined(__APPLE__)
-#include <OpenCL/opencl.h>
+	#include <OpenCL/opencl.h>
 #else
-#include <CL/cl.h>
+	#include <CL/cl.h>
 #endif
 
 #endif

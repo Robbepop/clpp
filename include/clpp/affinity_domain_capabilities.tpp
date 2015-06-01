@@ -1,4 +1,6 @@
-
+#ifndef CLPP_AFFINITY_DOMAIN_CAPABILITIES_H
+	#error "Do not include this file directly."
+#endif
 
 namespace cl {
 	auto AffinityDomainCapabilities::hasNuma() const -> cl_bool {

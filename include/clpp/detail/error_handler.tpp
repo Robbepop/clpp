@@ -41,13 +41,13 @@ namespace cl {
 			};
 			if (isSuccess(code)) return CL_SUCCESS;
 			if (local_info_map != nullptr) {
-				const auto it = local_info_map.find(code);
+				const auto it = local_info_map->find(code);
 				throw ExceptionType{code,
-					it != local_info_map.end() ? it.second : {""}};
+					it != local_info_map->end() ? it->second : ""};
 			}
 			const auto it = global_info_map.find(code);
 			throw ExceptionType{code,
-				it != global_info_map.end() ? it.second : {""}};
+				it != global_info_map.end() ? it->second : ""};
 		}
 
 		template <typename ExceptionType>
@@ -69,5 +69,3 @@ namespace cl {
 		}
 	}
 }
-
-#endif

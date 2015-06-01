@@ -14,11 +14,11 @@ namespace cl {
 		std::string m_info;
 
 	public:
-		AnyError(ErrorCode p_code, std::string p_info);
+		AnyError(RetCode p_code, std::string p_info);
 
-		AnyError(ErrorCode p_code, std::experimental::string_view p_info);
+		AnyError(RetCode p_code, std::experimental::string_view p_info);
 
-		virtual auto what() const noexcept;
+		virtual auto what() const noexcept -> const char *;
 
 		auto code() const;
 	};

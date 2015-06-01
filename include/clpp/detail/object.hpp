@@ -34,12 +34,10 @@ namespace cl {
 		//================================================================================
 		template<typename CLType>
 		class Object {
-		private:
+		public:
 			using info_type      = typename ObjectHandler<CLType>::info_type;
 			using exception_type = typename ObjectHandler<CLType>::exception_type;
-
-		public:
-			using cl_type = typename ObjectHandler<CLType>::type;
+			using cl_type        = typename ObjectHandler<CLType>::cl_type;
 
 			//============================================================================
 			// Returns the underlying OpenCL data of the wrapped object.
@@ -53,6 +51,7 @@ namespace cl {
 			//============================================================================
 
 			Object<CLType>();
+			Object<CLType>(cl_type rhs);
 			Object<CLType>(const Object<CLType> & rhs);
 			Object<CLType>(Object<CLType> && rhs) = default;
 

@@ -2,28 +2,18 @@
 	#error "Do not include this file directly!"
 #endif
 
+#include "clpp/partition.hpp"
+
 namespace cl {
 
 	//====================================================================================
-	// Constructor and Assignment
+	// Assignment
 	//====================================================================================
-
-    Device::Device():
-		detail::Wrapper<Device::cl_type>{}
-	{}
-
-    Device::Device(Device::cl_type device):
-		m_object{device}
-	{}
-
-    Device::Device(const Device & device):
-		detail::Wrapper<cl_type>{device}
-	{}
 
     Device& Device::operator=(const Device & rhs)
     {
         if (this != &rhs) {
-            detail::Wrapper<cl_type>::operator=(rhs);
+            detail::Object<cl_type>::operator=(rhs);
         }
         return *this;
     }

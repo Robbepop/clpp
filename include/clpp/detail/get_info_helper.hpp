@@ -1,5 +1,5 @@
-#ifndef CPPCL_DETAIL_GET_INFO_HELPER_H
-#define CPPCL_DETAIL_GET_INFO_HELPER_H
+#ifndef CLPP_DETAIL_GET_INFO_HELPER_H
+#define CLPP_DETAIL_GET_INFO_HELPER_H
 
 #include <vector>
 
@@ -30,5 +30,5 @@ namespace cl {
 	}
 }
 
-#include "clpp/detail/get_info_helper.tpp"
+//#include "clpp/detail/get_info_helper.tpp"
 #endif
