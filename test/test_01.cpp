@@ -13,10 +13,10 @@ void test_01() {
 	auto platform = platforms[0];
 
 	std::cout << "Platform ...\n"
-			  << "\tProfile: " << platform.profile() << "\n"
-			  << "\tName: " << platform.name() << "\n"
-			  << "\tVendor: " << platform.vendor() << "\n"
-			  << "\tVersion: " << platform.version() << "\n"
+			  << "\tProfile: " << platform.getProfile() << "\n"
+			  << "\tName: " << platform.getName() << "\n"
+			  << "\tVendor: " << platform.getVendor() << "\n"
+			  << "\tVersion: " << platform.getVersion() << "\n"
 			  << "\tExtensions: \n";
 	for (auto&& ext : platform.getExtensions()) {
 		std::cout << "\t\t" << ext << '\n';
@@ -26,12 +26,12 @@ void test_01() {
 	std::cout << "Count devices: " << devices.size() << '\n';
 	auto device = devices[0];
 	std::cout << "Devices ...\n"
-			  << "\tName: " << device.name() << '\n'
-			  << "\tAvailable: " << device.available() << '\n'
-			  << "\tCompiler available: " << device.compilerAvailable() << '\n'
-			  << "\tAddress bits: " << device.addressBits() << '\n'
-			  << "\tAvailable: " << ((device.available()) ? "true" : "false") << '\n';
-	for (auto&& size : device.maxWorkItemSizes()) {
+			  << "\tName: " << device.getName() << '\n'
+			  << "\tAvailable: " << device.isAvailable() << '\n'
+			  << "\tCompiler available: " << device.isCompilerAvailable() << '\n'
+			  << "\tAddress bits: " << device.getAddressBits() << '\n'
+			  << "\tAvailable: " << ((device.isAvailable()) ? "true" : "false") << '\n';
+	for (auto&& size : device.getMaxWorkItemSizes()) {
 		std::cout << "\t\t" << size << "\n";
 	}
 
@@ -41,13 +41,19 @@ void test_01() {
 	auto context = cl::Context(
 		properties,
 		devices,
-		[](std::string const& error_info, std::vector<uint8_t> const& private_info, int user_data) {
+//		[](std::string const& error_info, std::vector<char> const& private_info, int user_data) {
+//			std::cout << "error_info: " << error_info << '\n'
+//					  << "private_info: " << '\n';
+//			for (auto&& t : private_info) std::cout << '\t' << t << '\n';
+//			std::cout << "user_data: " << user_data << '\n';		
+//		},
+		[](auto&& error_info, auto&& private_info, auto&& user_data) {
 			std::cout << "error_info: " << error_info << '\n'
 					  << "private_info: " << '\n';
 			for (auto&& t : private_info) std::cout << '\t' << t << '\n';
 			std::cout << "user_data: " << user_data << '\n';		
 		},
-		usr_data
+		&usr_data
 	);
 
 	std::cout << "Context created successfully!\n";

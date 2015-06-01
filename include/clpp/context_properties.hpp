@@ -14,6 +14,8 @@ namespace cl {
 		using key_type = cl_context_properties;
 		using val_type = cl_context_properties;
 
+		ContextProperties() = default;
+
 		template<typename InputRange>
 		ContextProperties(InputRange properties);
 

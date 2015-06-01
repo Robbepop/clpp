@@ -12,28 +12,30 @@ namespace cl {
 	class ContextProperties;
 	class ContextError;
 
-	template<>
-	struct ObjectHandler<cl_context> final {
-		using cl_type = cl_context;
-		using info_type = cl_context_info;
-		using exception_type = ContextException;
+	namespace detail {
+		template<>
+		struct ObjectHandler<cl_context> final {
+			using cl_type = cl_context;
+			using info_type = cl_context_info;
+			using exception_type = ContextError;
 
-		static auto release(cl_context id) { return clReleaseContext(id); }
+			static auto release(cl_context id) { return clReleaseContext(id); }
 
-		static auto retain(cl_context id) { return clRetainContext(id); }
+			static auto retain(cl_context id) { return clRetainContext(id); }
 
-		static auto getInfo
-		(
-			cl_context context,
-			cl_context_info param_name,
-			size_t param_value_size,
-			void *param_value,
-			size_t *param_value_size_ret
-		) {
-			return clGetContextInfo(
-				context, param_name, param_value_size, param_value, param_value_size_ret);
-		}
-	};
+			static auto getInfo
+			(
+				cl_context context,
+				cl_context_info param_name,
+				size_t param_value_size,
+				void *param_value,
+				size_t *param_value_size_ret
+			) {
+				return clGetContextInfo(
+					context, param_name, param_value_size, param_value, param_value_size_ret);
+			}
+		};
+	}
 
 	class Context final : public detail::Object<cl_context> {
 	public:
@@ -41,9 +43,7 @@ namespace cl {
 		// Basic Constructors and Copy-Assignment
 		//================================================================================
 
-		Context();
-		Context(cl_type context);
-		Context(const Context & context);
+		using detail::Object<cl_context>::Object;
 
 		Context& operator=(const Context & rhs);
 

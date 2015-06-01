@@ -50,11 +50,13 @@ namespace cl {
 			// Constructors & Destructor
 			//============================================================================
 
+		public:
 			Object<CLType>();
 			Object<CLType>(cl_type rhs);
 			Object<CLType>(const Object<CLType> & rhs);
 			Object<CLType>(Object<CLType> && rhs) = default;
 
+		protected:
 			~Object<CLType>();
 
 			//============================================================================
@@ -79,8 +81,8 @@ namespace cl {
 			auto getInfoString(info_type p_info) const -> std::string;
 
 		private:
-			auto release();
-			auto retain();
+			void release();
+			void retain();
 		};
 	}
 }

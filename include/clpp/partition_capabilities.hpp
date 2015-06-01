@@ -21,9 +21,9 @@ namespace cl {
 		auto supportsPartitionByAffinityDomain() const -> cl_bool;
 
 	private:
-		static constexpr auto c_equally;
-		static constexpr auto c_byCounts;
-		static constexpr auto c_byAffinityDomain;
+		static constexpr auto c_equally          = 1u;
+		static constexpr auto c_byCounts         = 2u;
+		static constexpr auto c_byAffinityDomain = 4u;
 	};
 }
 

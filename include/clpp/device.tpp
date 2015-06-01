@@ -3,6 +3,15 @@
 #endif
 
 #include "clpp/partition.hpp"
+#include "clpp/fp_config.hpp"
+#include "clpp/execution_capabilities.hpp"
+#include "clpp/affinity_domain_capabilities.hpp"
+#include "clpp/partition_capabilities.hpp"
+#include "clpp/command_queue_properties.hpp"
+#include "clpp/svm_capabilities.hpp"
+
+#include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string/classification.hpp>
 
 namespace cl {
 
@@ -27,10 +36,10 @@ namespace cl {
 		auto error      = cl_int{CL_INVALID_VALUE};
 		auto countElems = cl_uint{0};
 		error = clCreateSubDevices(m_object, partition.data(), 0, nullptr, std::addressof(countElems));
-		detail::error::handle<DeviceException>(error, info_map);
+		detail::error::handle<exception_type>(error);
 		auto ids = std::vector<Device::cl_type>(countElems);
-		error = clCreateSubDevices(m_object, properties.data(), countElems, ids.data(), nullptr);
-		detail::error::handle<DeviceException>(error, info_map);
+		error = clCreateSubDevices(m_object, partition.data(), countElems, ids.data(), nullptr);
+		detail::error::handle<exception_type>(error);
 		return {ids.begin(), ids.end()};
 	}
 
@@ -45,7 +54,7 @@ namespace cl {
 		return partition(Partition::byCounts(counts));
 	}
 
-	auto Device::partitionByAffinityDomain(DeviceAffinityDomain domain)
+	auto Device::partitionByAffinityDomain(AffinityDomain domain)
 		-> std::vector<Device>
 	{
 		return partition(Partition::byAffinityDomain(domain));
@@ -70,7 +79,8 @@ namespace cl {
 	auto Device::getFpConfig(FPType type) const -> FPConfig {
 		switch (type) {
 		case FPType::halfPrecision:
-			return {getInfo<cl_device_fp_config>(CL_DEVICE_HALF_FP_CONFIG)};
+			assert(false && "unsupported operation");
+		//	return {getInfo<cl_device_fp_config>(CL_DEVICE_HALF_FP_CONFIG)};
 		case FPType::singlePrecision:
 			return {getInfo<cl_device_fp_config>(CL_DEVICE_SINGLE_FP_CONFIG)};
 		case FPType::doublePrecision:
@@ -118,7 +128,7 @@ namespace cl {
 	}
 
 	auto Device::getGlobalVariablePreferredTotalSize() const -> size_t {
-		return getInfo<size_t>(CL_DEVICE_GLOBAL_VARIABLE_ PREFERRED_TOTAL_SIZE);
+		return getInfo<size_t>(CL_DEVICE_GLOBAL_VARIABLE_PREFERRED_TOTAL_SIZE);
 	}
 
 	auto Device::getImage2DMaxHeight() const -> size_t {
@@ -272,12 +282,12 @@ namespace cl {
 		return getInfoString(CL_DEVICE_OPENCL_C_VERSION);
 	}
 
-	auto Device::getParentDevice() const -> Device {
-		const auto parentId = getInfo<cl_device_id>CL_DEVICE_PARENT_DEVICE);
-		if (parentId == 0) {
-			throw exception_type{"this device does not have a parent device."};
+	auto Device::getParentDevice() const -> boost::optional<Device> {
+		const auto parentId = getInfo<cl_device_id>(CL_DEVICE_PARENT_DEVICE);
+		if (parentId == nullptr) {
+			return {};
 		}
-		return {parentId};
+		return {{parentId}};
 	}
 
 	auto Device::getPartitionAffinityDomain() const -> AffinityDomainCapabilities {
@@ -375,24 +385,20 @@ namespace cl {
 	}
 
 
-	auto Device::getSpirVersions() const -> std::vector<std::string> {
-			  auto versions  = std::vector<std::string>{};
-		const auto verString = getInfoString(CL_DEVICE_SPIR_VERSIONS);
-		boost::split(versions, verString, boost::is_any_of("\t "), boost::token_compress_on);
-		return versions;
-	}
+//	auto Device::getSpirVersions() const -> std::vector<std::string> {
+//			  auto versions  = std::vector<std::string>{};
+//		const auto verString = getInfoString(CL_DEVICE_SPIR_VERSIONS);
+//		boost::split(versions, verString, boost::is_any_of("\t "), boost::token_compress_on);
+//		return versions;
+//	}
 
 	auto Device::getSvmCapabilities() const -> SvmCapabilities {
 		return {getInfo<cl_device_svm_capabilities>(CL_DEVICE_SVM_CAPABILITIES)};
 	}
 
-	auto Device::getTerminateCapabilities() const -> TerminateCapabilities {
-		return {getInfo<cl_device_terminate_capability_khr>(CL_DEVICE_TERMINATE_CAPABILITY_KHR)};
-	}
-
 
 	auto Device::getType() const -> DeviceType {
-		return {getInfo<cl_device_type>(CL_DEVICE_TYPE)};
+		return static_cast<DeviceType>(getInfo<cl_device_type>(CL_DEVICE_TYPE));
 	}
 
 	auto Device::getVendor() const -> std::string {

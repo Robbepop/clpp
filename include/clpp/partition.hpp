@@ -24,13 +24,12 @@ namespace cl {
 
 		static auto byAffinityDomain(AffinityDomain domain) -> Partition;
 
-	private:
+	public:
 		Partition(std::vector<cl_device_partition_property> properties);
 
 		//================================================================================
 		// Constructor for API compatibility.
 		//================================================================================
-	public:
 
 		explicit Partition(const cl_device_partition_property* properties);
 

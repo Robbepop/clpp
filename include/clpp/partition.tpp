@@ -2,9 +2,7 @@
 	#error "Do not include this file directly."
 #endif
 
-#include "utility/to_underlying.hpp"
-
-#include <type_traits>
+#include <cassert>
 
 namespace cl {
 	auto Partition::equally(cl_uint count) -> Partition {
@@ -81,17 +79,15 @@ namespace cl {
 	//================================================================================
 
 	auto Partition::getComputeUnits() const -> cl_uint {
-		if (getKind() != Kind::equally) {
-			throw PartitionError("this operation can only be used by equal partitioning.");
-		}
+		assert(getKind() == Kind::equally &&
+			"this method is only defined for equally partitions");
 		assert(m_properties.size() == 3 && "internal buffer is invalid");
 		return static_cast<cl_uint>(m_properties[1]);
 	}
 
 	auto Partition::getCounts() const -> std::vector<cl_uint> {
-		if (getKind() != Kind::byCounts) {
-			throw PartitionError("this operation can only be used by byCounts partitioning.");
-		}
+		assert(getKind() == Kind::byCounts &&
+			"this method is only defined for byCounts partitions");
 		assert(m_properties.size() >= 3 && "internal buffer is invalid");
 		auto counts = std::vector<cl_uint>{};
 		counts.reserve(m_properties.size() - 2);
@@ -102,9 +98,8 @@ namespace cl {
 	}
 
 	auto Partition::getAffinityDomain() const -> AffinityDomain {
-		if (getKind() != Kind::equally) {
-			throw PartitionError("this operation can only be used by equal partitioning.");
-		}
+		assert(getKind() == Kind::byAffinityDomain &&
+			"this method is only defined for byAffinityDomain partitions");
 		assert(m_properties.size() == 3 && "internal buffer is invalid");
 		return static_cast<AffinityDomain>(m_properties[1]);
 	}

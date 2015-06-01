@@ -4,25 +4,12 @@
 
 namespace cl {
 	//====================================================================================
-	// Basic Constructors and Copy-Assignment
+	// Copy-Assignment
 	//====================================================================================
-
-	Context::Context():
-		detail::Wrapper<Device::cl_type>{}
-	{}
-
-	Context::Context(Context::cl_type context):
-		m_object{device}
-	{}
-
-	Context::Context(const Context & context):
-		detail::Wrapper<cl_type>{device}
-	{}
-
 
 	Context& Context::operator=(const Context & rhs) {
         if (this != &rhs) {
-            detail::Wrapper<cl_type>::operator=(rhs);
+            detail::Object<cl_type>::operator=(rhs);
         }
         return *this;
 	}
@@ -62,7 +49,7 @@ namespace cl {
 			) {
 				auto temp = reinterpret_cast<callback_data*>(user_data);
 				auto errorString = std::string{error_info};
-				auto privateData = std::vector{
+				auto privateData = std::vector<char>{
 					reinterpret_cast<const char*>(private_info),
 					reinterpret_cast<const char*>(private_info) + cb};
 				auto userData    = temp->user_data;
@@ -75,7 +62,7 @@ namespace cl {
 			std::addressof(error)
 		);
 		if (detail::error::handle<exception_type>(error)) {
-			m_id = contex;
+			m_object = contex;
 		}
 	}
 
@@ -97,7 +84,7 @@ namespace cl {
 			std::addressof(error)
 		);
 		if (detail::error::handle<exception_type>(error)) {
-			m_id = contex;
+			m_object = contex;
 		}
 	}
 
@@ -125,7 +112,7 @@ namespace cl {
 			) {
 				auto temp = reinterpret_cast<callback_data*>(user_data);
 				auto errorString = std::string{error_info};
-				auto privateData = std::vector{
+				auto privateData = std::vector<char>{
 					reinterpret_cast<const char*>(private_info),
 					reinterpret_cast<const char*>(private_info) + cb};
 				auto userData    = temp->user_data;
@@ -138,7 +125,7 @@ namespace cl {
 			std::addressof(error)
 		);
 		if (detail::error::handle<exception_type>(error)) {
-			m_id = contex;
+			m_object = contex;
 		}
 	}
 
@@ -154,7 +141,7 @@ namespace cl {
 			std::addressof(error)
 		);
 		if (detail::error::handle<exception_type>(error)) {
-			m_id = contex;
+			m_object = contex;
 		}
 	}
 
@@ -180,7 +167,7 @@ namespace cl {
 	}
 
 	auto Context::getProperties() const -> ContextProperties {
-		return {getInfo<cl_context_properties[]>(CL_CONTEXT_PROPERTIES)};
+		return {getInfoVector<cl_context_properties>(CL_CONTEXT_PROPERTIES)};
 	}
 
 }

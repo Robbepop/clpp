@@ -10,6 +10,8 @@
 #include "clpp/local_memory_type.hpp"
 #include "clpp/scalar_type.hpp"
 
+#include "boost/optional.hpp"
+
 #include <map>
 
 namespace cl {
@@ -138,7 +140,7 @@ namespace cl {
 		auto getNativeVectorWidth(ScalarType type) const -> cl_uint;
 		auto getOpenCLCVersion() const                 -> std::string;
 
-		auto getParentDevice() const                   -> Device;
+		auto getParentDevice() const                   -> boost::optional<Device>;
 		auto getPartitionAffinityDomain() const        -> AffinityDomainCapabilities;
 		auto getPartitionMaxSubDevices() const         -> cl_uint;
 		auto getPartitionProperties() const            -> PartitionCapabilities;
@@ -165,9 +167,8 @@ namespace cl {
 
 		auto getReferenceCount() const                 -> cl_uint;
 
-		auto getSpirVersions() const                   -> std::vector<std::string>;
+		//auto getSpirVersions() const                   -> std::vector<std::string>;
 		auto getSvmCapabilities() const                -> SvmCapabilities;
-		auto getTerminateCapabilities() const          -> TerminateCapabilities;
 
 		auto getType() const                           -> DeviceType;
 		auto getVendor() const                         -> std::string;

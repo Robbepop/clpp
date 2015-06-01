@@ -3,12 +3,8 @@
 #endif
 
 namespace cl {
-	auto PartitionCapabilities::c_equally          = 1u;
-	auto PartitionCapabilities::c_byCounts         = 2u;
-	auto PartitionCapabilities::c_byAffinityDomain = 4u;
-
 	template<typename InputRange>
-	PartitionCapabilities(InputRange properties) {
+	PartitionCapabilities::PartitionCapabilities(InputRange properties) {
 		for (auto&& property : properties) {
 			switch (property) {
 			case CL_DEVICE_PARTITION_EQUALLY:            modifyMask<c_equally>(true);          break;
@@ -38,14 +34,14 @@ namespace cl {
 	}
 
 	auto PartitionCapabilities::supportsPartitionEqually() const -> cl_bool {
-		readMask<c_equally>();
+		return readMask<c_equally>();
 	}
 
 	auto PartitionCapabilities::supportsPartitionByCounts() const -> cl_bool {
-		readMask<c_byCounts>();
+		return readMask<c_byCounts>();
 	}
 
 	auto PartitionCapabilities::supportsPartitionByAffinityDomain() const -> cl_bool {
-		readMask<c_byAffinityDomain>();
+		return readMask<c_byAffinityDomain>();
 	}
 }
