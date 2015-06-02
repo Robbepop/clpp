@@ -8,6 +8,37 @@
 #include <unordered_map>
 #include <map>
 
+namespace cast {
+	template<typename T, typename V>
+	auto to(const V & value) -> T {
+		return static_cast<T>(value);
+	}
+
+	template<typename T, typename V>
+	auto as(const V & value) -> T {
+		return reinterpret_cast<T>(value);
+	}
+}
+
+namespace test {
+	struct tabular {
+		tabular(int offset, int width): m_offset{offset}, m_width{width} {}
+		auto getWidth() const -> int { return m_width; }
+		auto getOffset() const -> int { return m_offset; }
+		auto operator()(int scaledOffset, int newWidth = 0) -> tabular {
+			return tabular{scaledOffset * m_offset, newWidth};
+		}
+	private:
+		int m_offset;
+		int m_width;
+	};
+}
+
+auto operator<<(std::ostream & os, const test::tabular & tab) -> std::ostream & {
+	os << '\n' << std::setw(tab.getOffset()) << ' ' << std::setw(tab.getWidth());
+	return os;
+}
+
 auto operator<<(std::ostream & os, const cl::MemoryCacheType & type) -> std::ostream & {
 	switch (type) {
 		case cl::MemoryCacheType::readOnlyCache:  os << "Read Only";  break;
@@ -30,26 +61,80 @@ auto operator<<(std::ostream & os, const cl::LocalMemoryType & type) -> std::ost
 
 auto operator<<(std::ostream & os, const cl::DeviceType & type) -> std::ostream & {
 	switch (type) {
-		case cl::DeviceType::defaultType: os << "Default Type";   break;
-		case cl::DeviceType::cpu:         os << "Compute Processing Unit (CPU)"; break;
+		case cl::DeviceType::defaultType: os << "Default Type";                     break;
+		case cl::DeviceType::cpu:         os << "Compute Processing Unit (CPU)";    break;
 		case cl::DeviceType::gpu:         os << "Graphical Processing Unit (GPU)";  break;
-		case cl::DeviceType::accelerator: os << "Accelerator";  break;
-		case cl::DeviceType::all:         os << "All Types";  break;
+		case cl::DeviceType::accelerator: os << "Accelerator";                      break;
+		case cl::DeviceType::all:         os << "All Types";                        break;
 		default: assert(false);
 	}
 	return os;
 }
 
+auto operator<<(std::ostream & os, const cl::AffinityDomain & domain) -> std::ostream & {
+	switch (domain) {
+		case cl::AffinityDomain::numa:              os << "NUMA";               break;
+		case cl::AffinityDomain::cacheL1:           os << "L1 Cache";           break;
+		case cl::AffinityDomain::cacheL2:           os << "L2 Cache";           break;
+		case cl::AffinityDomain::cacheL3:           os << "L3 Cache";           break;
+		case cl::AffinityDomain::cacheL4:           os << "L4 Cache";           break;
+		case cl::AffinityDomain::nextPartitionable: os << "Next Partitionable"; break;
+		default: assert(false);
+	}
+	return os;
+}
+
+auto operator<<(std::ostream & os, const cl::AffinityDomainCapabilities & caps) -> std::ostream & {
+	using cast::to;
+	auto tab = test::tabular{10, 30};
+	os << tab << "Has NUMA"              << to<bool>(caps.hasNuma())
+	   << tab << "Has L1-Cache"          << to<bool>(caps.hasL1Cache())
+	   << tab << "Has L2-Cache"          << to<bool>(caps.hasL2Cache())
+	   << tab << "Has L3-Cache"          << to<bool>(caps.hasL3Cache())
+	   << tab << "Has L4-Cache"          << to<bool>(caps.hasL4Cache())
+	   << tab << "Is next partitionable" << to<bool>(caps.isNextPartitionable());
+	return os;
+}
+
+auto operator<<(std::ostream & os, const cl::CommandQueueProperties & props) -> std::ostream & {
+	using cast::to;
+	auto tab = test::tabular{10, 30};
+	os << tab << "Out of order exec. enabled" << to<bool>(props.isOutOfOrderExecModeEnabled())
+	   << tab << "Profiling enabled"                   << to<bool>(props.isProfilingEnabled());
+	return os;
+}
+
+auto operator<<(std::ostream & os, const cl::ExecutionCapabilities & caps) -> std::ostream & {
+	// TODO
+	return os;
+}
+
+auto operator<<(std::ostream & os, const cl::PartitionCapabilities & caps) -> std::ostream & {
+	// TODO
+	return os;
+}
+
+auto operator<<(std::ostream & os, const cl::SvmCapabilities & caps) -> std::ostream & {
+	// TODO
+	return os;
+}
+
+auto operator<<(std::ostream & os, const cl::FPConfig & config) -> std::ostream & {
+	// TODO
+	return os;
+}
+
 auto operator<<(std::ostream & os, const cl::Platform & platform) -> std::ostream & {
 	using std::setw;
+	auto tab = test::tabular{5, 35};
 	os << "Platform\n" << std::left
-	   << setw(5) << ' ' << setw(15) << "Name"    << platform.getName()    << '\n'
-	   << setw(5) << ' ' << setw(15) << "Profile" << platform.getProfile() << '\n'
-	   << setw(5) << ' ' << setw(15) << "Vendor"  << platform.getVendor()  << '\n'
-	   << setw(5) << ' ' << setw(15) << "Version" << platform.getVersion() << '\n'
-	   << setw(5) << ' '             << "Extensions:\n";
+	   << tab    << "Name"    << platform.getName()
+	   << tab    << "Profile" << platform.getProfile()
+	   << tab    << "Vendor"  << platform.getVendor()
+	   << tab    << "Version" << platform.getVersion()
+	   << tab(1) << "Extensions";
 	for (auto&& ext : platform.getExtensions()) {
-		os << setw(10) << ' ' << ext << '\n';
+		os << tab(2) << ext;
 	}
 	return os;
 }
@@ -62,38 +147,6 @@ auto operator<<(std::ostream& out, const std::vector<T>& v) -> std::ostream & {
 		out << "\b\b]";
 	}
 	return out;
-}
-
-namespace test {
-	struct tabular {
-		static constexpr auto off = "\n     ";
-		tabular(int offset, int width): m_offset{offset}, m_width{width} {}
-		auto getWidth() const -> int { return m_width; }
-		auto getOffset() const -> int { return m_offset; }
-		auto operator()(int scaledOffset, int newWidth = 0) -> tabular {
-			return tabular{scaledOffset * m_offset, newWidth};
-		}
-	private:
-		int m_offset;
-		int m_width;
-	};
-}
-
-auto operator<<(std::ostream & os, const test::tabular & tab) -> std::ostream & {
-	os << '\n' << std::setw(tab.getOffset()) << ' ' << std::setw(tab.getWidth());
-	return os;
-}
-
-namespace cast {
-	template<typename T, typename V>
-	auto to(const V & value) -> T {
-		return static_cast<T>(value);
-	}
-
-	template<typename T, typename V>
-	auto as(const V & value) -> T {
-		return reinterpret_cast<T>(value);
-	}
 }
 
 auto operator<<(std::ostream & os, const cl::Device & device) -> std::ostream & {
@@ -178,7 +231,7 @@ auto operator<<(std::ostream & os, const cl::Device & device) -> std::ostream & 
 
 	   << tab << "OpenCL C Version"          << device.getOpenCLCVersion()
 	   << tab << "Has Parent Device"         << to<bool>(device.getParentDevice())
-	   //<< tab << "Partition Affinity Domain" << device.getPartitionAffinityDomain()
+	   << tab << "Partition Affinity Domain" << device.getPartitionAffinityDomain()
 	   << tab << "Partition Max Sub Devices" << device.getPartitionMaxSubDevices()
 	   //<< tab << "Partition Properties"      << device.getPartitionProperties()
 	   //<< tab << "Partition Type"            << device.getPartition()
@@ -211,8 +264,8 @@ auto operator<<(std::ostream & os, const cl::Device & device) -> std::ostream & 
 
 	   << tab << "Queue on Device Max Size"   << device.getQueueOnDeviceMaxSize()
 	   << tab << "Queue on Device Pref. Size" << device.getQueueOnDevicePreferredSize()
-	   //<< tab << "" << device.getQueueOnDeviceProperties()
-	   //<< tab << "" << device.getQueueOnHostProperties()
+	   << tab << "Queue on Device Properties" << device.getQueueOnDeviceProperties()
+	   << tab << "Queue on Host Properties" << device.getQueueOnHostProperties()
 
 	   << '\n'
 
@@ -225,7 +278,7 @@ auto operator<<(std::ostream & os, const cl::Device & device) -> std::ostream & 
 	   << tab << "Driver Version"   << device.getDriverVersion();
 
 	os << '\n';
-	os << tab(1) << "Extensions:";
+	os << tab(1) << "Extensions";
 	for (auto&& ext : device.getExtensions()) {
 		os << tab(2) << ext;
 	}

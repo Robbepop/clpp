@@ -14,7 +14,7 @@ namespace cl {
 		auto supportsCoarseGrainBuffer() const -> cl_bool;
 		auto supportsFineGrainBuffer() const   -> cl_bool;
 		auto supportsFineGrainSystem() const   -> cl_bool;
-		auto supportsAtomics() const            -> cl_bool;
+		auto supportsAtomics() const           -> cl_bool;
 	};
 }
 
