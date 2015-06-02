@@ -82,9 +82,9 @@ namespace cl {
 		//================================================================================
 
 		auto getReferenceCount() const -> cl_uint;
-		auto getNumDevices() const -> cl_uint;
-		auto getDevices() const -> std::vector<Device>;
-		auto getProperties() const -> ContextProperties;
+		auto getNumDevices() const     -> cl_uint;
+		auto getDevices() const        -> std::vector<Device>;
+		auto getProperties() const     -> ContextProperties;
 	};
 }
 

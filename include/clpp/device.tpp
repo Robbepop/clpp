@@ -109,6 +109,11 @@ namespace cl {
 		return extensions;
 	}
 
+	auto Device::hasExtension(std::string extension) const -> bool {
+		const auto extensions = getExtensions();
+		return std::find(extensions.cbegin(), extensions.cend(), extension) != extensions.end();
+	}
+
 
 	auto Device::getGlobalMemoryCacheSize() const -> cl_ulong {
 		return getInfo<cl_ulong>(CL_DEVICE_GLOBAL_MEM_CACHE_SIZE);

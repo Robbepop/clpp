@@ -84,14 +84,15 @@ namespace cl {
 		//================================================================================
 
 	public:
-		auto getAddressBits() const            -> cl_uint;
-		auto isAvailable() const               -> cl_bool;
-		auto isCompilerAvailable() const       -> cl_bool;
-		auto getFpConfig(FPType type) const    -> FPConfig;
-		auto isLittleEndian() const            -> cl_bool;
-		auto hasErrorCorrectionSupport() const -> cl_bool;
-		auto getExecutionCapabilities() const  -> ExecutionCapabilities;
-		auto getExtensions() const             -> std::vector<std::string>;
+		auto getAddressBits() const                    -> cl_uint;
+		auto isAvailable() const                       -> cl_bool;
+		auto isCompilerAvailable() const               -> cl_bool;
+		auto getFpConfig(FPType type) const            -> FPConfig;
+		auto isLittleEndian() const                    -> cl_bool;
+		auto hasErrorCorrectionSupport() const         -> cl_bool;
+		auto getExecutionCapabilities() const          -> ExecutionCapabilities;
+		auto getExtensions() const                     -> std::vector<std::string>;
+		auto hasExtension(std::string extension) const -> bool;
 
 		auto getGlobalMemoryCacheSize() const     -> cl_ulong;
 		auto getGlobalMemoryCacheType() const     -> MemoryCacheType;
@@ -138,7 +139,7 @@ namespace cl {
 
 		auto getName() const                             -> std::string;
 		auto getNativeVectorWidth(ScalarType type) const -> cl_uint;
-		auto getOpenCLCVersion() const                 -> std::string;
+		auto getOpenCLCVersion() const                   -> std::string;
 
 		auto getParentDevice() const                   -> boost::optional<Device>;
 		auto getPartitionAffinityDomain() const        -> AffinityDomainCapabilities;
