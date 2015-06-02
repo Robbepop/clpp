@@ -19,13 +19,13 @@ namespace cl {
 		template<typename InputRange>
 		ContextProperties(InputRange properties);
 
-		auto setPlatform(Platform platform) -> ContextProperties &;
+		auto setPlatform(Platform platform)   -> ContextProperties &;
 		auto setInteropUserSync(cl_bool flag) -> ContextProperties &;
 
 		template<typename Value>
 		auto set(key_type property, Value value) -> ContextProperties &;
 
-		auto getPlatform() -> Platform;
+		auto getPlatform()        -> Platform;
 		auto getInteropUserSync() -> cl_bool;
 
 		template<typename RetType>

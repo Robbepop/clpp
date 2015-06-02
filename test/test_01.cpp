@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include <map>
 
-std::ostream& operator<<(std::ostream & os, const cl::MemoryCacheType & type) {
+auto operator<<(std::ostream & os, const cl::MemoryCacheType & type) -> std::ostream & {
 	switch (type) {
 		case cl::MemoryCacheType::readOnlyCache:  os << "Read Only";  break;
 		case cl::MemoryCacheType::readWriteCache: os << "Read/Write"; break;
@@ -18,7 +18,7 @@ std::ostream& operator<<(std::ostream & os, const cl::MemoryCacheType & type) {
 	return os;
 }
 
-std::ostream& operator<<(std::ostream & os, const cl::LocalMemoryType & type) {
+auto operator<<(std::ostream & os, const cl::LocalMemoryType & type) -> std::ostream & {
 	switch (type) {
 		case cl::LocalMemoryType::none:   os << "None";   break;
 		case cl::LocalMemoryType::global: os << "Global"; break;
@@ -28,7 +28,7 @@ std::ostream& operator<<(std::ostream & os, const cl::LocalMemoryType & type) {
 	return os;
 }
 
-std::ostream& operator<<(std::ostream & os, const cl::DeviceType & type) {
+auto operator<<(std::ostream & os, const cl::DeviceType & type) -> std::ostream & {
 	switch (type) {
 		case cl::DeviceType::defaultType: os << "Default Type";   break;
 		case cl::DeviceType::cpu:         os << "Compute Processing Unit (CPU)"; break;
@@ -40,13 +40,7 @@ std::ostream& operator<<(std::ostream & os, const cl::DeviceType & type) {
 	return os;
 }
 
-//		defaultType = CL_DEVICE_TYPE_DEFAULT,
-//		cpu         = CL_DEVICE_TYPE_CPU,
-//		gpu         = CL_DEVICE_TYPE_GPU,
-//		accelerator = CL_DEVICE_TYPE_ACCELERATOR,
-//		all         = CL_DEVICE_TYPE_ALL
-
-std::ostream& operator<<(std::ostream & os, const cl::Platform & platform) {
+auto operator<<(std::ostream & os, const cl::Platform & platform) -> std::ostream & {
 	using std::setw;
 	os << "Platform\n" << std::left
 	   << setw(5) << ' ' << setw(15) << "Name"    << platform.getName()    << '\n'
@@ -61,13 +55,33 @@ std::ostream& operator<<(std::ostream & os, const cl::Platform & platform) {
 }
 
 template <typename T>
-std::ostream& operator<<(std::ostream& out, const std::vector<T>& v) {
-	if ( !v.empty() ) {
+auto operator<<(std::ostream& out, const std::vector<T>& v) -> std::ostream & {
+	if (!v.empty()) {
 		out << '[';
 		std::copy(v.begin(), v.end(), std::ostream_iterator<T>(out, ", "));
 		out << "\b\b]";
 	}
 	return out;
+}
+
+namespace test {
+	struct tabular {
+		static constexpr auto off = "\n     ";
+		tabular(int offset, int width): m_offset{offset}, m_width{width} {}
+		auto getWidth() const -> int { return m_width; }
+		auto getOffset() const -> int { return m_offset; }
+		auto operator()(int scaledOffset, int newWidth = 0) -> tabular {
+			return tabular{scaledOffset * m_offset, newWidth};
+		}
+	private:
+		int m_offset;
+		int m_width;
+	};
+}
+
+auto operator<<(std::ostream & os, const test::tabular & tab) -> std::ostream & {
+	os << '\n' << std::setw(tab.getOffset()) << ' ' << std::setw(tab.getWidth());
+	return os;
 }
 
 namespace cast {
@@ -82,29 +96,11 @@ namespace cast {
 	}
 }
 
-struct tabular {
-	static constexpr auto off = "\n     ";
-	tabular(int offset, int width): m_offset{offset}, m_width{width} {}
-	auto getWidth() const -> int { return m_width; }
-	auto getOffset() const -> int { return m_offset; }
-	auto operator()(int scaledOffset, int newWidth = 0) -> tabular {
-		return tabular{scaledOffset * m_offset, newWidth};
-	}
-private:
-	int m_offset;
-	int m_width;
-};
-
-std::ostream& operator<<(std::ostream & os, const tabular & tab) {
-	os << '\n' << std::setw(tab.getOffset()) << ' ' << std::setw(tab.getWidth());
-	return os;
-}
-
-std::ostream& operator<<(std::ostream & os, const cl::Device & device) {
+auto operator<<(std::ostream & os, const cl::Device & device) -> std::ostream & {
 	using cast::to;
 	using cast::as;
 	using std::setw;
-	auto tab = tabular{5, 35};
+	auto tab = test::tabular{5, 35};
 	os << "Device" << std::left << std::boolalpha
 	   << tab << "Name"                     << device.getName()
 	   << tab << "Available"                << to<bool>(device.isAvailable())
@@ -199,13 +195,13 @@ std::ostream& operator<<(std::ostream & os, const cl::Device & device) {
 
 	   << '\n'
 
-	   << tab << "Pref. Vector Width (char)"       << device.getPreferredVectorWidth(cl::ScalarType::charType)
-	   << tab << "Pref. Vector Width (short)"      << device.getPreferredVectorWidth(cl::ScalarType::shortType)
-	   << tab << "Pref. Vector Width (int)"        << device.getPreferredVectorWidth(cl::ScalarType::intType)
-	   << tab << "Pref. Vector Width (long)"       << device.getPreferredVectorWidth(cl::ScalarType::longType)
-	   << tab << "Pref. Vector Width (half)"       << device.getPreferredVectorWidth(cl::ScalarType::halfType)
-	   << tab << "Pref. Vector Width (float)"      << device.getPreferredVectorWidth(cl::ScalarType::floatType)
-	   << tab << "Pref. Vector Width (double)"     << device.getPreferredVectorWidth(cl::ScalarType::doubleType)
+	   << tab << "Pref. Vector Width (char)"   << device.getPreferredVectorWidth(cl::ScalarType::charType)
+	   << tab << "Pref. Vector Width (short)"  << device.getPreferredVectorWidth(cl::ScalarType::shortType)
+	   << tab << "Pref. Vector Width (int)"    << device.getPreferredVectorWidth(cl::ScalarType::intType)
+	   << tab << "Pref. Vector Width (long)"   << device.getPreferredVectorWidth(cl::ScalarType::longType)
+	   << tab << "Pref. Vector Width (half)"   << device.getPreferredVectorWidth(cl::ScalarType::halfType)
+	   << tab << "Pref. Vector Width (float)"  << device.getPreferredVectorWidth(cl::ScalarType::floatType)
+	   << tab << "Pref. Vector Width (double)" << device.getPreferredVectorWidth(cl::ScalarType::doubleType)
 
 	   << tab << "Print Buffer Size"          << device.getPrintfBufferSize()
 	   << tab << "Profile"                    << device.getProfile()

@@ -16,8 +16,8 @@ namespace cl {
 
 		auto data() -> std::vector<cl_device_partition_property>;
 
-		auto supportsPartitionEqually() const -> cl_bool;
-		auto supportsPartitionByCounts() const -> cl_bool;
+		auto supportsPartitionEqually() const          -> cl_bool;
+		auto supportsPartitionByCounts() const         -> cl_bool;
 		auto supportsPartitionByAffinityDomain() const -> cl_bool;
 
 	private:
