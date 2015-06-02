@@ -14,6 +14,7 @@ namespace cl {
 
 	auto AnyError::what() const noexcept -> const char * {
 		return m_info.c_str();
+		//return "Hello, World!"; // test
 	}
 
 	auto AnyError::code() const {

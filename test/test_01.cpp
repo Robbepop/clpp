@@ -30,7 +30,7 @@ void test_01() {
 			  << "\tAvailable: " << device.isAvailable() << '\n'
 			  << "\tCompiler available: " << device.isCompilerAvailable() << '\n'
 			  << "\tAddress bits: " << device.getAddressBits() << '\n'
-			  << "\tAvailable: " << ((device.isAvailable()) ? "true" : "false") << '\n';
+			  << "\tAvailable: " << (device.isAvailable() ? "true" : "false") << '\n';
 	std::cout << "\tMax Workt Item Sizes:\n";
 	for (auto&& size : device.getMaxWorkItemSizes()) {
 		std::cout << "\t\t" << size << "\n";
@@ -57,7 +57,7 @@ void test_01() {
 	auto properties = cl::ContextProperties().setPlatform(platform);
 	std::cout << "Context properties created successfully!\n";
 
-	auto context = cl::Context(properties, cl::DeviceType::defaultType);
+	auto context = cl::Context(properties, cl::DeviceType::cpu);
 	std::cout << "Context created successfully!\n";
 
 	std::ignore = context;

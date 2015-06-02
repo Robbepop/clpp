@@ -34,6 +34,7 @@ namespace cl {
 		)
 			-> cl_bool
 		{
+			using namespace std::literals;
 			static const auto global_info_map = info_map{
 				{RetCode::outOfResources, "there was a failure to allocate resources required by the OpenCL implementation on the device."},
 				{RetCode::outOfHostMemory, "there was a failure to allocate resources required by the OpenCL implementation on the host."}
@@ -42,11 +43,11 @@ namespace cl {
 			if (local_info_map != nullptr) {
 				const auto it = local_info_map->find(code);
 				throw ExceptionType{code,
-					it != local_info_map->end() ? it->second : ""};
+					it != local_info_map->end() ? it->second : ""s};
 			}
 			const auto it = global_info_map.find(code);
 			throw ExceptionType{code,
-				it != global_info_map.end() ? it->second : ""};
+				it != global_info_map.end() ? it->second : ""s};
 		}
 
 		template <typename ExceptionType>

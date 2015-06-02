@@ -167,6 +167,7 @@ namespace cl {
 
 		auto getReferenceCount() const                 -> cl_uint;
 
+		// 'use of undeclared CL_DEVICE_SPIR_VERSIONS' in OpenCL 2.0 conformant code ...
 		//auto getSpirVersions() const                   -> std::vector<std::string>;
 		auto getSvmCapabilities() const                -> SvmCapabilities;
 

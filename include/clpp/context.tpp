@@ -35,10 +35,10 @@ namespace cl {
 		auto cbWrapper = new callback_data{callback, user_data};
 		auto ids       = std::vector<cl_device_id>{};
 		ids.reserve(devices.size());
-		std::transform(devices.cbegin(), devices.cend(), ids.begin(),
+		std::transform(devices.cbegin(), devices.cend(), std::back_inserter(ids),
 			[](auto device) {
 				return device.get();
-			});		
+			});
 		auto error  = cl_int{CL_INVALID_VALUE};
 		auto contex = clCreateContext(
 			properties.data().data(),
