@@ -11,8 +11,7 @@ namespace cl {
 	public:
 		using detail::MaskWrapper<PartitionCapabilities::cl_mask_type>::MaskWrapper;
 
-		template<typename InputRange>
-		PartitionCapabilities(InputRange properties);
+		PartitionCapabilities(std::vector<cl_device_partition_property> properties);
 
 		auto data() -> std::vector<cl_device_partition_property>;
 

@@ -40,6 +40,9 @@ namespace cl {
 		//================================================================================
 
 		auto getKind() const -> Kind;
+		auto isEqually() const -> bool;
+		auto isByCounts() const -> bool;
+		auto isByAffinityDomain() const -> bool;
 
 		auto data()          ->       cl_device_partition_property *;
 		auto data() const    -> const cl_device_partition_property *;

@@ -6,21 +6,23 @@
 
 namespace cl {
 	auto Partition::equally(cl_uint count) -> Partition {
-		const auto properties = std::vector<cl_device_partition_property> {
-			{CL_DEVICE_PARTITION_EQUALLY, count, 0}
+		const auto properties = std::vector<cl_device_partition_property>{
+			CL_DEVICE_PARTITION_EQUALLY, count, 0
 		};
 		return Partition(properties);
 	}
 
 	template<typename RangeType>
 	auto Partition::byCounts(RangeType const& counts) -> Partition {
+		static_assert(std::is_same<typename RangeType::value_type, cl_device_partition_property>::value,
+			"only ranges with a value type of 'cl_device_partition_property' are allowed");
 		auto properties = std::vector<cl_device_partition_property>{};
 		properties.reserve(counts.size() + 2);
 		properties.push_back(CL_DEVICE_PARTITION_BY_COUNTS);
 		for (auto&& elem : counts) {
 			properties.push_back(elem);
 		}
-		properties.push_back(CL_DEVICE_PARTITION_BY_COUNTS);
+		properties.push_back(CL_DEVICE_PARTITION_BY_COUNTS_LIST_END);
 		return Partition{properties.data()};
 	}
 
@@ -55,6 +57,9 @@ namespace cl {
 	//================================================================================
 
 	auto Partition::getKind() const -> Kind {
+		if (m_properties.size() == 0) {
+			return Kind::none;
+		}
 		const auto head = m_properties.front();
 		switch (head) {
 			case CL_DEVICE_PARTITION_EQUALLY:            return Kind::equally;
@@ -62,6 +67,18 @@ namespace cl {
 			case CL_DEVICE_PARTITION_BY_AFFINITY_DOMAIN: return Kind::byAffinityDomain;
 			default:                                     return Kind::none;
 		};
+	}
+
+	auto Partition::isEqually() const -> bool {
+		return getKind() == Kind::equally;
+	}
+
+	auto Partition::isByCounts() const -> bool {
+		return getKind() == Kind::byCounts;
+	}
+
+	auto Partition::isByAffinityDomain() const -> bool {
+		return getKind() == Kind::byAffinityDomain;
 	}
 
 	auto Partition::data() -> cl_device_partition_property * {

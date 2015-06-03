@@ -3,15 +3,16 @@
 #endif
 
 namespace cl {
-	template<typename InputRange>
-	PartitionCapabilities::PartitionCapabilities(InputRange properties) {
+	PartitionCapabilities::PartitionCapabilities(
+		std::vector<cl_device_partition_property> properties
+	){
 		for (auto&& property : properties) {
 			switch (property) {
-			case CL_DEVICE_PARTITION_EQUALLY:            modifyMask<c_equally>(true);          break;
-			case CL_DEVICE_PARTITION_BY_COUNTS:          modifyMask<c_byCounts>(true);         break;
-			case CL_DEVICE_PARTITION_BY_AFFINITY_DOMAIN: modifyMask<c_byAffinityDomain>(true); break;
-			case 0: return;
-			default: assert(false);
+				case CL_DEVICE_PARTITION_EQUALLY:            modifyMask<c_equally>(true);          break;
+				case CL_DEVICE_PARTITION_BY_COUNTS:          modifyMask<c_byCounts>(true);         break;
+				case CL_DEVICE_PARTITION_BY_AFFINITY_DOMAIN: modifyMask<c_byAffinityDomain>(true); break;
+				case 0: return;
+				default: assert(false);
 			}
 		}
 	}

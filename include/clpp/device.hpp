@@ -145,7 +145,7 @@ namespace cl {
 		auto getPartitionAffinityDomain() const        -> AffinityDomainCapabilities;
 		auto getPartitionMaxSubDevices() const         -> cl_uint;
 		auto getPartitionProperties() const            -> PartitionCapabilities;
-		auto getParition() const                       -> Partition;
+		auto getPartition() const                      -> Partition;
 
 		auto getPipeMaxActiveReservations() const -> cl_uint;
 		auto getPipeMaxPacketSize() const         -> cl_uint;

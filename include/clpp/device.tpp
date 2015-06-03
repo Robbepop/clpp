@@ -307,7 +307,7 @@ namespace cl {
 		return {getInfoVector<cl_device_partition_property>(CL_DEVICE_PARTITION_PROPERTIES)};
 	}
 
-	auto Device::getParition() const -> Partition {
+	auto Device::getPartition() const -> Partition {
 		return {getInfoVector<cl_device_partition_property>(CL_DEVICE_PARTITION_TYPE)};
 	}
 

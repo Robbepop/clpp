@@ -8,6 +8,16 @@
 #include <unordered_map>
 #include <map>
 
+template <typename T>
+auto operator<<(std::ostream& out, const std::vector<T>& v) -> std::ostream & {
+	if (!v.empty()) {
+		out << '[';
+		std::copy(v.begin(), v.end(), std::ostream_iterator<T>(out, ", "));
+		out << "\b\b]";
+	}
+	return out;
+}
+
 namespace cast {
 	template<typename T, typename V>
 	auto to(const V & value) -> T {
@@ -92,42 +102,76 @@ auto operator<<(std::ostream & os, const cl::AffinityDomainCapabilities & caps) 
 	   << tab << "Has L2-Cache"          << to<bool>(caps.hasL2Cache())
 	   << tab << "Has L3-Cache"          << to<bool>(caps.hasL3Cache())
 	   << tab << "Has L4-Cache"          << to<bool>(caps.hasL4Cache())
-	   << tab << "Is next partitionable" << to<bool>(caps.isNextPartitionable());
+	   << tab << "Next Partitionable" << to<bool>(caps.isNextPartitionable());
 	return os;
 }
 
 auto operator<<(std::ostream & os, const cl::CommandQueueProperties & props) -> std::ostream & {
 	using cast::to;
 	auto tab = test::tabular{10, 30};
-	os << tab << "Out of order exec. enabled" << to<bool>(props.isOutOfOrderExecModeEnabled())
-	   << tab << "Profiling enabled"                   << to<bool>(props.isProfilingEnabled());
+	os << tab << "Out Of Order Exec. Enabled" << to<bool>(props.isOutOfOrderExecModeEnabled())
+	   << tab << "Profiling Enabled"          << to<bool>(props.isProfilingEnabled());
 	return os;
 }
 
 auto operator<<(std::ostream & os, const cl::ExecutionCapabilities & caps) -> std::ostream & {
-	// TODO
+	using cast::to;
+	auto tab = test::tabular{10, 30};
+	os << tab << "Execute Kernel"        << to<bool>(caps.canExecuteKernel())
+	   << tab << "Execute Native Kernel" << to<bool>(caps.canExecuteNativeKernel());
 	return os;
 }
 
 auto operator<<(std::ostream & os, const cl::PartitionCapabilities & caps) -> std::ostream & {
-	// TODO
+	using cast::to;
+	auto tab = test::tabular{10, 30};
+	os << tab << "Partition Equally"            << to<bool>(caps.supportsPartitionEqually())
+	   << tab << "Partition By Counts"          << to<bool>(caps.supportsPartitionByCounts())
+	   << tab << "Partition By Affinity Domain" << to<bool>(caps.supportsPartitionByAffinityDomain());
 	return os;
 }
 
 auto operator<<(std::ostream & os, const cl::SvmCapabilities & caps) -> std::ostream & {
-	// TODO
+	using cast::to;
+	auto tab = test::tabular{10, 30};
+	os << tab << "Coarse Grain Buffer" << to<bool>(caps.supportsCoarseGrainBuffer())
+	   << tab << "Fine Grain Buffer"   << to<bool>(caps.supportsFineGrainBuffer())
+	   << tab << "Fine Grain System"   << to<bool>(caps.supportsFineGrainSystem())
+	   << tab << "Atomics"             << to<bool>(caps.supportsAtomics());
 	return os;
 }
 
 auto operator<<(std::ostream & os, const cl::FPConfig & config) -> std::ostream & {
-	// TODO
+	using cast::to;
+	auto tab = test::tabular{10, 30};
+	os << tab << "Denorm"                        << to<bool>(config.supportsDenorm())
+	   << tab << "Inf And NaN"                   << to<bool>(config.supportsInfAndNan())
+	   << tab << "Round To Nearest"              << to<bool>(config.supportsRoundToNearest())
+	   << tab << "Round To Zero"                 << to<bool>(config.supportsRoundToZero())
+	   << tab << "Round To Infinity"             << to<bool>(config.supportsRoundToInf())
+	   << tab << "Fused Multiply Add"            << to<bool>(config.supportsFusedMultiplyAdd())
+	   << tab << "Correctly Rounded Div.-Sqrt."  << to<bool>(config.supportsCorrectlyRoundedDivideSqrt())
+	   << tab << "Soft Float"                    << to<bool>(config.supportsSoftFloat());
+	return os;
+}
+
+auto operator<<(std::ostream & os, const cl::Partition & partition) -> std::ostream & {
+	switch (partition.getKind()) {
+		case cl::Partition::Kind::equally:
+			os << "Equally: "            << partition.getComputeUnits();
+		case cl::Partition::Kind::byCounts:
+			os << "By Counts: "          << partition.getCounts();
+		case cl::Partition::Kind::byAffinityDomain:
+			os << "By Affinity Domain: " << partition.getAffinityDomain();
+		case cl::Partition::Kind::none:
+			os << "Not Partitioned";
+	}
 	return os;
 }
 
 auto operator<<(std::ostream & os, const cl::Platform & platform) -> std::ostream & {
-	using std::setw;
 	auto tab = test::tabular{5, 35};
-	os << "Platform\n" << std::left
+	os << "Platform" << std::left
 	   << tab    << "Name"    << platform.getName()
 	   << tab    << "Profile" << platform.getProfile()
 	   << tab    << "Vendor"  << platform.getVendor()
@@ -139,20 +183,8 @@ auto operator<<(std::ostream & os, const cl::Platform & platform) -> std::ostrea
 	return os;
 }
 
-template <typename T>
-auto operator<<(std::ostream& out, const std::vector<T>& v) -> std::ostream & {
-	if (!v.empty()) {
-		out << '[';
-		std::copy(v.begin(), v.end(), std::ostream_iterator<T>(out, ", "));
-		out << "\b\b]";
-	}
-	return out;
-}
-
 auto operator<<(std::ostream & os, const cl::Device & device) -> std::ostream & {
 	using cast::to;
-	using cast::as;
-	using std::setw;
 	auto tab = test::tabular{5, 35};
 	os << "Device" << std::left << std::boolalpha
 	   << tab << "Name"                     << device.getName()
@@ -162,6 +194,15 @@ auto operator<<(std::ostream & os, const cl::Device & device) -> std::ostream & 
 	   << tab << "Little Endian"            << to<bool>(device.isLittleEndian())
 	   << tab << "Linker Available"         << to<bool>(device.isLinkerAvailable())
 	   << tab << "Error Correction Support" << to<bool>(device.hasErrorCorrectionSupport())
+	   << tab << "Execution Capabilities"   << device.getExecutionCapabilities()
+
+	   << '\n'
+
+	   << tab << "Floating Point Config (single precision)"    << device.getFpConfig(cl::FPType::singlePrecision)
+
+	   << '\n'
+
+	   << tab << "Floating Point Config (double precision)"    << device.getFpConfig(cl::FPType::doublePrecision)
 
 	   << '\n'
 
@@ -170,7 +211,7 @@ auto operator<<(std::ostream & os, const cl::Device & device) -> std::ostream & 
 	   << tab << "Global Memory Cacheline Size" << device.getGlobalMemoryCachelineSize()
 	   << tab << "Global Memory Size"           << device.getGlobalMemorySize()
 	   << tab << "Global Var. Pref. Total Size" << device.getGlobalVariablePreferredTotalSize()
-	   << tab << "Max Workt Item Sizes"         << device.getMaxWorkItemSizes()
+	   << tab << "Max Work Item Sizes"         << device.getMaxWorkItemSizes()
 
 	   << '\n'
 
@@ -233,15 +274,17 @@ auto operator<<(std::ostream & os, const cl::Device & device) -> std::ostream & 
 	   << tab << "Has Parent Device"         << to<bool>(device.getParentDevice())
 	   << tab << "Partition Affinity Domain" << device.getPartitionAffinityDomain()
 	   << tab << "Partition Max Sub Devices" << device.getPartitionMaxSubDevices()
-	   //<< tab << "Partition Properties"      << device.getPartitionProperties()
-	   //<< tab << "Partition Type"            << device.getPartition()
+	   << tab << "Partition Properties"      << device.getPartitionProperties()
+	   << tab << "Partition Type"            << device.getPartition()
 
 	   << '\n'
 
 	   << tab << "Pipe Max Active Reservations" << device.getPipeMaxActiveReservations()
 	   << tab << "Pipe Max Packet Size"         << device.getPipeMaxPacketSize()
+	   << tab << "Platform Name"                << device.getPlatform().getName()
 
-	   << tab << "Platform"                        << device.getPlatform().getName()
+	   << '\n'
+
 	   << tab << "Pref. Global Atomic Alignment"   << device.getPreferredGlobalAtomicAlignment()
 	   << tab << "Pref. Local Atomic Alignment"    << device.getPreferredLocalAtomicAlignment()
 	   << tab << "Pref. Platform Atomic Alignment" << device.getPreferredPlatformAtomicAlignment()
@@ -256,6 +299,8 @@ auto operator<<(std::ostream & os, const cl::Device & device) -> std::ostream & 
 	   << tab << "Pref. Vector Width (float)"  << device.getPreferredVectorWidth(cl::ScalarType::floatType)
 	   << tab << "Pref. Vector Width (double)" << device.getPreferredVectorWidth(cl::ScalarType::doubleType)
 
+	   << '\n'
+
 	   << tab << "Print Buffer Size"          << device.getPrintfBufferSize()
 	   << tab << "Profile"                    << device.getProfile()
 	   << tab << "Profiling Timer Resolution" << device.getProfilingTimerResolution()
@@ -265,12 +310,12 @@ auto operator<<(std::ostream & os, const cl::Device & device) -> std::ostream & 
 	   << tab << "Queue on Device Max Size"   << device.getQueueOnDeviceMaxSize()
 	   << tab << "Queue on Device Pref. Size" << device.getQueueOnDevicePreferredSize()
 	   << tab << "Queue on Device Properties" << device.getQueueOnDeviceProperties()
-	   << tab << "Queue on Host Properties" << device.getQueueOnHostProperties()
+	   << tab << "Queue on Host Properties"   << device.getQueueOnHostProperties()
 
 	   << '\n'
 
 	   << tab << "Reference Count"  << device.getReferenceCount()
-	   //<< tab << "SVM Capabilities" << device.getSvmCapabilities()
+	   << tab << "SVM Capabilities" << device.getSvmCapabilities()
 	   << tab << "Type"             << device.getType()
 	   << tab << "Vendor"           << device.getVendor()
 	   << tab << "Vendor ID"        << device.getVendorID()
@@ -293,6 +338,7 @@ void test_01() {
 	for (auto&& platform : platforms) {
 		std::cout << platform;
 	}
+	std::cout << '\n';
 	auto platform = platforms[0];
 
 	auto devices = platform.getDevices(cl::DeviceType::all);
