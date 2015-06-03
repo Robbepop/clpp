@@ -68,6 +68,61 @@ namespace cl {
 		auto readBufferAsync(Buffer<T> buffer, OutIterator out, EventRange waitList) -> Event;
 
 		//================================================================================
+		// Overloads to access clEnqueueReadBufferRect
+		//================================================================================
+
+		template<typename OutIterator, typename T, size_t N>
+		void readBufferRect(
+			Buffer<T> buffer,
+			size_t[N] bufferOrigin, size_t[N] hostOrigin, size_t[N] region,
+			size_t bufferRowPitch, size_t bufferSlicePitch,
+			size_t hostRowPitch, size_t hostSlicePitch,
+			OutIterator out);
+
+		template<typename OutIterator, typename EventRange, typename T, size_t N>
+		void readBufferRect(
+			Buffer<T> buffer,
+			size_t[N] bufferOrigin, size_t[N] hostOrigin, size_t[N] region,
+			size_t bufferRowPitch, size_t bufferSlicePitch,
+			size_t hostRowPitch, size_t hostSlicePitch,
+			OutIterator out, EventRange waitList);
+
+		template<typename OutIterator, typename T, size_t N>
+		auto readBufferRectAsync(
+			Buffer<T> buffer,
+			size_t[N] bufferOrigin, size_t[N] hostOrigin, size_t[N] region,
+			size_t bufferRowPitch, size_t bufferSlicePitch,
+			size_t hostRowPitch, size_t hostSlicePitch,
+			OutIterator out) -> Event;
+
+		template<typename OutIterator, typename EventRange, typename T, size_t N>
+		auto readBufferRectAsync(
+			Buffer<T> buffer,
+			size_t[N] bufferOrigin, size_t[N] hostOrigin, size_t[N] region,
+			size_t bufferRowPitch, size_t bufferSlicePitch,
+			size_t hostRowPitch, size_t hostSlicePitch,
+			OutIterator out, EventRange waitList) -> Event;
+
+		//================================================================================
+		// Marker & Barrier
+		//================================================================================
+
+		template<typename EventRange>
+		auto marker(EventRange waitList) const -> Event;
+		auto marker() const -> Event;
+
+		template<typename EventRange>
+		auto barrier(EventRange waitList) const -> Event;
+		auto barrier() const -> Event;
+
+		//================================================================================
+		// Flush & Finish
+		//================================================================================
+
+		void flush() const;
+		void finish() const;
+
+		//================================================================================
 		// Information Getters
 		//================================================================================
 
