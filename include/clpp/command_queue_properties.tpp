@@ -3,11 +3,11 @@
 #endif
 
 namespace cl {
-	auto CommandQueueProperties::isOutOfOrderExecModeEnabled() const -> cl_bool {
+	auto CommandQueueProperties::isOutOfOrderExecModeEnabled() const -> bool {
 		return readMask<CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE>();
 	}
 
-	auto CommandQueueProperties::isProfilingEnabled() const -> cl_bool {		
+	auto CommandQueueProperties::isProfilingEnabled() const -> bool {		
 		return readMask<CL_QUEUE_PROFILING_ENABLE>();
 	}
 

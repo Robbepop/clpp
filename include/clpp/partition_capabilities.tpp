@@ -34,15 +34,15 @@ namespace cl {
 		return properties;
 	}
 
-	auto PartitionCapabilities::supportsPartitionEqually() const -> cl_bool {
+	auto PartitionCapabilities::supportsPartitionEqually() const -> bool {
 		return readMask<c_equally>();
 	}
 
-	auto PartitionCapabilities::supportsPartitionByCounts() const -> cl_bool {
+	auto PartitionCapabilities::supportsPartitionByCounts() const -> bool {
 		return readMask<c_byCounts>();
 	}
 
-	auto PartitionCapabilities::supportsPartitionByAffinityDomain() const -> cl_bool {
+	auto PartitionCapabilities::supportsPartitionByAffinityDomain() const -> bool {
 		return readMask<c_byAffinityDomain>();
 	}
 }

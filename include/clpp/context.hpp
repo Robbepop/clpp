@@ -25,11 +25,11 @@ namespace cl {
 
 			static auto getInfo
 			(
-				cl_context context,
-				cl_context_info param_name,
-				size_t param_value_size,
-				void *param_value,
-				size_t *param_value_size_ret
+				cl_type   context,
+				info_type param_name,
+				size_t    param_value_size,
+				void *    param_value,
+				size_t *  param_value_size_ret
 			) {
 				return clGetContextInfo(
 					context, param_name, param_value_size, param_value, param_value_size_ret);

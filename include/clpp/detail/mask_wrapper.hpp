@@ -26,7 +26,7 @@ namespace cl {
 			void modifyMask(cl_bool flag);
 
 			template<MaskType Option>
-			auto readMask() const -> cl_bool;
+			auto readMask() const -> bool;
 		};
 	}
 }

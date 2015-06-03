@@ -2,8 +2,10 @@ Improvements & Bug fixes:
 - Exceptions what() method is screwed and throws logical_error instead of providing information.
 - Context Properties implementation uses ugly C-style casts in the get and set methods.
 - Add convenience methods for context creation as Context::createBest() etc.
+- Add convenience methods for command queue creation as Context::createDefaultQueue() etc.
 - Fix bug that detail::Object's retain and release methods can't check for errors via detail::error::handle method.
 - Extend detail::error's global_info_map for all possible RetCodes.
+- Context's constructor with callback still requires 'new' keyword with current implementation.
 
 Experimental:
 - Use templates instead of ScalarType and FPType enums to coordinate calls for different OpenCL primitives.

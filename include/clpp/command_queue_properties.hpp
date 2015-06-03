@@ -11,8 +11,8 @@ namespace cl {
 	public:
 		using detail::MaskWrapper<CommandQueueProperties::cl_mask_type>::MaskWrapper;
 
-		auto isOutOfOrderExecModeEnabled() const -> cl_bool;
-		auto isProfilingEnabled() const          -> cl_bool;
+		auto isOutOfOrderExecModeEnabled() const -> bool;
+		auto isProfilingEnabled() const          -> bool;
 
 		auto enableOutOfOrderExecMode() -> CommandQueueProperties &;
 		auto enableProfiling()          -> CommandQueueProperties &;

@@ -26,7 +26,7 @@ namespace cl {
 		auto set(key_type property, Value value) -> ContextProperties &;
 
 		auto getPlatform()        -> Platform;
-		auto getInteropUserSync() -> cl_bool;
+		auto getInteropUserSync() -> bool;
 
 		template<typename RetType>
 		auto get(key_type property) -> RetType;

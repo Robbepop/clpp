@@ -28,7 +28,7 @@ namespace cl {
 
 		template<typename MaskType>
 		template<MaskType Option>
-		auto MaskWrapper<MaskType>::readMask() const -> cl_bool {
+		auto MaskWrapper<MaskType>::readMask() const -> bool {
 			return !(m_mask & Option);
 		}
 	}

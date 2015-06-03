@@ -42,7 +42,7 @@ namespace cl {
 		return {get<cl_platform_id>(CL_CONTEXT_PLATFORM)};
 	}
 
-	auto ContextProperties::getInteropUserSync() -> cl_bool {
+	auto ContextProperties::getInteropUserSync() -> bool {
 		return get<cl_bool>(CL_CONTEXT_INTEROP_USER_SYNC);
 	}
 

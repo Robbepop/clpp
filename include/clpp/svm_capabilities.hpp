@@ -11,10 +11,10 @@ namespace cl {
 	public:
 		using detail::MaskWrapper<SvmCapabilities::cl_mask_type>::MaskWrapper;
 
-		auto supportsCoarseGrainBuffer() const -> cl_bool;
-		auto supportsFineGrainBuffer() const   -> cl_bool;
-		auto supportsFineGrainSystem() const   -> cl_bool;
-		auto supportsAtomics() const           -> cl_bool;
+		auto supportsCoarseGrainBuffer() const -> bool;
+		auto supportsFineGrainBuffer() const   -> bool;
+		auto supportsFineGrainSystem() const   -> bool;
+		auto supportsAtomics() const           -> bool;
 	};
 }
 

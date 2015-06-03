@@ -11,12 +11,12 @@ namespace cl {
 	public:
 		using detail::MaskWrapper<AffinityDomainCapabilities::cl_mask_type>::MaskWrapper;
 
-		auto hasNuma() const             -> cl_bool;
-		auto hasL4Cache() const          -> cl_bool;
-		auto hasL3Cache() const          -> cl_bool;
-		auto hasL2Cache() const          -> cl_bool;
-		auto hasL1Cache() const          -> cl_bool;
-		auto isNextPartitionable() const -> cl_bool;
+		auto hasNuma() const             -> bool;
+		auto hasL4Cache() const          -> bool;
+		auto hasL3Cache() const          -> bool;
+		auto hasL2Cache() const          -> bool;
+		auto hasL1Cache() const          -> bool;
+		auto isNextPartitionable() const -> bool;
 	};
 }
 

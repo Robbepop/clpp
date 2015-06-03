@@ -11,8 +11,8 @@ namespace cl {
 	public:
 		using detail::MaskWrapper<ExecutionCapabilities::cl_mask_type>::MaskWrapper;
 
-		auto canExecuteKernel() const       -> cl_bool;
-		auto canExecuteNativeKernel() const -> cl_bool;
+		auto canExecuteKernel() const       -> bool;
+		auto canExecuteNativeKernel() const -> bool;
 	};
 }
 

@@ -3,11 +3,11 @@
 #endif
 
 namespace cl {
-	auto ExecutionCapabilities::canExecuteKernel() const -> cl_bool {
+	auto ExecutionCapabilities::canExecuteKernel() const -> bool {
 		return readMask<CL_EXEC_KERNEL>();
 	}
 
-	auto ExecutionCapabilities::canExecuteNativeKernel() const -> cl_bool {
+	auto ExecutionCapabilities::canExecuteNativeKernel() const -> bool {
 		return readMask<CL_EXEC_NATIVE_KERNEL>();
 	}
 }

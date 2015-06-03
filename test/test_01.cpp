@@ -97,61 +97,61 @@ auto operator<<(std::ostream & os, const cl::AffinityDomain & domain) -> std::os
 auto operator<<(std::ostream & os, const cl::AffinityDomainCapabilities & caps) -> std::ostream & {
 	using cast::to;
 	auto tab = test::tabular{10, 30};
-	os << tab << "Has NUMA"              << to<bool>(caps.hasNuma())
-	   << tab << "Has L1-Cache"          << to<bool>(caps.hasL1Cache())
-	   << tab << "Has L2-Cache"          << to<bool>(caps.hasL2Cache())
-	   << tab << "Has L3-Cache"          << to<bool>(caps.hasL3Cache())
-	   << tab << "Has L4-Cache"          << to<bool>(caps.hasL4Cache())
-	   << tab << "Next Partitionable" << to<bool>(caps.isNextPartitionable());
+	os << tab << "Has NUMA"           << caps.hasNuma()
+	   << tab << "Has L1-Cache"       << caps.hasL1Cache()
+	   << tab << "Has L2-Cache"       << caps.hasL2Cache()
+	   << tab << "Has L3-Cache"       << caps.hasL3Cache()
+	   << tab << "Has L4-Cache"       << caps.hasL4Cache()
+	   << tab << "Next Partitionable" << caps.isNextPartitionable();
 	return os;
 }
 
 auto operator<<(std::ostream & os, const cl::CommandQueueProperties & props) -> std::ostream & {
 	using cast::to;
 	auto tab = test::tabular{10, 30};
-	os << tab << "Out Of Order Exec. Enabled" << to<bool>(props.isOutOfOrderExecModeEnabled())
-	   << tab << "Profiling Enabled"          << to<bool>(props.isProfilingEnabled());
+	os << tab << "Out Of Order Exec. Enabled" << props.isOutOfOrderExecModeEnabled()
+	   << tab << "Profiling Enabled"          << props.isProfilingEnabled();
 	return os;
 }
 
 auto operator<<(std::ostream & os, const cl::ExecutionCapabilities & caps) -> std::ostream & {
 	using cast::to;
 	auto tab = test::tabular{10, 30};
-	os << tab << "Execute Kernel"        << to<bool>(caps.canExecuteKernel())
-	   << tab << "Execute Native Kernel" << to<bool>(caps.canExecuteNativeKernel());
+	os << tab << "Execute Kernel"        << caps.canExecuteKernel()
+	   << tab << "Execute Native Kernel" << caps.canExecuteNativeKernel();
 	return os;
 }
 
 auto operator<<(std::ostream & os, const cl::PartitionCapabilities & caps) -> std::ostream & {
 	using cast::to;
 	auto tab = test::tabular{10, 30};
-	os << tab << "Partition Equally"            << to<bool>(caps.supportsPartitionEqually())
-	   << tab << "Partition By Counts"          << to<bool>(caps.supportsPartitionByCounts())
-	   << tab << "Partition By Affinity Domain" << to<bool>(caps.supportsPartitionByAffinityDomain());
+	os << tab << "Partition Equally"            << caps.supportsPartitionEqually()
+	   << tab << "Partition By Counts"          << caps.supportsPartitionByCounts()
+	   << tab << "Partition By Affinity Domain" << caps.supportsPartitionByAffinityDomain();
 	return os;
 }
 
 auto operator<<(std::ostream & os, const cl::SvmCapabilities & caps) -> std::ostream & {
 	using cast::to;
 	auto tab = test::tabular{10, 30};
-	os << tab << "Coarse Grain Buffer" << to<bool>(caps.supportsCoarseGrainBuffer())
-	   << tab << "Fine Grain Buffer"   << to<bool>(caps.supportsFineGrainBuffer())
-	   << tab << "Fine Grain System"   << to<bool>(caps.supportsFineGrainSystem())
-	   << tab << "Atomics"             << to<bool>(caps.supportsAtomics());
+	os << tab << "Coarse Grain Buffer" << caps.supportsCoarseGrainBuffer()
+	   << tab << "Fine Grain Buffer"   << caps.supportsFineGrainBuffer()
+	   << tab << "Fine Grain System"   << caps.supportsFineGrainSystem()
+	   << tab << "Atomics"             << caps.supportsAtomics();
 	return os;
 }
 
 auto operator<<(std::ostream & os, const cl::FPConfig & config) -> std::ostream & {
 	using cast::to;
 	auto tab = test::tabular{10, 30};
-	os << tab << "Denorm"                        << to<bool>(config.supportsDenorm())
-	   << tab << "Inf And NaN"                   << to<bool>(config.supportsInfAndNan())
-	   << tab << "Round To Nearest"              << to<bool>(config.supportsRoundToNearest())
-	   << tab << "Round To Zero"                 << to<bool>(config.supportsRoundToZero())
-	   << tab << "Round To Infinity"             << to<bool>(config.supportsRoundToInf())
-	   << tab << "Fused Multiply Add"            << to<bool>(config.supportsFusedMultiplyAdd())
-	   << tab << "Correctly Rounded Div.-Sqrt."  << to<bool>(config.supportsCorrectlyRoundedDivideSqrt())
-	   << tab << "Soft Float"                    << to<bool>(config.supportsSoftFloat());
+	os << tab << "Denorm"                       << config.supportsDenorm()
+	   << tab << "Inf And NaN"                  << config.supportsInfAndNan()
+	   << tab << "Round To Nearest"             << config.supportsRoundToNearest()
+	   << tab << "Round To Zero"                << config.supportsRoundToZero()
+	   << tab << "Round To Infinity"            << config.supportsRoundToInf()
+	   << tab << "Fused Multiply Add"           << config.supportsFusedMultiplyAdd()
+	   << tab << "Correctly Rounded Div.-Sqrt." << config.supportsCorrectlyRoundedDivideSqrt()
+	   << tab << "Soft Float"                   << config.supportsSoftFloat();
 	return os;
 }
 
@@ -198,11 +198,11 @@ auto operator<<(std::ostream & os, const cl::Device & device) -> std::ostream & 
 
 	   << '\n'
 
-	   << tab << "Floating Point Config (single precision)"    << device.getFpConfig(cl::FPType::singlePrecision)
+	   << tab << "Floating Point Config (float)" << device.getFpConfig(cl::FPType::singlePrecision)
 
 	   << '\n'
 
-	   << tab << "Floating Point Config (double precision)"    << device.getFpConfig(cl::FPType::doublePrecision)
+	   << tab << "Floating Point Config (double)" << device.getFpConfig(cl::FPType::doublePrecision)
 
 	   << '\n'
 
