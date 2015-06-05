@@ -41,31 +41,37 @@ namespace cl {
 		// Overloads to access clEnqueueReadBuffer
 		//================================================================================
 
-		template<typename OutIterator, typename T>
-		void readBuffer(Buffer<T> buffer, size_t offset, size_t size, OutIterator out);
+		template<typename OutputIterator, typename T>
+		void readBuffer(Buffer<T> buffer, size_t offset,
+			OutputIterator first, OutputIterator last);
 
-		template<typename OutIterator, typename T>
-		void readBuffer(Buffer<T> buffer, OutIterator out);
+		template<typename OutputIterator, typename T>
+		void readBuffer(Buffer<T> buffer, OutputIterator first);
 
-		template<typename OutIterator, typename EventRange, typename T>
-		void readBuffer(Buffer<T> buffer, size_t offset, size_t size,
-			OutIterator out, EventRange waitList);
+		template<typename OutputIterator, typename T>
+		auto readBufferAsync(Buffer<T> buffer, size_t offset,
+			OutputIterator first, OutputIterator last) -> Event;
 
-		template<typename OutIterator, typename EventRange, typename T>
-		void readBuffer(Buffer<T> buffer, OutIterator out, EventRange waitList);
+		template<typename OutputIterator, typename T>
+		auto readBufferAsync(Buffer<T> buffer, OutputIterator first) -> Event;
 
-		template<typename OutIterator, typename T>
-		auto readBufferAsync(Buffer<T> buffer, size_t offset, size_t size, OutIterator out) -> Event;
+		//================================================================================
+		// Overloads to access clEnqueueWriteBuffer
+		//================================================================================
 
-		template<typename OutIterator, typename T>
-		auto readBufferAsync(Buffer<T> buffer, OutIterator out) -> Event;
+		template<typename InputIterator, typename T>
+		void writeBuffer(Buffer<T> buffer, size_t offset,
+			InputIterator first, InputIterator last);
 
-		template<typename OutIterator, typename EventRange, typename T>
-		auto readBufferAsync(Buffer<T> buffer, size_t offset, size_t size,
-			OutIterator out, EventRange waitList) -> Event;
+		template<typename InputIterator, typename T>
+		void writeBuffer(Buffer<T> buffer, InputIterator first);
 
-		template<typename OutIterator, typename EventRange, typename T>
-		auto readBufferAsync(Buffer<T> buffer, OutIterator out, EventRange waitList) -> Event;
+		template<typename InputIterator, typename T>
+		auto writeBufferAsync(Buffer<T> buffer, size_t offset,
+			InputIterator first, InputIterator last) -> Event;
+
+		template<typename InputIterator, typename T>
+		auto writeBufferAsync(Buffer<T> buffer, InputIterator first) -> Event;
 
 		//================================================================================
 		// Overloads to access clEnqueueReadBufferRect
@@ -77,15 +83,7 @@ namespace cl {
 			size_t[N] bufferOrigin, size_t[N] hostOrigin, size_t[N] region,
 			size_t bufferRowPitch, size_t bufferSlicePitch,
 			size_t hostRowPitch, size_t hostSlicePitch,
-			OutIterator out);
-
-		template<typename OutIterator, typename EventRange, typename T, size_t N>
-		void readBufferRect(
-			Buffer<T> buffer,
-			size_t[N] bufferOrigin, size_t[N] hostOrigin, size_t[N] region,
-			size_t bufferRowPitch, size_t bufferSlicePitch,
-			size_t hostRowPitch, size_t hostSlicePitch,
-			OutIterator out, EventRange waitList);
+			OutIterator first);
 
 		template<typename OutIterator, typename T, size_t N>
 		auto readBufferRectAsync(
@@ -93,26 +91,90 @@ namespace cl {
 			size_t[N] bufferOrigin, size_t[N] hostOrigin, size_t[N] region,
 			size_t bufferRowPitch, size_t bufferSlicePitch,
 			size_t hostRowPitch, size_t hostSlicePitch,
-			OutIterator out) -> Event;
+			OutIterator first) -> Event;
 
-		template<typename OutIterator, typename EventRange, typename T, size_t N>
-		auto readBufferRectAsync(
+		//================================================================================
+		// Overloads to access clEnqueueWriteBufferRect
+		//================================================================================
+
+		template<typename OutIterator, typename T, size_t N>
+		void writeBufferRect(
 			Buffer<T> buffer,
 			size_t[N] bufferOrigin, size_t[N] hostOrigin, size_t[N] region,
 			size_t bufferRowPitch, size_t bufferSlicePitch,
 			size_t hostRowPitch, size_t hostSlicePitch,
-			OutIterator out, EventRange waitList) -> Event;
+			OutIterator out);
+
+		template<typename OutIterator, typename T, size_t N>
+		auto writeBufferRectAsync(
+			Buffer<T> buffer,
+			size_t[N] bufferOrigin, size_t[N] hostOrigin, size_t[N] region,
+			size_t bufferRowPitch, size_t bufferSlicePitch,
+			size_t hostRowPitch, size_t hostSlicePitch,
+			OutIterator out) -> Event;
 
 		//================================================================================
-		// Marker & Barrier
+		// Overloads to access clEnqueueCopyBuffer
+		//================================================================================
+
+		template<typename T, typename V>
+		void copyBuffer(Buffer<T> src, Buffer<V> dst,
+			size_t srcOffset, size_t dstOffset, size_t size);
+
+		template<typename T, typename V>
+		void copyBuffer(Buffer<T> src, Buffer<V> dst);
+
+		template<typename T, typename V>
+		auto copyBufferAsync(Buffer<T> src, Buffer<V> dst,
+			size_t srcOffset, size_t dstOffset, size_t size) -> Event;
+
+		template<typename T, typename V>
+		auto copyBufferAsync(Buffer<T> src, Buffer<V> dst) -> Event;
+
+		//================================================================================
+		// Overloads to access clEnqueueCopyBufferRect
+		//================================================================================
+
+		template<typename T, typename V, size_t N>
+		void copyBufferRect(Buffer<T> src, Buffer<V> dest,
+			size_t[N] srcOrigin, size_t[N] dstOrigin, size_t[N] region,
+			size_t srcRowPitch, size_t srcSlicePitch,
+			size_t dstRowPitch, size_t dstSlidePitch);
+
+		template<typename T, typename V, size_t N>
+		auto copyBufferRectAsync(Buffer<T> src, Buffer<V> dest,
+			size_t[N] srcOrigin, size_t[N] dstOrigin, size_t[N] region,
+			size_t srcRowPitch, size_t srcSlicePitch,
+			size_t dstRowPitch, size_t dstSlidePitch) -> Event;
+
+		//================================================================================
+		// Overloads to access clEnqueueFillBuffer
+		//================================================================================
+
+		template<typename T>
+		void fillBuffer(Buffer<T> buffer, T const& value, size_t offset, size_t size);
+
+		template<typename T>
+		void fillBuffer(Buffer<T> buffer, T const& value);
+
+		template<typename T>
+		auto fillBufferAsync(Buffer<T> buffer, T const& value, size_t offset, size_t size)
+			-> Event;
+
+		template<typename T>
+		auto fillBufferAsync(Buffer<T> buffer, T const& value) -> Event;
+
+		//================================================================================
+		// Wait (for events), Marker & Barrier
 		//================================================================================
 
 		template<typename EventRange>
-		auto marker(EventRange waitList) const -> Event;
+		auto wait(EventRange const& waitList) const -> CommandQueue &;
+
+		template<typename EventRange>
 		auto marker() const -> Event;
 
 		template<typename EventRange>
-		auto barrier(EventRange waitList) const -> Event;
 		auto barrier() const -> Event;
 
 		//================================================================================
