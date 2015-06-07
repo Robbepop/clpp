@@ -82,4 +82,24 @@ namespace cl {
 	auto Event::getReferenceCount() const -> cl_uint {
 		return getInfo<cl_uint>(CL_EVENT_REFERENCE_COUNT);
 	}
+
+	auto Event::getProfilingQueued() const -> cl_ulong {
+		return getInfo<cl_ulong>(CL_PROFILING_COMMAND_QUEUED);
+	}
+
+	auto Event::getProfilingSubmit() const -> cl_ulong {
+		return getInfo<cl_ulong>(CL_PROFILING_COMMAND_SUBMIT);
+	}
+
+	auto Event::getProfilingStart() const -> cl_ulong {
+		return getInfo<cl_ulong>(CL_PROFILING_COMMAND_START);
+	}
+
+	auto Event::getProfilingEnd() const -> cl_ulong {
+		return getInfo<cl_ulong>(CL_PROFILING_COMMAND_END);
+	}
+
+	auto Event::getProfilingComplete() const -> cl_ulong {
+		return getInfo<cl_ulong>(CL_PROFILING_COMMAND_COMPLETE);
+	}
 }

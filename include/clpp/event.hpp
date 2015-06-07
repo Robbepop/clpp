@@ -72,6 +72,17 @@ namespace cl {
 		auto getCommand() const        -> Command;
 		auto getStatus() const         -> ExecutionStatus;
 		auto getReferenceCount() const -> cl_uint;
+
+		//================================================================================
+		// Information access profiling helper methods.
+		//================================================================================
+	public:
+
+		auto getProfilingQueued() const   -> cl_ulong;
+		auto getProfilingSubmit() const   -> cl_ulong;
+		auto getProfilingStart() const    -> cl_ulong;
+		auto getProfilingEnd() const      -> cl_ulong;
+		auto getProfilingComplete() const -> cl_ulong;
 	};
 }
 
