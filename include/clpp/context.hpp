@@ -23,8 +23,7 @@ namespace cl {
 
 			static auto retain(cl_context id) { return clRetainContext(id); }
 
-			static auto getInfo
-			(
+			static auto getInfo(
 				cl_type   context,
 				info_type param_name,
 				size_t    param_value_size,
@@ -76,6 +75,34 @@ namespace cl {
 			ContextProperties const& properties,
 			DeviceType type
 		);
+
+		//================================================================================
+		// Create Memory Objects
+		//================================================================================
+
+		template<typename T>
+		auto createBuffer(
+			size_t size,
+			DeviceAccess deviceAccess = DeviceAccess::readWrite,
+			HostAccess hostAccess     = HostAccess::readWrite
+		) const -> Buffer<T>;
+
+		template<typename InputIterator>
+		auto createBuffer(
+			InputIterator first,
+			InputIterator last,
+			TransferMode transferMode,
+			DeviceAccess deviceAccess = DeviceAccess::readWrite,
+			HostAccess hostAccess     = HostAccess::readWrite
+		) const -> Buffer<InputIterator::value_type>;
+
+		template<typename InputRange>
+		auto createBuffer(
+			InputRange range,
+			TransferMode transferMode,
+			DeviceAccess deviceAccess = DeviceAccess::readWrite,
+			HostAccess hostAccess     = HostAccess::readWrite
+		) const -> Buffer<InputRange::value_type>;
 
 		//================================================================================
 		// Information access helper methods.

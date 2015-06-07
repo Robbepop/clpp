@@ -19,9 +19,10 @@ namespace cl {
 			using exception_type = PlatformError;
 
 			static auto release(cl_platform_id) { return CL_SUCCESS; }
+
 			static auto retain(cl_platform_id) { return CL_SUCCESS; }
-			static auto getInfo
-			(
+
+			static auto getInfo(
 				cl_type   platform,
 				info_type param_name,
 				size_t    param_value_size,

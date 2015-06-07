@@ -37,8 +37,7 @@ namespace cl {
 
 			static auto retain(cl_device_id id) { clRetainDevice(id); }
 
-			static auto getInfo
-			(
+			static auto getInfo(
 				cl_type   device,
 				info_type param_name,
 				size_t    param_value_size,

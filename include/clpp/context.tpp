@@ -2,7 +2,10 @@
 	#error "Do not include this file directly."
 #endif
 
-#include <iostream>
+#include "utility/to_underlying.hpp"
+
+//#include <iostream>
+#include <iterator>
 
 namespace cl {
 	//====================================================================================
@@ -55,10 +58,8 @@ namespace cl {
 					reinterpret_cast<const char*>(private_info),
 					reinterpret_cast<const char*>(private_info) + cb};
 				auto userData    = temp->user_data;
-				delete temp; // call delete before calling user's callback
-				             // to ensure that data is freed even if the user's
-				             // callback throws an exception.
 				temp->callback(errorString, privateData, userData);
+				delete temp;
 			},
 			std::addressof(cbWrapper),
 			std::addressof(error)
@@ -118,10 +119,8 @@ namespace cl {
 					reinterpret_cast<const char*>(private_info),
 					reinterpret_cast<const char*>(private_info) + cb};
 				auto userData    = temp->user_data;
-				delete temp; // call delete before calling user's callback
-				             // to ensure that data is freed even if the user's
-				             // callback throws an exception.
 				temp->callback(errorString, privateData, userData);
+				delete temp;
 			},
 			std::addressof(cbWrapper),
 			std::addressof(error)
@@ -145,6 +144,59 @@ namespace cl {
 		if (detail::error::handle<exception_type>(error)) {
 			m_object = contex;
 		}
+	}
+
+	//================================================================================
+	// Create Memory Objects
+	//================================================================================
+
+	template<typename T>
+	auto createBuffer(
+		size_t size,
+		DeviceAccess deviceAccess = DeviceAccess::readWrite,
+		HostAccess hostAccess     = HostAccess::readWrite
+	) const
+		-> Buffer<T>
+	{
+		using namespace utility;
+		auto error = cl_int{CL_INVALID_VALUE};
+		auto flags = to_underlying(deviceAccess) | to_underlying(hostAccess);
+		auto id    = clCreateBuffer(get(), flags, size, nullptr, std::addressof(error));
+		detail::error::handle<exception_type>(error);
+		return {id};
+	}
+
+	template<typename InputIterator>
+	auto createBuffer(
+		InputIterator first,
+		InputIterator last,
+		TransferMode transferMode,
+		DeviceAccess deviceAccess = DeviceAccess::readWrite,
+		HostAccess hostAccess     = HostAccess::readWrite
+	) const
+		-> Buffer<InputRange::value_type>
+	{
+		using namespace utility;
+		auto error = cl_int{CL_INVALID_VALUE};
+		auto flags = to_underlying(transferMode)
+		           | to_underlying(deviceAccess)
+		           | to_underlying(hostAccess);
+		auto size  = std::distance(first, last);
+		auto id    = clCreateBuffer(get(), flags, size, first, std::addressof(error));
+		detail::error::handle<exception_type>(error);
+		return {id};
+	}
+
+	template<typename InputRange>
+	auto createBuffer(
+		InputRange range,
+		TransferMode transferMode,
+		DeviceAccess deviceAccess = DeviceAccess::readWrite,
+		HostAccess hostAccess     = HostAccess::readWrite
+	) const
+		-> Buffer<InputRange::value_type>
+	{
+		return createBuffer(range.begin(), range.end(), transferMode, deviceAccess, hostAccess);
 	}
 
 	//====================================================================================
