@@ -9,9 +9,9 @@ namespace cl {
 			using info_type      = cl_command_queue_info;
 			using exception_type = CommandQueueError;
 
-			static auto release(cl_command_queue id) { clReleaseCommandQueue(id); }
+			static auto release(cl_type id) { clReleaseCommandQueue(id); }
 
-			static auto retain(cl_command_queue id) { clRetainCommandQueue(id); }
+			static auto retain(cl_type id) { clRetainCommandQueue(id); }
 
 			static auto getInfo
 			(
@@ -33,7 +33,7 @@ namespace cl {
 		// Constructors and Assignment
 		//================================================================================
 
-		using detail::Object<cl_command_queue>::Object;
+		using detail::Object<cl_type>::Object;
 
 		auto operator=(const CommandQueue & rhs) -> CommandQueue &;
 
@@ -205,9 +205,6 @@ namespace cl {
 		auto when(EventRange const& waitList) const -> CommandQueue const&;
 
 		template<typename EventRange>
-		void wait(EventRange const& waitList) const;
-
-		template<typename EventRange>
 		auto marker() const -> Event;
 
 		template<typename EventRange>
@@ -233,4 +230,5 @@ namespace cl {
 	};
 }
 
+#include "clpp/command_queue.tpp"
 #endif

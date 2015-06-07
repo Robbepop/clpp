@@ -19,9 +19,9 @@ namespace cl {
 			using info_type = cl_context_info;
 			using exception_type = ContextError;
 
-			static auto release(cl_context id) { return clReleaseContext(id); }
+			static auto release(cl_type id) { return clReleaseContext(id); }
 
-			static auto retain(cl_context id) { return clRetainContext(id); }
+			static auto retain(cl_type id) { return clRetainContext(id); }
 
 			static auto getInfo(
 				cl_type   context,
@@ -42,7 +42,7 @@ namespace cl {
 		// Basic Constructors and Copy-Assignment
 		//================================================================================
 
-		using detail::Object<cl_context>::Object;
+		using detail::Object<cl_type>::Object;
 
 		Context& operator=(const Context & rhs);
 

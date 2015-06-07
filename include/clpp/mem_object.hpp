@@ -19,11 +19,11 @@ namespace cl {
 			static auto retain(cl_mem id) { clRetainMemObject(id); }
 
 			static auto getInfo(
-				cl_mem memory_object,
+				cl_mem      memory_object,
 				cl_mem_info param_name,
-				size_t param_value_size,
-				void *param_value,
-				size_t *param_value_size_ret
+				size_t      param_value_size,
+				void *      param_value,
+				size_t *    param_value_size_ret
 			) {
 				return clGetMemObjectInfo(
 					memory_object, param_name, param_value_size, param_value, param_value_size_ret);
@@ -37,7 +37,7 @@ namespace cl {
 		//================================================================================
 	public:
 
-		using detail::Object<cl_mem>::Object;
+		using detail::Object<cl_type>::Object;
 
 		MemObject& operator=(const MemObject & rhs);
 

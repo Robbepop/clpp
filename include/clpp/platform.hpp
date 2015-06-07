@@ -18,9 +18,9 @@ namespace cl {
 			using info_type      = cl_platform_info;
 			using exception_type = PlatformError;
 
-			static auto release(cl_platform_id) { return CL_SUCCESS; }
+			static auto release(cl_type) { return CL_SUCCESS; }
 
-			static auto retain(cl_platform_id) { return CL_SUCCESS; }
+			static auto retain(cl_type) { return CL_SUCCESS; }
 
 			static auto getInfo(
 				cl_type   platform,
@@ -49,7 +49,7 @@ namespace cl {
 		// Note that move constructors and move assign operator are default generated.
 		//================================================================================
 
-		using detail::Object<cl_platform_id>::Object;
+		using detail::Object<cl_type>::Object;
 
 		Platform& operator=(const Platform & rhs);
 

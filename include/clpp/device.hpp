@@ -33,9 +33,9 @@ namespace cl {
 			using info_type      = cl_device_info;
 			using exception_type = DeviceError;
 
-			static auto release(cl_device_id id) { clReleaseDevice(id); }
+			static auto release(cl_type id) { clReleaseDevice(id); }
 
-			static auto retain(cl_device_id id) { clRetainDevice(id); }
+			static auto retain(cl_type id) { clRetainDevice(id); }
 
 			static auto getInfo(
 				cl_type   device,
@@ -57,7 +57,7 @@ namespace cl {
 		// Constructor and Assignment
 		//================================================================================
 
-		using detail::Object<cl_device_id>::Object;
+		using detail::Object<cl_type>::Object;
 
 		Device& operator=(const Device & rhs);
 		
