@@ -62,8 +62,8 @@ namespace cl {
 		//================================================================================
 	public:
 
-		template<typename Function>
-		auto setCallback(ExecutionStatus status, Function callback) const;
+		template<typename Function, typename T>
+		auto setCallback(ExecutionStatus status, Function callback, T&& data) const;
 
 		//================================================================================
 		// Information access helper methods.
@@ -78,4 +78,5 @@ namespace cl {
 	};
 }
 
+#include "clpp/event.tpp"
 #endif

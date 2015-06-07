@@ -21,4 +21,5 @@ namespace cl {
 	};
 }
 
+#include "clpp/buffer.tpp"
 #endif
