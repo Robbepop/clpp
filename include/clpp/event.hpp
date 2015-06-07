@@ -34,11 +34,8 @@ namespace cl {
 		template<typename EventRange>
 		static void wait(EventRange const& waitList);
 
-//		template<typename T>
-//		static void wait(T const& event);
-
-//		template<typename T, typename... Args>
-//		static void wait(T const& event, Args...);
+		template<typename... Events>
+		static void wait(Events...);
 
 		//================================================================================
 		// Constructor and Assignment

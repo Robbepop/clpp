@@ -5,19 +5,16 @@
 namespace cl {
 	template<typename EventRange>
 	void Event::wait(EventRange const& waitList) {
-		auto error = clWaitForEvents(waitList.size(), waitList.data());
+		auto error = clWaitForEvents(
+			waitList.size(),
+			reinterpret_cast<const cl_type*>(waitList.data()));
 		detail::error::handle<Event::exception_type>(error);
 	}
 
-//	template<typename T>
-//	static void Event::wait(T const& event) {
-//		// TODO
-//	}
-
-//	template<typename T, typename... Args>
-//	static void Event::wait(T const& event, Args...) {
-//		// TODO
-//	}
+	template<typename... Events>
+	void Event::wait(Events...) {
+		wait(utility::make_array(Events...));
+	}
 
 	Event& Event::operator=(const Event & rhs) {
         if (this != &rhs) {
@@ -45,7 +42,7 @@ namespace cl {
 			Function callback;
 			T&& data;
 		};
-		auto cbw   = new CallbackWrapper{callback, data};
+		auto cbw   = new CallbackWrapper{callback, std::forward(data)};
 		auto error = cl_int{CL_INVALID_VALUE};
 		error = clSetEventCallback(
 			get(), static_cast<command_exec_callback_type>(status),
