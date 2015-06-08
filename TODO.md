@@ -21,6 +21,8 @@ Experimental:
   Same behaviour could be implemented for CommandQueue's when(), barrier() and marker() method.
 
 TODO:
+- Remove old exceptions from existing code.
+- Implement global error info table with the new exceptions.
 - Complete implementation of CommandQueue.
 - Complete API and implementation of several Image objects. E.g. Image2D, Image3D, Image1D etc...
 - Complete API and implementation of Program.

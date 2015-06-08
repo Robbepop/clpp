@@ -4,7 +4,6 @@
 #include "clpp/detail/common.hpp"
 
 #include <stdexcept>
-#include <string>
 
 namespace cl {
 	namespace error {
@@ -16,24 +15,24 @@ namespace cl {
 			virtual auto code() const noexcept -> RetCode      = 0;
 		};
 
-		#define EXCEPTION(ExceptionName, RetCode, Msg) \
-			class ExceptionName final : public AnyError { \
-			public: \
-				using AnyError::AnyError; \
+		#define EXCEPTION(ExceptionName, RetCode, Msg)              \
+			class ExceptionName final : public AnyError {           \
+			public:                                                 \
+				using AnyError::AnyError;                           \
 				auto what() const override noexcept -> const char*; \
-				auto code() const override noexcept -> RetCode; \
-			}; \
- \
-			auto ExceptionName::what() const override noexcept \
-				-> const char * \
-			{ \
-				return Msg; \
-			} \
- \
-			auto ExceptionName::code() const override noexcept \
-				-> RetCode \
-			{ \
-				return RetCode; \
+				auto code() const override noexcept -> RetCode;     \
+			};                                                      \
+			                                                        \
+			auto ExceptionName::what() const override noexcept      \
+				-> const char *                                     \
+			{                                                       \
+				return Msg;                                         \
+			}                                                       \
+			                                                        \
+			auto ExceptionName::code() const override noexcept      \
+				-> RetCode                                          \
+			{                                                       \
+				return RetCode;                                     \
 			}
 
 			EXCEPTION(DeviceNotFound,
