@@ -28,7 +28,7 @@ namespace cl {
 		kernelArgumentInfoNotAvailable        = CL_KERNEL_ARG_INFO_NOT_AVAILABLE,
 
 		invalidValue                     = CL_INVALID_VALUE,
-		invalidDevice_type               = CL_INVALID_DEVICE_TYPE,
+		invalidDeviceType                = CL_INVALID_DEVICE_TYPE,
 		invalidPlatform                  = CL_INVALID_PLATFORM,
 		invalidDevice                    = CL_INVALID_DEVICE,
 		invalidContext                   = CL_INVALID_CONTEXT,
