@@ -235,15 +235,13 @@ namespace cl {
 		//================================================================================
 
 		template<typename EventRange>
-		auto when(EventRange const& waitList) -> CommandQueue &;
+		auto when(EventRange const& waitList) const -> CommandQueueExecutor;
 
-		template<typename EventRange>
-		auto when(EventRange const& waitList) const -> CommandQueue const&;
+		template<typename...Events>
+		auto when(Events... events) const -> CommandQueueExecutor;
 
-		template<typename EventRange>
 		auto marker() const -> Event;
 
-		template<typename EventRange>
 		auto barrier() const -> Event;
 
 		//================================================================================

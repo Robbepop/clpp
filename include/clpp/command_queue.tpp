@@ -288,12 +288,10 @@ namespace cl {
 
 	}
 
-	template<typename EventRange>
 	auto CommandQueue::marker() const -> Event {
 
 	}
 
-	template<typename EventRange>
 	auto CommandQueue::barrier() const -> Event {
 
 	}
