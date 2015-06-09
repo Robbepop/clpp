@@ -303,11 +303,11 @@ namespace cl {
 	//================================================================================
 
 	void CommandQueue::flush() const {
-
+		detail::error::handle(clFlush(get()));
 	}
 
 	void CommandQueue::finish() const {
-
+		detail::error::handle(clFinish(get()));
 	}
 
 	//================================================================================
@@ -315,26 +315,26 @@ namespace cl {
 	//================================================================================
 
 	auto CommandQueue::getContext() const -> Context {
-
+		return {getInfo<cl_context>(CL_QUEUE_CONTEXT)};
 	}
 
 	auto CommandQueue::getDevice() const -> Device {
-
+		return {getInfo<cl_device_id>(CL_QUEUE_DEVICE)};
 	}
 
 	auto CommandQueue::getReferenceCount() const -> cl_uint {
-
+		return getInfo<cl_uint>(CL_QUEUE_REFERENCE_COUNT);
 	}
 
 	auto CommandQueue::getProperties() const -> CommandQueueProperties {
-
+		return {getInfo<cl_command_queue_properties>(CL_QUEUE_PROPERTIES)};
 	}
 
 	auto CommandQueue::getSize() const -> cl_uint {
-
+		return getInfo<cl_uint>(CL_QUEUE_SIZE);
 	}
 
 	auto CommandQueue::size() const -> cl_uint {
-
+		return getSize();
 	}
 }
