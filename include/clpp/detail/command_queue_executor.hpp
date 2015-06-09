@@ -11,11 +11,12 @@ namespace cl {
 
 	namespace detail {
 		class CommandQueueExecutor final {
-		public:
+			friend class CommandQueue;
+
 			//============================================================================
 			// Constructors and Assignment
 			//============================================================================
-		public:
+		private:
 			CommandQueueExecutor(CommandQueue const& queue);
 
 			template<typename EventRange>
