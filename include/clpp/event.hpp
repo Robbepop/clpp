@@ -26,7 +26,7 @@ namespace cl {
 		};
 	}
 
-	class Event : public detail::Object<cl_event> {
+	class Event final : public detail::Object<cl_event> {
 		//================================================================================
 		// Wrapper API for clWaitForEvents
 		//================================================================================

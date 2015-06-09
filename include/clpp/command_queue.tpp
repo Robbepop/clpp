@@ -231,6 +231,50 @@ namespace cl {
 	}
 
 	//================================================================================
+	// ND Range Kernel Execution
+	//================================================================================
+
+	template<typename T>
+	auto execute1DRange(
+		Kernel const& kernel,
+		size_t globalWorkOffset,
+		size_t globalWorkSize,
+		size_t localWorkSize
+	) const -> Event {
+
+	}
+
+	template<typename T>
+	auto execute2DRange(
+		Kernel const& kernel,
+		NDRange<2> const& globalWorkOffset,
+		NDRange<2> const& globalWorkSize,
+		NDRange<2> const& localWorkSize
+	) const -> Event {
+
+	}
+
+	template<typename T>
+	auto execute3DRange(
+		Kernel const& kernel,
+		NDRange<3> const& globalWorkOffset,
+		NDRange<3> const& globalWorkSize,
+		NDRange<3> const& localWorkSize
+	) const -> Event {
+
+	}
+
+	template<typename T, size_t N>
+	auto executeNDRange(
+		Kernel const& kernel,
+		NDRange<N> const& globalWorkOffset,
+		NDRange<N> const& globalWorkSize,
+		NDRange<N> const& localWorkSize
+	) const -> Event {
+
+	}
+
+	//================================================================================
 	// Wait (for events), Marker & Barrier and When for async calls
 	//================================================================================
 

@@ -27,7 +27,6 @@ namespace cl {
 			return isSuccess(static_cast<code_type>(code));
 		}
 
-		template <typename ExceptionType>
 		auto error::handle(
 			RetCode code,
 			error::info_map const* local_info_map
@@ -46,26 +45,22 @@ namespace cl {
 					it != local_info_map->end() ? it->second : ""s};
 			}
 			const auto it = global_info_map.find(code);
-			throw ExceptionType{code,
-				it != global_info_map.end() ? it->second : ""s};
+			throw error::InvalidValue{it != global_info_map.end() ? it->second : ""s};
 		}
 
-		template <typename ExceptionType>
 		auto error::handle(
 			error::code_type code,
 			error::info_map const& local_info_map
 		)
 			-> cl_bool
 		{
-			return handle<ExceptionType>(
+			return handle(
 				static_cast<RetCode>(code),
 				std::addressof(local_info_map));
 		}
 
-		template <typename ExceptionType>
 		auto error::handle(error::code_type code) -> cl_bool {
-			return handle<ExceptionType>(
-				static_cast<RetCode>(code), nullptr);
+			return handle(static_cast<RetCode>(code), nullptr);
 		}
 	}
 }

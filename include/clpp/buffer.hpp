@@ -5,11 +5,17 @@
 
 namespace cl {
 	template<typename T>
-	class Buffer : public MemObject {
+	class Buffer final : public MemObject {
 	public:
 		using MemObject::MemObject;
 
-		Buffer & operator=(Buffer const& rhs);
+		auto operator=(Buffer const& rhs) -> Buffer &;
+
+		auto createSubBuffer(
+			size_t origin, size_t size,
+			DeviceAccess deviceAccess = DeviceAccess::readWrite,
+			HostAccess hostAccess     = HostAccess::readWrite
+		) const -> Buffer<T>;
 
 		auto size() const       -> size_t;
 

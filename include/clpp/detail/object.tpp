@@ -99,7 +99,7 @@ namespace cl {
 		void Object<CLType>::release() {
 			if (m_object != nullptr) {
 				ObjectHandler<CLType>::release(m_object);
-				//error::handle<exception_type>(
+				//error::handle(
 				//	ObjectHandler<CLType>::release(m_object));
 			}
 		}
@@ -108,7 +108,7 @@ namespace cl {
 		void Object<CLType>::retain() {
 			if (m_object != nullptr) {
 				ObjectHandler<CLType>::retain(m_object);
-//				error::handle<exception_type>(
+//				error::handle(
 //					ObjectHandler<CLType>::retain(m_object));
 			}
 		}
