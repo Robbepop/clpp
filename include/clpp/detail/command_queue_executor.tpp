@@ -49,26 +49,28 @@ namespace cl {
 		void CommandQueueExecutor::readBuffer(
 			Buffer<T> buffer, size_t offset, OutputIterator first, OutputIterator last
 		) const {
-
+			// TODO
 		}
 
 		template<typename OutputIterator, typename T>
-		void CommandQueueExecutor::readBuffer(Buffer<T> buffer, OutputIterator first) const {
-
+		void CommandQueueExecutor::readBuffer(
+			Buffer<T> buffer, OutputIterator first
+		) const {
+			// TODO
 		}
 
 		template<typename OutputIterator, typename T>
 		auto CommandQueueExecutor::readBufferAsync(
 			Buffer<T> buffer, size_t offset, OutputIterator first, OutputIterator last
 		) const -> Event {
-
+			// TODO
 		}
 
 		template<typename OutputIterator, typename T>
 		auto CommandQueueExecutor::readBufferAsync(
 			Buffer<T> buffer, OutputIterator first
 		) const -> Event {
-
+			// TODO
 		}
 
 		//============================================================================
@@ -79,26 +81,54 @@ namespace cl {
 		void CommandQueueExecutor::writeBuffer(
 			Buffer<T> buffer, size_t offset, InputIterator first, InputIterator last
 		) const {
-
+			auto error = clEnqueueWriteBuffer(
+				getQueueId(), buffer.get(), CL_BLOCKING,
+				offset * sizeof(T), std::distance(first, last) * sizeof(T),
+				std::addressof(first[0]),
+				getWaitListSize(), getWaitListData(), nullptr);
+			detail::error::handle(error);
 		}
 
 		template<typename InputIterator, typename T>
-		void CommandQueueExecutor::writeBuffer(Buffer<T> buffer, InputIterator first) const {
-
+		void CommandQueueExecutor::writeBuffer(
+			Buffer<T> buffer, InputIterator first
+		) const {
+			auto error = clEnqueueWriteBuffer(
+				getQueueId(), buffer.get(), CL_BLOCKING,
+				0, buffer.getSizeInBytes(),
+				std::addressof(first[0]),
+				getWaitListSize(), getWaitListData(), nullptr);
+			detail::error::handle(error);
 		}
 
 		template<typename InputIterator, typename T>
 		auto CommandQueueExecutor::writeBufferAsync(
 			Buffer<T> buffer, size_t offset, InputIterator first, InputIterator last
 		) const -> Event {
-
+			auto eventId = cl_event{nullptr};
+			auto error   = clEnqueueWriteBuffer(
+				getQueueId(), buffer.get(), CL_BLOCKING,
+				offset * sizeof(T), std::distance(first, last) * sizeof(T),
+				std::addressof(first[0]),
+				getWaitListSize(), getWaitListData(),
+				std::addressof(eventId));
+			detail::error::handle(error);
+			return {eventId};
 		}
 
 		template<typename InputIterator, typename T>
 		auto CommandQueueExecutor::writeBufferAsync(
 			Buffer<T> buffer, InputIterator first
 		) const -> Event {
-
+			auto eventId = cl_event{nullptr};
+			auto error   = clEnqueueWriteBuffer(
+				getQueueId(), buffer.get(), CL_BLOCKING,
+				0, buffer.getSizeInBytes(),
+				std::addressof(first[0]),
+				getWaitListSize(), getWaitListData(),
+				std::addressof(eventId));
+			detail::error::handle(error);
+			return {eventId};
 		}
 
 		//============================================================================
@@ -115,7 +145,20 @@ namespace cl {
 			size_t hostRowPitch, size_t hostSlicePitch,
 			OutIterator first
 		) const {
-
+			static_assert(std::is_same<
+				OutIterator::value_type, Buffer<T>::value_type>::value,
+				"value_type of OutIterator must be the same as value_type of buffer");
+			auto error = clEnqueueReadBufferRect(
+				getQueueId(), CL_BLOCKING,
+				toByteArray(bufferOrigin).data(),
+				toByteArray(hostOrigin).data(),
+				toByteArray(region).data(),
+				bufferRowPitch * sizeof(T), bufferSlicePitch * sizeof(T),
+				hostRowPitch * sizeof(T), hostSlicePitch * sizeof(T),
+				std::addressof(first[0]),
+				getWaitListSize(), getWaitListData(),
+				nullptr);
+			detail::error::handle(error);
 		}
 
 		template<typename OutIterator, typename T>
@@ -128,14 +171,29 @@ namespace cl {
 			size_t hostRowPitch, size_t hostSlicePitch,
 			OutIterator first
 		) const -> Event {
-
+			static_assert(std::is_same<
+				OutIterator::value_type, Buffer<T>::value_type>::value,
+				"value_type of OutIterator must be the same as value_type of buffer");
+			auto evendId = cl_event{nullptr};
+			auto error   = clEnqueueReadBufferRect(
+				getQueueId(), CL_NON_BLOCKING,
+				toByteArray(bufferOrigin).data(),
+				toByteArray(hostOrigin).data(),
+				toByteArray(region).data(),
+				bufferRowPitch * sizeof(T), bufferSlicePitch * sizeof(T),
+				hostRowPitch * sizeof(T), hostSlicePitch * sizeof(T),
+				std::addressof(first[0]),
+				getWaitListSize(), getWaitListData(),
+				std::addressof(eventId));
+			detail::error::handle(error);
+			return {eventId};
 		}
 
 		//============================================================================
 		// Overloads to access clEnqueueWriteBufferRect
 		//============================================================================
 
-		template<typename OutIterator, typename T>
+		template<typename InIterator, typename T>
 		void CommandQueueExecutor::writeBufferRect(
 			Buffer<T> buffer,
 			std::array<size_t, 3> const& bufferOrigin,
@@ -143,11 +201,11 @@ namespace cl {
 			std::array<size_t, 3> const& region,
 			size_t bufferRowPitch, size_t bufferSlicePitch,
 			size_t hostRowPitch, size_t hostSlicePitch,
-			OutIterator out
+			InIterator first
 		) const {
 			static_assert(std::is_same<
-				OutIterator::value_type, Buffer<T>::value_type>::value,
-				"value_type of out must be the same as value_type of buffer");
+				InIterator::value_type, Buffer<T>::value_type>::value,
+				"value_type of InIterator must be the same as value_type of buffer");
 			auto error = clEnqueueWriteBufferRect(
 				getQueueId(), CL_BLOCKING,
 				toByteArray(bufferOrigin).data(),
@@ -155,13 +213,13 @@ namespace cl {
 				toByteArray(region).data(),
 				bufferRowPitch * sizeof(T), bufferSlicePitch * sizeof(T),
 				hostRowPitch * sizeof(T), hostSlicePitch * sizeof(T),
-				std::addressof(out[0]),
+				std::addressof(first[0]),
 				getWaitListSize(), getWaitListData(),
 				nullptr);
 			detail::error::handle(error);
 		}
 
-		template<typename OutIterator, typename T>
+		template<typename InIterator, typename T>
 		auto CommandQueueExecutor::writeBufferRectAsync(
 			Buffer<T> buffer,
 			std::array<size_t, 3> const& bufferOrigin,
@@ -169,11 +227,11 @@ namespace cl {
 			std::array<size_t, 3> const& region,
 			size_t bufferRowPitch, size_t bufferSlicePitch,
 			size_t hostRowPitch, size_t hostSlicePitch,
-			OutIterator out
+			InIterator first
 		) const -> Event {
 			static_assert(std::is_same<
-				OutIterator::value_type, Buffer<T>::value_type>::value,
-				"value_type of out must be the same as value_type of buffer");
+				InIterator::value_type, Buffer<T>::value_type>::value,
+				"value_type of InIterator must be the same as value_type of buffer");
 			auto evendId = cl_event{nullptr};
 			auto error   = clEnqueueWriteBufferRect(
 				getQueueId(), CL_NON_BLOCKING,
@@ -182,7 +240,7 @@ namespace cl {
 				toByteArray(region).data(),
 				bufferRowPitch * sizeof(T), bufferSlicePitch * sizeof(T),
 				hostRowPitch * sizeof(T), hostSlicePitch * sizeof(T),
-				std::addressof(out[0]),
+				std::addressof(first[0]),
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId));
 			detail::error::handle(error);
