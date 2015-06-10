@@ -22,6 +22,10 @@ namespace cl {
 			auto getWaitListData() const -> cl_event const*;
 			auto getWaitListSize() const -> cl_uint;
 
+			// converts element count based arrays into byte based arrays
+			template<typename T, size_t N>
+			auto toByteArray(std::array<T,N> const& array) const -> std::array<T,N>;
+
 			//============================================================================
 			// Constructors and Assignment
 			//============================================================================

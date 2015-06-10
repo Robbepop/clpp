@@ -23,6 +23,15 @@ namespace cl {
 			m_wait_list.size();
 		}
 
+		template<typename T, size_t N>
+		auto CommandQueueExecutor::toByteArray(std::array<T,N> const& values) const -> std::array<T,N> {
+			auto byteArray = std::array<T,N>{};
+			for (auto i = 0u; i < N; ++i) {
+				byteArray[i] = values[i] * sizeof(T);
+			}
+			return byteArray;
+		}
+
 		//============================================================================
 		// Constructors and Assignment
 		//============================================================================
@@ -190,10 +199,14 @@ namespace cl {
 			size_t srcRowPitch, size_t srcSlicePitch,
 			size_t dstRowPitch, size_t dstSlidePitch
 		) const {
+			using namespace utility;
+			constexpr size = sizeof(T);
 			auto eventId = cl_event{nullptr};
 			auto error   = clEnqueueCopyBufferRect(
 				src.get(), dst.get(),
-				srcOrigin.data(), dstOrigin.data(), region.data(),
+				toByteArray(srcOrigin).data(),
+				toByteArray(dstOrigin).data(),
+				toByteArray(region).data(),
 				srcRowPitch * sizeof(T), srcSlicePitch * sizeof(T),
 				dstRowPitch * sizeof(T), dstSlidePitch * sizeof(T),
 				getWaitListSize(), getWaitListData(),
@@ -213,7 +226,9 @@ namespace cl {
 			auto eventId = cl_event{nullptr};
 			auto error   = clEnqueueCopyBufferRect(
 				src.get(), dst.get(),
-				srcOrigin.data(), dstOrigin.data(), region.data(),
+				toByteArray(srcOrigin).data(),
+				toByteArray(dstOrigin).data(),
+				toByteArray(region).data(),
 				srcRowPitch * sizeof(T), srcSlicePitch * sizeof(T),
 				dstRowPitch * sizeof(T), dstSlidePitch * sizeof(T),
 				getWaitListSize(), getWaitListData(),
