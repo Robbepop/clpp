@@ -17,7 +17,8 @@ namespace cl {
 			HostAccess hostAccess     = HostAccess::readWrite
 		) const -> Buffer<T>;
 
-		auto size() const       -> size_t;
+		auto size() const           -> size_t;
+		auto getSizeInBytes() const -> size_t;
 
 		auto getSize() const    -> size_t;
 		auto getOffset() const  -> size_t;

@@ -13,7 +13,7 @@ namespace cl {
 		m_valid{false}
 	{}
 
-	MappedMemory::MappedMemory(CommandQueue queue, MemoryObject mem, T* data, size_t size):
+	MappedMemory::MappedMemory(CommandQueue const& queue, MemoryObject const& mem, T* data, size_t size):
 		m_queue{queue},
 		m_mem_obj{mem},
 		m_data{data},

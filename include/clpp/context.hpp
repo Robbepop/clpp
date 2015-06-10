@@ -99,7 +99,7 @@ namespace cl {
 		template<typename InputRange>
 		auto createBuffer(
 			InputRange range,
-			TransferMode transferMode,
+			TransferMode transferMode = TransferMode::none,
 			DeviceAccess deviceAccess = DeviceAccess::readWrite,
 			HostAccess hostAccess     = HostAccess::readWrite
 		) const -> Buffer<InputRange::value_type>;

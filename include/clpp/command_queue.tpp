@@ -207,26 +207,30 @@ namespace cl {
 	//================================================================================
 
 	template<typename T>
-	void CommandQueue::mapBuffer(Buffer<T>, MapAccess access, MappedMemory<T> & result,
-		size_t offset, size_t size
+	void CommandQueue::mapBuffer(
+		Buffer<T> const& buffer, MapAccess access, size_t offset, size_t size, MappedMemory<T> & result
 	) const {
 
 	}
 
 	template<typename T>
-	void CommandQueue::mapBuffer(Buffer<T>, MapAccess access, MappedMemory<T> & result) const {
+	void CommandQueue::mapBuffer(
+		Buffer<T> const& buffer, MapAccess access, MappedMemory<T> & result
+	) const {
 
 	}
 
 	template<typename T>
-	auto CommandQueue::mapBufferAsync(Buffer<T>, MapAccess access, MappedMemory<T> & result,
-		size_t offset, size_t size
+	auto CommandQueue::mapBufferAsync(
+		Buffer<T> const& buffer, MapAccess access, size_t offset, size_t size, MappedMemory<T> & result
 	) const -> Event {
 
 	}
 
 	template<typename T>
-	auto CommandQueue::mapBufferAsync(Buffer<T>, MapAccess access, MappedMemory<T> & result) const -> Event {
+	auto CommandQueue::mapBufferAsync(
+		Buffer<T> const& buffer, MapAccess access, MappedMemory<T> & result
+	) const -> Event {
 
 	}
 
@@ -234,8 +238,7 @@ namespace cl {
 	// ND Range Kernel Execution
 	//================================================================================
 
-	template<typename T>
-	auto execute1DRange(
+	auto CommandQueue::execute1DRange(
 		Kernel const& kernel,
 		size_t globalWorkOffset,
 		size_t globalWorkSize,
@@ -244,28 +247,8 @@ namespace cl {
 
 	}
 
-	template<typename T>
-	auto execute2DRange(
-		Kernel const& kernel,
-		NDRange<2> const& globalWorkOffset,
-		NDRange<2> const& globalWorkSize,
-		NDRange<2> const& localWorkSize
-	) const -> Event {
-
-	}
-
-	template<typename T>
-	auto execute3DRange(
-		Kernel const& kernel,
-		NDRange<3> const& globalWorkOffset,
-		NDRange<3> const& globalWorkSize,
-		NDRange<3> const& localWorkSize
-	) const -> Event {
-
-	}
-
-	template<typename T, size_t N>
-	auto executeNDRange(
+	template<size_t N>
+	auto CommandQueue::executeNDRange(
 		Kernel const& kernel,
 		NDRange<N> const& globalWorkOffset,
 		NDRange<N> const& globalWorkSize,

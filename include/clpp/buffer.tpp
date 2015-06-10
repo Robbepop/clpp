@@ -34,13 +34,18 @@ namespace cl {
 	}
 
 	template<typename T>
+	auto Buffer<T>::getSizeInBytes() const -> size_t {
+		return MemObject::getSize();
+	}
+
+	template<typename T>
 	auto Buffer<T>::getSize() const -> size_t {
-		return MemObject::getSize() / sizeof(T);
+		return getSizeInBytes() / sizeof(T);
 	}
 
 	template<typename T>
 	auto Buffer<T>::getOffset() const -> size_t {
-		return MemObject::size() / sizeof(T);
+		return getSizeInBytes() / sizeof(T);
 	}
 
 	template<typename T>

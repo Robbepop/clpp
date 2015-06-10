@@ -85,6 +85,7 @@ namespace cl {
 	public:
 		auto getAddressBits() const                    -> cl_uint;
 		auto isAvailable() const                       -> cl_bool;
+		auto getBuiltinKernels() const                 -> std::vector<std::string>>;
 		auto isCompilerAvailable() const               -> cl_bool;
 		auto getFpConfig(FPType type) const            -> FPConfig;
 		auto isLittleEndian() const                    -> cl_bool;

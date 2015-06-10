@@ -12,7 +12,6 @@ namespace cl {
 		struct ObjectHandler<cl_mem> final {
 			using cl_type        = cl_mem;
 			using info_type      = cl_mem_info;
-			using exception_type = MemoryObjectError;
 
 			static auto release(cl_mem id) { clReleaseMemObject(id); }
 

@@ -72,6 +72,13 @@ namespace cl {
 		return getInfo<cl_bool>(CL_DEVICE_AVAILABLE);
 	}
 
+	auto Device::getBuiltinKernels() const -> std::vector<std::string>> {
+			  auto kernels       = std::vector<std::string>{};
+		const auto kernelsString = getInfoString(CL_DEVICE_BUILT_IN_KERNELS);
+		boost::split(kernels, kernelsString, boost::is_any_of("\t "), boost::token_compress_on);
+		return kernels;
+	}
+
 	auto Device::isCompilerAvailable() const -> cl_bool {
 		return getInfo<cl_bool>(CL_DEVICE_COMPILER_AVAILABLE);
 	}

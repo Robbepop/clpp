@@ -6,7 +6,7 @@ namespace cl {
 	class MappedMemory final {
 	public:
 		MappedMemory();
-		MappedMemory(CommandQueue queue, MemoryObject mem, T* data, size_t size);
+		MappedMemory(CommandQueue const& queue, MemoryObject const& mem, T* data, size_t size);
 		~MappedMemory();
 
 		template<typename EventRange>

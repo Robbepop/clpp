@@ -14,13 +14,22 @@ namespace cl {
 			friend class CommandQueue;
 
 			//============================================================================
+			// Helper methods to access members.
+			//============================================================================
+		private:
+
+			auto getQueueId() const      -> cl_command_queue;
+			auto getWaitListData() const -> cl_event const*;
+			auto getWaitListSize() const -> cl_uint;
+
+			//============================================================================
 			// Constructors and Assignment
 			//============================================================================
 		private:
 			CommandQueueExecutor(CommandQueue const& queue);
 
 			template<typename EventRange>
-			CommandQueueExecutor(CommandQueue const& queue, EventRange waitList);
+			CommandQueueExecutor(CommandQueue const& queue, EventRange const& waitList);
 
 			CommandQueueExecutor(CommandQueueExecutor const& rhs) = delete;
 			CommandQueueExecutor(CommandQueueExecutor && rhs)     = delete;
@@ -180,25 +189,25 @@ namespace cl {
 		public:
 
 			template<typename T>
-			void mapBuffer(Buffer<T>, MapAccess access, MappedMemory<T> & result,
-				size_t offset, size_t size) const;
+			void mapBuffer(Buffer<T> const& buffer, MapAccess access,
+				size_t offset, size_t size, MappedMemory<T> & result) const;
 
 			template<typename T>
-			void mapBuffer(Buffer<T>, MapAccess access, MappedMemory<T> & result) const;
+			void mapBuffer(Buffer<T> const& buffer, MapAccess access, MappedMemory<T> & result) const;
 
 			template<typename T>
-			auto mapBufferAsync(Buffer<T>, MapAccess access, MappedMemory<T> & result,
-				size_t offset, size_t size) const -> Event;
+			auto mapBufferAsync(Buffer<T> const& buffer, MapAccess access,
+				size_t offset, size_t size, MappedMemory<T> & result) const -> Event;
 
 			template<typename T>
-			auto mapBufferAsync(Buffer<T>, MapAccess access, MappedMemory<T> & result) const -> Event;
+			auto mapBufferAsync(Buffer<T> const& buffer, MapAccess access,
+				MappedMemory<T> & result) const -> Event;
 
 			//============================================================================
 			// ND Range Kernel Execution
 			//============================================================================
 		public:
 
-			template<typename T>
 			auto execute1DRange(
 				Kernel const& kernel,
 				size_t globalWorkOffset,
@@ -206,23 +215,7 @@ namespace cl {
 				size_t localWorkSize
 			) const -> Event;
 
-			template<typename T>
-			auto execute2DRange(
-				Kernel const& kernel,
-				NDRange<2> const& globalWorkOffset,
-				NDRange<2> const& globalWorkSize,
-				NDRange<2> const& localWorkSize
-			) const -> Event;
-
-			template<typename T>
-			auto execute3DRange(
-				Kernel const& kernel,
-				NDRange<3> const& globalWorkOffset,
-				NDRange<3> const& globalWorkSize,
-				NDRange<3> const& localWorkSize
-			) const -> Event;
-
-			template<typename T, size_t N>
+			template<size_t N>
 			auto executeNDRange(
 				Kernel const& kernel,
 				NDRange<N> const& globalWorkOffset,
