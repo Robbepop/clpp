@@ -23,9 +23,9 @@ namespace cl {
 			m_wait_list.size();
 		}
 
-		template<typename T, size_t N>
-		auto CommandQueueExecutor::toByteArray(std::array<T,N> const& values) const -> std::array<T,N> {
-			auto byteArray = std::array<T,N>{};
+		template<template<class, size_t> class A, class T, size_t N>
+		auto CommandQueueExecutor::toByteArray(A<T,N> const& values) const -> A<T,N> {
+			auto byteArray = A<T,N>{};
 			for (auto i = 0u; i < N; ++i) {
 				byteArray[i] = values[i] * sizeof(T);
 			}
@@ -119,7 +119,23 @@ namespace cl {
 			std::array<size_t, 3> const& region,
 			size_t bufferRowPitch, size_t bufferSlicePitch,
 			size_t hostRowPitch, size_t hostSlicePitch,
-			OutIterator out) const;
+			OutIterator out
+		) const {
+			static_assert(std::is_same<
+				OutIterator::value_type, Buffer<T>::value_type>::value,
+				"value_type of out must be the same as value_type of buffer");
+			auto error = clEnqueueWriteBufferRect(
+				getQueueId(), CL_BLOCKING,
+				toByteArray(bufferOrigin).data(),
+				toByteArray(hostOrigin).data(),
+				toByteArray(region).data(),
+				bufferRowPitch * sizeof(T), bufferSlicePitch * sizeof(T),
+				hostRowPitch * sizeof(T), hostSlicePitch * sizeof(T),
+				std::addressof(out[0]),
+				getWaitListSize(), getWaitListData(),
+				nullptr);
+			detail::error::handle(error);
+		}
 
 		template<typename OutIterator, typename T>
 		auto writeBufferRectAsync(
@@ -129,7 +145,25 @@ namespace cl {
 			std::array<size_t, 3> const& region,
 			size_t bufferRowPitch, size_t bufferSlicePitch,
 			size_t hostRowPitch, size_t hostSlicePitch,
-			OutIterator out) const -> Event;
+			OutIterator out
+		) const -> Event {
+			static_assert(std::is_same<
+				OutIterator::value_type, Buffer<T>::value_type>::value,
+				"value_type of out must be the same as value_type of buffer");
+			auto evendId = cl_event{nullptr};
+			auto error   = clEnqueueWriteBufferRect(
+				getQueueId(), CL_NON_BLOCKING,
+				toByteArray(bufferOrigin).data(),
+				toByteArray(hostOrigin).data(),
+				toByteArray(region).data(),
+				bufferRowPitch * sizeof(T), bufferSlicePitch * sizeof(T),
+				hostRowPitch * sizeof(T), hostSlicePitch * sizeof(T),
+				std::addressof(out[0]),
+				getWaitListSize(), getWaitListData(),
+				std::addressof(eventId));
+			detail::error::handle(error);
+			return {eventId};
+		}
 
 		//============================================================================
 		// Overloads to access clEnqueueCopyBuffer

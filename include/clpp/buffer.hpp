@@ -9,6 +9,8 @@ namespace cl {
 	public:
 		using MemObject::MemObject;
 
+		using value_type = T;
+
 		auto operator=(Buffer const& rhs) -> Buffer &;
 
 		auto createSubBuffer(
