@@ -37,6 +37,8 @@ namespace cl {
 		template<typename... Events>
 		static void wait(Events...);
 
+		void wait() const;
+
 		//================================================================================
 		// Constructor and Assignment
 		//================================================================================

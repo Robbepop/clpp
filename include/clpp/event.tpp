@@ -16,6 +16,11 @@ namespace cl {
 		wait(utility::make_array(Events...));
 	}
 
+	void Event::wait() const {
+		detail::error::handle(
+			clWaitForEvents(1, std::addressof(get())));
+	}
+
 	Event& Event::operator=(const Event & rhs) {
         if (this != &rhs) {
             detail::Object<cl_type>::operator=(rhs);

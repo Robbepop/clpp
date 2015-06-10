@@ -2,6 +2,8 @@
 	#error "Do not include this file directly."
 #endif
 
+#include <algorithm>
+
 namespace cl {
 	namespace detail {
 		//============================================================================
@@ -126,17 +128,55 @@ namespace cl {
 
 		template<typename T, typename V>
 		void copyBuffer(Buffer<T> src, Buffer<V> dst,
-			size_t srcOffset, size_t dstOffset, size_t size) const;
+			size_t srcOffset, size_t dstOffset, size_t size
+		) const {
+			auto eventId = cl_event{nullptr};
+			auto error   = clEnqueueCopyBuffer(
+				getQueueId(), src.get(), dst.get(),
+				srcOffset * sizeof(T), dstOffset * sizeof(T), size * sizeof(T),
+				getWaitListSize(), getWaitListData(),
+				std::addressof(eventId));
+			detail::error::handle(error);
+			Event::wait({eventId});
+		}
 
 		template<typename T, typename V>
-		void copyBuffer(Buffer<T> src, Buffer<V> dst) const;
+		void copyBuffer(Buffer<T> src, Buffer<V> dst) const {
+			auto eventId = cl_event{nullptr};
+			auto error   = clEnqueueCopyBuffer(
+				getQueueId(), src.get(), dst.get(),
+				0, 0, std::min(src.getSizeInBytes(), dst.getSizeInBytes()),
+				getWaitListSize(), getWaitListData(),
+				std::addressof(eventId));
+			detail::error::handle(error);
+			Event::wait({eventId});
+		}
 
 		template<typename T, typename V>
 		auto copyBufferAsync(Buffer<T> src, Buffer<V> dst,
-			size_t srcOffset, size_t dstOffset, size_t size) const -> Event;
+			size_t srcOffset, size_t dstOffset, size_t size
+		) const -> Event {
+			auto eventId = cl_event{nullptr};
+			auto error   = clEnqueueCopyBuffer(
+				getQueueId(), src.get(), dst.get(),
+				srcOffset * sizeof(T), dstOffset * sizeof(T), size * sizeof(T),
+				getWaitListSize(), getWaitListData(),
+				std::addressof(eventId));
+			detail::error::handle(error);
+			return {eventId};
+		}
 
 		template<typename T, typename V>
-		auto copyBufferAsync(Buffer<T> src, Buffer<V> dst) const -> Event;
+		auto copyBufferAsync(Buffer<T> src, Buffer<V> dst) const -> Event {
+			auto eventId = cl_event{nullptr};
+			auto error   = clEnqueueCopyBuffer(
+				getQueueId(), src.get(), dst.get(),
+				0, 0, std::min(src.getSizeInBytes(), dst.getSizeInBytes()),
+				getWaitListSize(), getWaitListData(),
+				std::addressof(eventId));
+			detail::error::handle(error);
+			return {eventId};
+		}
 
 		//============================================================================
 		// Overloads to access clEnqueueCopyBufferRect
@@ -148,7 +188,19 @@ namespace cl {
 			std::array<size_t, 3> const& dstOrigin,
 			std::array<size_t, 3> const& region,
 			size_t srcRowPitch, size_t srcSlicePitch,
-			size_t dstRowPitch, size_t dstSlidePitch) const;
+			size_t dstRowPitch, size_t dstSlidePitch
+		) const {
+			auto eventId = cl_event{nullptr};
+			auto error   = clEnqueueCopyBufferRect(
+				src.get(), dst.get(),
+				srcOrigin.data(), dstOrigin.data(), region.data(),
+				srcRowPitch * sizeof(T), srcSlicePitch * sizeof(T),
+				dstRowPitch * sizeof(T), dstSlidePitch * sizeof(T),
+				getWaitListSize(), getWaitListData(),
+				std::addressof(eventId));
+			detail::error::handle(error);
+			Event::wait({eventId});
+		}
 
 		template<typename T, typename V>
 		auto copyBufferRectAsync(Buffer<T> src, Buffer<V> dest,
@@ -156,24 +208,79 @@ namespace cl {
 			std::array<size_t, 3> const& dstOrigin,
 			std::array<size_t, 3> const& region,
 			size_t srcRowPitch, size_t srcSlicePitch,
-			size_t dstRowPitch, size_t dstSlidePitch) const -> Event;
+			size_t dstRowPitch, size_t dstSlidePitch
+		) const -> Event {
+			auto eventId = cl_event{nullptr};
+			auto error   = clEnqueueCopyBufferRect(
+				src.get(), dst.get(),
+				srcOrigin.data(), dstOrigin.data(), region.data(),
+				srcRowPitch * sizeof(T), srcSlicePitch * sizeof(T),
+				dstRowPitch * sizeof(T), dstSlidePitch * sizeof(T),
+				getWaitListSize(), getWaitListData(),
+				std::addressof(eventId));
+			detail::error::handle(error);
+			return {eventId};
+		}
 
 		//============================================================================
 		// Overloads to access clEnqueueFillBuffer
 		//============================================================================
 
 		template<typename T>
-		void fillBuffer(Buffer<T> buffer, T const& value, size_t offset, size_t size) const;
+		void fillBuffer(
+			Buffer<T> buffer, T const& value, size_t offset, size_t size
+		) const {
+			auto eventId = cl_event{nullptr};
+			auto error = clEnqueueFillBuffer(
+				getQueueId(), buffer.get(),
+				std::addressof(value), sizeof(T),
+				offset * sizeof(T), size * sizeof(T),
+				getWaitListSize(), getWaitListData(),
+				std::addressof(eventId));
+			detail::error::handle(error);
+			Event::wait({eventId}); // required for blocking operation
+		}
 
 		template<typename T>
-		void fillBuffer(Buffer<T> buffer, T const& value) const;
+		void fillBuffer(Buffer<T> buffer, T const& value) const {
+			auto eventId = cl_event{nullptr};
+			auto error = clEnqueueFillBuffer(
+				getQueueId(), buffer.get(),
+				std::addressof(value), sizeof(T),
+				0, buffer.getSizeInBytes(),
+				getWaitListSize(), getWaitListData(),
+				std::addressof(eventId));
+			detail::error::handle(error);
+			Event::wait({eventId}); // required for blocking operation
+		}
 
 		template<typename T>
-		auto fillBufferAsync(Buffer<T> buffer, T const& value, size_t offset, size_t size) const
-			-> Event;
+		auto fillBufferAsync(
+			Buffer<T> buffer, T const& value, size_t offset, size_t size
+		) const -> Event {
+			auto eventId = cl_event{nullptr};
+			auto error   = clEnqueueFillBuffer(
+				getQueueId(), buffer.get(),
+				std::addressof(value), sizeof(T),
+				offset * sizeof(T), size * sizeof(T),
+				getWaitListSize(), getWaitListData(),
+				std::addressof(eventId));
+			detail::error::handle(error);
+			return {eventId};
+		}
 
 		template<typename T>
-		auto fillBufferAsync(Buffer<T> buffer, T const& value) const -> Event;
+		auto fillBufferAsync(Buffer<T> buffer, T const& value) const -> Event {
+			auto eventId = cl_event{nullptr};
+			auto error   = clEnqueueFillBuffer(
+				getQueueId(), buffer.get(),
+				std::addressof(value), sizeof(T),
+				0, buffer.getSizeInBytes(),
+				getWaitListSize(), getWaitListData(),
+				std::addressof(eventId));
+			detail::error::handle(error);
+			return {eventId};
+		}
 
 		//============================================================================
 		// Overloads to access clEnqueueMapBuffer
