@@ -41,78 +41,102 @@ namespace cl {
 		template<typename EventRange>
 		CommandQueueExecutor(CommandQueue const& queue, EventRange const& waitList);
 
-		CommandQueueExecutor(CommandQueueExecutor const& rhs) = delete;
-		CommandQueueExecutor(CommandQueueExecutor && rhs)     = delete;
-
-		auto operator=(CommandQueueExecutor const& rhs) = delete;
-		auto operator=(CommandQueueExecutor && rhs)     = delete;
-
 		//============================================================================
 		// Overloads to access clEnqueueReadBuffer
 		//============================================================================
 
 		template<typename OutputIterator, typename T>
-		void readBuffer(Buffer<T> buffer, size_t offset,
-			OutputIterator first, OutputIterator last) const;
+		void CommandQueueExecutor::readBuffer(
+			Buffer<T> buffer, size_t offset, OutputIterator first, OutputIterator last
+		) const {
+
+		}
 
 		template<typename OutputIterator, typename T>
-		void readBuffer(Buffer<T> buffer, OutputIterator first) const;
+		void CommandQueueExecutor::readBuffer(Buffer<T> buffer, OutputIterator first) const {
+
+		}
 
 		template<typename OutputIterator, typename T>
-		auto readBufferAsync(Buffer<T> buffer, size_t offset,
-			OutputIterator first, OutputIterator last) const -> Event;
+		auto CommandQueueExecutor::readBufferAsync(
+			Buffer<T> buffer, size_t offset, OutputIterator first, OutputIterator last
+		) const -> Event {
+
+		}
 
 		template<typename OutputIterator, typename T>
-		auto readBufferAsync(Buffer<T> buffer, OutputIterator first) const -> Event;
+		auto CommandQueueExecutor::readBufferAsync(
+			Buffer<T> buffer, OutputIterator first
+		) const -> Event {
+
+		}
 
 		//============================================================================
 		// Overloads to access clEnqueueWriteBuffer
 		//============================================================================
 
 		template<typename InputIterator, typename T>
-		void writeBuffer(Buffer<T> buffer, size_t offset,
-			InputIterator first, InputIterator last) const;
+		void CommandQueueExecutor::writeBuffer(
+			Buffer<T> buffer, size_t offset, InputIterator first, InputIterator last
+		) const {
+
+		}
 
 		template<typename InputIterator, typename T>
-		void writeBuffer(Buffer<T> buffer, InputIterator first) const;
+		void CommandQueueExecutor::writeBuffer(Buffer<T> buffer, InputIterator first) const {
+
+		}
 
 		template<typename InputIterator, typename T>
-		auto writeBufferAsync(Buffer<T> buffer, size_t offset,
-			InputIterator first, InputIterator last) const -> Event;
+		auto CommandQueueExecutor::writeBufferAsync(
+			Buffer<T> buffer, size_t offset, InputIterator first, InputIterator last
+		) const -> Event {
+
+		}
 
 		template<typename InputIterator, typename T>
-		auto writeBufferAsync(Buffer<T> buffer, InputIterator first) const -> Event;
+		auto CommandQueueExecutor::writeBufferAsync(
+			Buffer<T> buffer, InputIterator first
+		) const -> Event {
+
+		}
 
 		//============================================================================
 		// Overloads to access clEnqueueReadBufferRect
 		//============================================================================
 
 		template<typename OutIterator, typename T>
-		void readBufferRect(
+		void CommandQueueExecutor::readBufferRect(
 			Buffer<T> buffer,
 			std::array<size_t, 3> const& bufferOrigin,
 			std::array<size_t, 3> const& hostOrigin,
 			std::array<size_t, 3> const& region,
 			size_t bufferRowPitch, size_t bufferSlicePitch,
 			size_t hostRowPitch, size_t hostSlicePitch,
-			OutIterator first) const;
+			OutIterator first
+		) const {
+
+		}
 
 		template<typename OutIterator, typename T>
-		auto readBufferRectAsync(
+		auto CommandQueueExecutor::readBufferRectAsync(
 			Buffer<T> buffer,
 			std::array<size_t, 3> const& bufferOrigin,
 			std::array<size_t, 3> const& hostOrigin,
 			std::array<size_t, 3> const& region,
 			size_t bufferRowPitch, size_t bufferSlicePitch,
 			size_t hostRowPitch, size_t hostSlicePitch,
-			OutIterator first) const -> Event;
+			OutIterator first
+		) const -> Event {
+
+		}
 
 		//============================================================================
 		// Overloads to access clEnqueueWriteBufferRect
 		//============================================================================
 
 		template<typename OutIterator, typename T>
-		void writeBufferRect(
+		void CommandQueueExecutor::writeBufferRect(
 			Buffer<T> buffer,
 			std::array<size_t, 3> const& bufferOrigin,
 			std::array<size_t, 3> const& hostOrigin,
@@ -138,7 +162,7 @@ namespace cl {
 		}
 
 		template<typename OutIterator, typename T>
-		auto writeBufferRectAsync(
+		auto CommandQueueExecutor::writeBufferRectAsync(
 			Buffer<T> buffer,
 			std::array<size_t, 3> const& bufferOrigin,
 			std::array<size_t, 3> const& hostOrigin,
@@ -170,7 +194,7 @@ namespace cl {
 		//============================================================================
 
 		template<typename T, typename V>
-		void copyBuffer(Buffer<T> src, Buffer<V> dst,
+		void CommandQueueExecutor::copyBuffer(Buffer<T> src, Buffer<V> dst,
 			size_t srcOffset, size_t dstOffset, size_t size
 		) const {
 			auto eventId = cl_event{nullptr};
@@ -184,7 +208,7 @@ namespace cl {
 		}
 
 		template<typename T, typename V>
-		void copyBuffer(Buffer<T> src, Buffer<V> dst) const {
+		void CommandQueueExecutor::copyBuffer(Buffer<T> src, Buffer<V> dst) const {
 			auto eventId = cl_event{nullptr};
 			auto error   = clEnqueueCopyBuffer(
 				getQueueId(), src.get(), dst.get(),
@@ -196,7 +220,7 @@ namespace cl {
 		}
 
 		template<typename T, typename V>
-		auto copyBufferAsync(Buffer<T> src, Buffer<V> dst,
+		auto CommandQueueExecutor::copyBufferAsync(Buffer<T> src, Buffer<V> dst,
 			size_t srcOffset, size_t dstOffset, size_t size
 		) const -> Event {
 			auto eventId = cl_event{nullptr};
@@ -210,7 +234,7 @@ namespace cl {
 		}
 
 		template<typename T, typename V>
-		auto copyBufferAsync(Buffer<T> src, Buffer<V> dst) const -> Event {
+		auto CommandQueueExecutor::copyBufferAsync(Buffer<T> src, Buffer<V> dst) const -> Event {
 			auto eventId = cl_event{nullptr};
 			auto error   = clEnqueueCopyBuffer(
 				getQueueId(), src.get(), dst.get(),
@@ -226,7 +250,7 @@ namespace cl {
 		//============================================================================
 
 		template<typename T, typename V>
-		void copyBufferRect(Buffer<T> src, Buffer<V> dest,
+		void CommandQueueExecutor::copyBufferRect(Buffer<T> src, Buffer<V> dest,
 			std::array<size_t, 3> const& srcOrigin,
 			std::array<size_t, 3> const& dstOrigin,
 			std::array<size_t, 3> const& region,
@@ -250,7 +274,7 @@ namespace cl {
 		}
 
 		template<typename T, typename V>
-		auto copyBufferRectAsync(Buffer<T> src, Buffer<V> dest,
+		auto CommandQueueExecutor::copyBufferRectAsync(Buffer<T> src, Buffer<V> dest,
 			std::array<size_t, 3> const& srcOrigin,
 			std::array<size_t, 3> const& dstOrigin,
 			std::array<size_t, 3> const& region,
@@ -276,7 +300,7 @@ namespace cl {
 		//============================================================================
 
 		template<typename T>
-		void fillBuffer(
+		void CommandQueueExecutor::fillBuffer(
 			Buffer<T> buffer, T const& value, size_t offset, size_t size
 		) const {
 			auto eventId = cl_event{nullptr};
@@ -291,7 +315,7 @@ namespace cl {
 		}
 
 		template<typename T>
-		void fillBuffer(Buffer<T> buffer, T const& value) const {
+		void CommandQueueExecutor::fillBuffer(Buffer<T> buffer, T const& value) const {
 			auto eventId = cl_event{nullptr};
 			auto error = clEnqueueFillBuffer(
 				getQueueId(), buffer.get(),
@@ -304,7 +328,7 @@ namespace cl {
 		}
 
 		template<typename T>
-		auto fillBufferAsync(
+		auto CommandQueueExecutor::fillBufferAsync(
 			Buffer<T> buffer, T const& value, size_t offset, size_t size
 		) const -> Event {
 			auto eventId = cl_event{nullptr};
@@ -319,7 +343,7 @@ namespace cl {
 		}
 
 		template<typename T>
-		auto fillBufferAsync(Buffer<T> buffer, T const& value) const -> Event {
+		auto CommandQueueExecutor::fillBufferAsync(Buffer<T> buffer, T const& value) const -> Event {
 			auto eventId = cl_event{nullptr};
 			auto error   = clEnqueueFillBuffer(
 				getQueueId(), buffer.get(),
@@ -373,7 +397,7 @@ namespace cl {
 			auto eventId = cl_event{nullptr};
 			auto error   = cl_int{CL_INVALID_VALUE};
 			auto region  = clEnqueueMapBuffer(
-				getQueueId(), CL_BLOCKING, access,
+				getQueueId(), CL_NON_BLOCKING, access,
 				offset * sizeof(T), size * sizeof(T),
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId),
@@ -390,7 +414,7 @@ namespace cl {
 			auto eventId = cl_event{nullptr};
 			auto error   = cl_int{CL_INVALID_VALUE};
 			auto region  = clEnqueueMapBuffer(
-				getQueueId(), CL_BLOCKING, access,
+				getQueueId(), CL_NON_BLOCKING, access,
 				0, buffer.getSizeInBytes(),
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId),
