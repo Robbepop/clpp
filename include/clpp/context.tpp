@@ -202,31 +202,41 @@ namespace cl {
 		return createBuffer(range.begin(), range.end(), transferMode, deviceAccess, hostAccess);
 	}
 
+	//================================================================================
+	// Create Program Objects
+	//================================================================================
+
+	auto createProgramWithSource(std::string const& source) const -> Program {
+		auto error     = cl_int{CL_INVALID_VALUE};
+		auto programId = clCreateProgramWithSource(
+			get(), 1, source.data(), nullptr, std::addressof(error));
+		detail::error::handle(error);
+		return {programId};
+	}
+
 	//====================================================================================
 	// Wrapper API for clLinkProgram
 	//====================================================================================
 
-	template<typename DeviceIterator, typename ProgramIterator>
+	template<typename DeviceRange, typename ProgramRange>
 	auto linkProgram(
-		DeviceIterator firstDevice,
-		DeviceIterator lastDevice,
-		ProgramIterator firstProgram,
-		ProgramIterator lastProgram,
+		DeviceRange const& devices,
+		ProgramRange const& programs,
 		std::string const& options = ""
 	) const -> Program {
-		// TODO
+		auto error = cl_int{CL_INVALID_VALUE};
+		auto programId = clLinkProgram(
+			get(), devices.size(), std::addressof(devices[0]), );
 	}
 
-	template<typename DeviceIterator, typename ProgramIterator>
+	template<typename DeviceRange, typename ProgramRange>
 	auto linkProgram(
-		DeviceIterator firstDevice,
-		DeviceIterator lastDevice,
-		ProgramIterator firstProgram,
-		ProgramIterator lastProgram,
+		DeviceRange const& devices,
+		ProgramRange const& programs,
 		std::string const& options,
 		Function callback, T&& data
 	) const -> Program {
-		// TODO
+
 	}
 
 // cl_program clLinkProgram ( 	cl_context context,

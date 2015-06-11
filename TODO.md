@@ -20,7 +20,9 @@ Experimental:
   and automatically wait for them. E.g. Event::wait(event1, event2, event3);
   Same behaviour could be implemented for CommandQueue's when(), barrier() and marker() method.
 - Maybe add a CompileOptions class for an improved experience setting the compile and link options.
-- Convert some templated RangeX algorithms to IteratorX algorithms.
+- Convert some templated RangeX algorithms to IteratorX algorithms:
+	-> PartitionCapabilities constructor
+	-> (maybe) Partition constructor
 
 TODO:
 - Remove old exceptions from existing code.

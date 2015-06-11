@@ -43,7 +43,7 @@ namespace cl {
 		m_properties{std::move(properties)}
 	{}
 
-	Partition::Partition(const cl_device_partition_property* properties) {
+	Partition::Partition(cl_device_partition_property const* properties) {
 		for (auto it = &properties[0]; *it != 0; ++it) {
 			m_properties.push_back(*it);
 		}

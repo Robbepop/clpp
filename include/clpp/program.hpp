@@ -25,44 +25,56 @@ namespace cl {
 		//================================================================================
 	public:
 
+		void build(Device const& device) const;
+
+		template<typename DeviceRange>
+		void build(
+			DeviceRange const& devices
+		) const;
+
 		template<typename DeviceIterator>
 		void build(
 			DeviceIterator firstDevice,
-			DeviceIterator lastDevice,
-			std::string const& options = ""
+			DeviceIterator lastDevice
 		) const;
 
-		template<typename DeviceIterator, typename Function, typename T>
+		template<typename Function, typename T>
 		void build(
-			DeviceIterator firstDevice,
-			DeviceIterator lastDevice,
-			std::string const& options,
+			Device const& device,
 			Function callback, T&& data
 		) const;
 
-		//================================================================================
-		// Wrapper API for clCompileProgram
-		//================================================================================
-	public:
-
-		template<typename DeviceIterator>
-		void compile(
-			DeviceIterator firstDevice,
-			DeviceIterator lastDevice,
-			std::string const& options = ""
+		template<typename DeviceRange, typename Function, typename T>
+		void build(
+			DeviceRange const& devices,
+			Function callback, T&& data
 		) const;
 
 		template<typename DeviceIterator, typename Function, typename T>
-		void compile(
+		void build(
 			DeviceIterator firstDevice,
 			DeviceIterator lastDevice,
-			std::string const& options,
 			Function callback, T&& data
 		) const;
 
 		//================================================================================
 		// Information access helper methods.
 		//================================================================================
+	private:
+		template<typename T>
+		auto getBuildInfo(
+			Device const& device, cl_program_build_info info
+		) const -> T;
+
+		template<typename T>
+		auto getBuildInfoVector(
+			Device const& device, cl_program_build_info info
+		) const -> std::vector<T>;
+
+		auto getBuildInfoString(
+			Device const& device, cl_program_build_info info
+		) const -> std::string;
+
 	public:
 
 		auto getReferenceCount() const -> cl_uint;
@@ -70,7 +82,7 @@ namespace cl {
 		auto getNumDevices() const     -> cl_uint;
 		auto getDevices() const        -> std::vector<Device>;
 		auto getProgramSource() const  -> std::string;
-		auto getBinarySize() const     -> std::vector<size_t>;
+		auto getBinarySizes() const     -> std::vector<size_t>;
 //		auto getBinaries() const       -> std::vector<std::vector<unsigned char>>;
 		auto getNumKernels() const     -> cl_uint;
 		auto getKernelNames() const    -> std::vector<std::string>>;

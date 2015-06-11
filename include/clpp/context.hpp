@@ -101,7 +101,7 @@ namespace cl {
 
 		template<typename InputRange>
 		auto createBuffer(
-			InputRange range,
+			InputRange const& range,
 			TransferMode transferMode = TransferMode::none,
 			DeviceAccess deviceAccess = DeviceAccess::readWrite,
 			HostAccess hostAccess     = HostAccess::readWrite
@@ -111,58 +111,31 @@ namespace cl {
 		// Create Program Objects
 		//================================================================================
 
-// cl_program clCreateProgramWithSource ( 	cl_context context,
-//  	cl_uint count,
-//  	const char **strings,
-//  	const size_t *lengths,
-//  	cl_int *errcode_ret)
-
-// cl_program clCreateProgramWithBinary ( 	cl_context context,
-//  	cl_uint num_devices,
-//  	const cl_device_id *device_list,
-//  	const size_t *lengths,
-//  	const unsigned char **binaries,
-//  	cl_int *binary_status,
-//  	cl_int *errcode_ret)
-
-// cl_program clCreateProgramWithBuiltInKernels ( 	cl_context context,
-//  	cl_uint num_devices,
-//  	const cl_device_id *device_list,
-//  	const char *kernel_names,
-//  	cl_int *errcode_ret)
+		auto createProgramWithSource(std::string const& source) const -> Program;
 
 		//================================================================================
 		// Wrapper API for clLinkProgram
 		//================================================================================
 
-		template<typename DeviceIterator, typename ProgramIterator>
+		template<typename DeviceRange, typename ProgramRange>
 		auto linkProgram(
-			DeviceIterator firstDevice,
-			DeviceIterator lastDevice,
-			ProgramIterator firstProgram,
-			ProgramIterator lastProgram,
-			std::string const& options = ""
+			DeviceRange const& devices,
+			ProgramRange const& programs
 		) const -> Program;
 
-		template<typename DeviceIterator, typename ProgramIterator>
+		template<typename DeviceRange, typename ProgramRange>
 		auto linkProgram(
-			DeviceIterator firstDevice,
-			DeviceIterator lastDevice,
-			ProgramIterator firstProgram,
-			ProgramIterator lastProgram,
-			std::string const& options,
+			DeviceRange const& devices,
+			ProgramRange const& programs,
 			Function callback, T&& data
 		) const -> Program;
 
-// cl_program clLinkProgram ( 	cl_context context,
-//  	cl_uint num_devices,
-//  	const cl_device_id *device_list,
-//  	const char *options,
-//  	cl_uint num_input_programs,
-//  	const cl_program *input_programs,
-//  	void (CL_CALLBACK *pfn_notify) (cl_program program, void *user_data),
-//  	void *user_data,
-//  	cl_int *errcode_ret)
+		template<typename DeviceRange, typename ProgramRange>
+		auto linkProgram(
+			DeviceRange const& devices,
+			ProgramRange const& programs,
+			Function callback, T&& data
+		) const -> Program;
 
 		//================================================================================
 		// Information access helper methods.

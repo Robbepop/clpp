@@ -15,8 +15,8 @@ namespace cl {
 
 	template<typename Value>
 	auto ContextProperties::set(key_type property, Value value) -> ContextProperties & {
-		//const auto val = static_cast<ContextProperties::val_type>(value);        // doesn't work!
-		//const auto val = reinterpret_cast<ContextProperties::val_type>(value); // doesn't work either!
+//		const auto val = static_cast<ContextProperties::val_type>(value);       // doesn't work!
+//		const auto val = reinterpret_cast<ContextProperties::val_type>(value);  // doesn't work either!
 		const auto val = (ContextProperties::val_type) value;
 		m_properties[property] = val;
 		return *this;
