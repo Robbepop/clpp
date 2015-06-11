@@ -37,11 +37,11 @@ namespace cl {
 		auto cend()   const noexcept -> T const*;
 
 	private:
-		CommandQueue m_queue;
-		MemoryObject m_mem_obj;
-		T* m_data;
-		size_t m_size;
-		bool m_valid;
+		CommandQueue       m_queue;
+		MemoryObject       m_mem_obj;
+		T*                 m_data;
+		size_t             m_size;
+		bool               m_valid;
 		std::vector<Event> m_wait_list;
 	};
 }

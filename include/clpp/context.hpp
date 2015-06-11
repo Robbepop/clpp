@@ -50,17 +50,20 @@ namespace cl {
 		// Special Constructors
 		//================================================================================
 
-		template<typename Function, typename T>
+		template<typename DeviceIterator, typename Function, typename T>
 		Context(
 			ContextProperties const& properties,
-			std::vector<Device> const& devices,
+			DeviceIterator firstDevice,
+			DeviceIterator lastDevice,
 			Function callback,
 			T* user_data
 		);
 
+		template<typename DeviceIterator>
 		Context(
 			ContextProperties const& properties,
-			std::vector<Device> const& devices
+			DeviceIterator firstDevice,
+			DeviceIterator lastDevice
 		);
 
 		template<typename Function, typename T>
@@ -103,6 +106,63 @@ namespace cl {
 			DeviceAccess deviceAccess = DeviceAccess::readWrite,
 			HostAccess hostAccess     = HostAccess::readWrite
 		) const -> Buffer<InputRange::value_type>;
+
+		//================================================================================
+		// Create Program Objects
+		//================================================================================
+
+// cl_program clCreateProgramWithSource ( 	cl_context context,
+//  	cl_uint count,
+//  	const char **strings,
+//  	const size_t *lengths,
+//  	cl_int *errcode_ret)
+
+// cl_program clCreateProgramWithBinary ( 	cl_context context,
+//  	cl_uint num_devices,
+//  	const cl_device_id *device_list,
+//  	const size_t *lengths,
+//  	const unsigned char **binaries,
+//  	cl_int *binary_status,
+//  	cl_int *errcode_ret)
+
+// cl_program clCreateProgramWithBuiltInKernels ( 	cl_context context,
+//  	cl_uint num_devices,
+//  	const cl_device_id *device_list,
+//  	const char *kernel_names,
+//  	cl_int *errcode_ret)
+
+		//================================================================================
+		// Wrapper API for clLinkProgram
+		//================================================================================
+
+		template<typename DeviceIterator, typename ProgramIterator>
+		auto linkProgram(
+			DeviceIterator firstDevice,
+			DeviceIterator lastDevice,
+			ProgramIterator firstProgram,
+			ProgramIterator lastProgram,
+			std::string const& options = ""
+		) const -> Program;
+
+		template<typename DeviceIterator, typename ProgramIterator>
+		auto linkProgram(
+			DeviceIterator firstDevice,
+			DeviceIterator lastDevice,
+			ProgramIterator firstProgram,
+			ProgramIterator lastProgram,
+			std::string const& options,
+			Function callback, T&& data
+		) const -> Program;
+
+// cl_program clLinkProgram ( 	cl_context context,
+//  	cl_uint num_devices,
+//  	const cl_device_id *device_list,
+//  	const char *options,
+//  	cl_uint num_input_programs,
+//  	const cl_program *input_programs,
+//  	void (CL_CALLBACK *pfn_notify) (cl_program program, void *user_data),
+//  	void *user_data,
+//  	cl_int *errcode_ret)
 
 		//================================================================================
 		// Information access helper methods.

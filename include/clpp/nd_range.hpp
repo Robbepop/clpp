@@ -15,6 +15,7 @@ namespace cl {
 		NDRange(NDRange<N> const& rhs);
 
 		// singleton for the NullRange
+		template<size_t N>
 		static auto null() -> NDRange<N> const&;
 
 		auto operator=(NDRange<N> const& rhs) -> NDRange&;

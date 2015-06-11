@@ -264,4 +264,5 @@ namespace cl {
 	}
 }
 
+#include "clpp/detail/command_queue_executor.tpp"
 #endif

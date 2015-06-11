@@ -19,6 +19,8 @@ Experimental:
 - Add Event::wait() method as variadic template to allow taking any amount of Event objects
   and automatically wait for them. E.g. Event::wait(event1, event2, event3);
   Same behaviour could be implemented for CommandQueue's when(), barrier() and marker() method.
+- Maybe add a CompileOptions class for an improved experience setting the compile and link options.
+- Convert some templated RangeX algorithms to IteratorX algorithms.
 
 TODO:
 - Remove old exceptions from existing code.
@@ -31,3 +33,5 @@ TODO:
 - Complete API and implementation of Sampler.
 - Complete API and implementation of Pipe.
 - Complete API and implementation of Shared Virtual Memory (SVM).
+- Create a complete wrapper API for clCompileProgram with included headers
+- Create a complete wrapper API for clLinkProgram with linked source libraries
