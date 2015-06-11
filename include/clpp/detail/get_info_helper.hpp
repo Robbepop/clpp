@@ -5,27 +5,27 @@
 
 namespace cl {
 	namespace detail {
-		template<typename ReturnType, typename ObjectIdType, typename InfoIdType, typename InfoFunc>
+		template<typename T, typename ObjectIdType, typename InfoIdType, typename InfoFunc>
 		auto getInfo(
-			ObjectIdType p_id,
-			InfoIdType info_id,
-			InfoFunc get_info
-		) -> ReturnType;
+			ObjectIdType objId,
+			InfoIdType infoId,
+			InfoFunc getInfo
+		) -> T;
 
-		template<typename ReturnType, typename ObjectIdType, typename InfoIdType, typename InfoFunc>
+		template<typename T, typename ObjectIdType, typename InfoIdType, typename InfoFunc>
 		auto getInfoVector(
-			ObjectIdType m_id,
-			InfoIdType info_id,
-			InfoFunc get_info,
-			bool count_element_wise = true
-		) -> std::vector<ReturnType>;
+			ObjectIdType objId,
+			InfoIdType infoId,
+			InfoFunc getInfo,
+			bool countElementWise = true
+		) -> std::vector<T>;
 
 		template<typename ObjectIdType, typename InfoIdType, typename InfoFunc>
 		auto getInfoString(
-			ObjectIdType m_id,
-			InfoIdType info_id,
-			InfoFunc get_info,
-			bool count_element_wise = false
+			ObjectIdType objId,
+			InfoIdType infoId,
+			InfoFunc getInfo,
+			bool countElementWise = false
 		) -> std::string;
 	}
 }

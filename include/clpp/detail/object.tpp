@@ -53,41 +53,44 @@ namespace cl {
 		//================================================================================
 
 		template<typename CLType>
-		template<typename InfoType>
-		auto Object<CLType>::getInfo(Object<CLType>::info_type p_info) const
+		template<typename T>
+		auto Object<CLType>::getInfo(Object<CLType>::info_type infoId) const
 			-> InfoType
 		{
-			auto error = cl_int{CL_INVALID_VALUE};
-			auto data  = InfoType{};
-			error = ObjectHandler<CLType>::getInfo(
-				m_object, p_info, sizeof(InfoType), std::addressof(data), nullptr);
-			error::handle<Object<CLType>::exception_type>(error);
-			return data;
+			return detail::getInfo<T>(get(), infoId, Object<cl_type>::getInfo);
+//			auto error = cl_int{CL_INVALID_VALUE};
+//			auto data  = InfoType{};
+//			error = ObjectHandler<CLType>::getInfo(
+//				m_object, p_info, sizeof(InfoType), std::addressof(data), nullptr);
+//			error::handle<Object<CLType>::exception_type>(error);
+//			return data;
 		}
 
 		template<typename CLType>
-		template<typename InfoType>
+		template<typename T>
 		auto Object<CLType>::getInfoVector(Object<CLType>::info_type p_info) const
-			-> std::vector<InfoType>
+			-> std::vector<T>
 		{
-			auto error    = cl_int{CL_INVALID_VALUE};
-			auto req_size = size_t{0};
-			error = ObjectHandler<CLType>::getInfo(
-				m_object, p_info, 0, nullptr, std::addressof(req_size));
-			error::handle<Object<CLType>::exception_type>(error);
-			const auto count_elems = req_size / sizeof(InfoType);
-				  auto info        = std::vector<InfoType>(count_elems);
-			error = ObjectHandler<CLType>::getInfo(m_object, p_info, req_size, info.data(), nullptr);
-			error::handle<Object<CLType>::exception_type>(error);
-			return info;
+			return detail::getInfoVector<T>(get(), infoId, Object<cl_type>::getInfo);
+//			auto error    = cl_int{CL_INVALID_VALUE};
+//			auto req_size = size_t{0};
+//			error = ObjectHandler<CLType>::getInfo(
+//				m_object, p_info, 0, nullptr, std::addressof(req_size));
+//			error::handle(error);
+//			const auto count_elems = req_size / sizeof(InfoType);
+//				  auto info        = std::vector<InfoType>(count_elems);
+//			error = ObjectHandler<CLType>::getInfo(m_object, p_info, req_size, info.data(), nullptr);
+//			error::handle(error);
+//			return info;
 		}
 
 		template<typename CLType>
-		auto Object<CLType>::getInfoString(Object<CLType>::info_type p_info) const
+		auto Object<CLType>::getInfoString(Object<CLType>::info_type infoId) const
 			-> std::string
 		{
-			const auto data = getInfoVector<char>(p_info);
-			return {data.begin(), data.end()};
+			return detail::getInfoString(get(), infoId, Object<cl_type>::getInfo);
+//			const auto data = getInfoVector<char>(p_info);
+//			return {data.begin(), data.end()};
 		}
 
 		//================================================================================

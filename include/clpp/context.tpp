@@ -215,41 +215,6 @@ namespace cl {
 	}
 
 	//====================================================================================
-	// Wrapper API for clLinkProgram
-	//====================================================================================
-
-	template<typename DeviceRange, typename ProgramRange>
-	auto linkProgram(
-		DeviceRange const& devices,
-		ProgramRange const& programs,
-		std::string const& options = ""
-	) const -> Program {
-		auto error = cl_int{CL_INVALID_VALUE};
-		auto programId = clLinkProgram(
-			get(), devices.size(), std::addressof(devices[0]), );
-	}
-
-	template<typename DeviceRange, typename ProgramRange>
-	auto linkProgram(
-		DeviceRange const& devices,
-		ProgramRange const& programs,
-		std::string const& options,
-		Function callback, T&& data
-	) const -> Program {
-
-	}
-
-// cl_program clLinkProgram ( 	cl_context context,
-//  	cl_uint num_devices,
-//  	const cl_device_id *device_list,
-//  	const char *options,
-//  	cl_uint num_input_programs,
-//  	const cl_program *input_programs,
-//  	void (CL_CALLBACK *pfn_notify) (cl_program program, void *user_data),
-//  	void *user_data,
-//  	cl_int *errcode_ret)
-
-	//====================================================================================
 	// Information access helper methods.
 	//====================================================================================
 

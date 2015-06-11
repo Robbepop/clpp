@@ -11,20 +11,22 @@ namespace cl {
 	//================================================================================
 
 	auto Program::createKernel(std::string const& name) const -> Kernel {
-		// TODO
-
-// cl_kernel clCreateKernel ( 	cl_program  program,
-//  	const char *kernel_name,
-//  	cl_int *errcode_ret)
+		auto error = cl_int{CL_INVALID_VALUE};
+		auto kernelId = clCreateKernel(get(), name.c_str(), std::addressof(error));
+		detail::error::handle(error);
+		return {kernelId};
 	}
 
 	auto Program::createAllKernels() const -> std::vector<Kernel> {
-		// TODO
-
-// cl_int clCreateKernelsInProgram ( 	cl_program  program,
-//  	cl_uint num_kernels,
-//  	cl_kernel *kernels,
-//  	cl_uint *num_kernels_ret)
+		auto countKernels = cl_uint{0};
+		auto error = clCreateKernelsInProgram(
+			get(), 0, nullptr, std::addressof(countKernels));
+		detail::error::handle(error);
+		auto kernels = std::vector<Kernel>(countKernels);
+		auto error = clCreateKernelsInProgram(
+			get(), countKernels, kernels.data(), nullptr);
+		detail::error::handle(error);
+		return kernels;
 	}
 
 	//================================================================================

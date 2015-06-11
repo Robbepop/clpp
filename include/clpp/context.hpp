@@ -114,30 +114,6 @@ namespace cl {
 		auto createProgramWithSource(std::string const& source) const -> Program;
 
 		//================================================================================
-		// Wrapper API for clLinkProgram
-		//================================================================================
-
-		template<typename DeviceRange, typename ProgramRange>
-		auto linkProgram(
-			DeviceRange const& devices,
-			ProgramRange const& programs
-		) const -> Program;
-
-		template<typename DeviceRange, typename ProgramRange>
-		auto linkProgram(
-			DeviceRange const& devices,
-			ProgramRange const& programs,
-			Function callback, T&& data
-		) const -> Program;
-
-		template<typename DeviceRange, typename ProgramRange>
-		auto linkProgram(
-			DeviceRange const& devices,
-			ProgramRange const& programs,
-			Function callback, T&& data
-		) const -> Program;
-
-		//================================================================================
 		// Information access helper methods.
 		//================================================================================
 

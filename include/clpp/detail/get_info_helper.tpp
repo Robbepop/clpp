@@ -9,58 +9,52 @@
 
 namespace cl {
 	namespace detail {
-		template<typename ReturnType, typename ObjectIdType, typename InfoIdType, typename InfoFunc>
+		template<typename T, typename ObjectIdType, typename InfoIdType, typename InfoFunc>
 		auto getInfo(
-			ObjectIdType p_id,
-			InfoIdType info_id,
-			InfoFunc get_info
+			ObjectIdType objId,
+			InfoIdType infoId,
+			InfoFunc getInfo
 		)
-			-> ReturnType
+			-> T
 		{
-			static const auto errors = error::info_map{
-				{RetCode::invalidValue, "invalid use of getInfo function; OR invalid information queried."}
-			};
 			auto error = cl_int{CL_INVALID_VALUE};
 			auto info  = ReturnType{};
-			error      = get_info(p_id, info_id, sizeof(ReturnType), std::addressof(info), nullptr);
-			error::handle(error, errors);
+			error      = getInfo(objId, infoId, sizeof(T), std::addressof(info), nullptr);
+			error::handle(error);
 			return info;
 		}
 
-		template<typename ReturnType, typename ObjectIdType, typename InfoIdType, typename InfoFunc>
+		template<typename T, typename ObjectIdType, typename InfoIdType, typename InfoFunc>
 		auto getInfoVector(
-			ObjectIdType m_id,
-			InfoIdType info_id,
-			InfoFunc get_info,
-			bool count_element_wise
+			ObjectIdType objId,
+			InfoIdType infoId,
+			InfoFunc getInfo,
+			bool countElementWise
 		)
-			-> std::vector<ReturnType>
+			-> std::vector<T>
 		{
-			static const auto errors = error::info_map{
-				{RetCode::invalidValue, "invalid use of getInfo function; OR invalid information queried."}
-			};
-			auto error       = cl_int{CL_INVALID_VALUE};
-			auto buffer_size = cl_uint{0};
-			error            = get_info(m_id, info_id, 0, nullptr, std::addressof(buffer_size));
-			error::handle(error, errors);
-			auto count_elems = count_element_wise ? buffer_size : buffer_size / sizeof(ReturnType);
-			auto info = std::vector<ReturnType>(count_elems);
-			error = get_info(m_id, info_id, buffer_size, info.data(), nullptr);
-			error::handle(error, errors);
+			auto error      = cl_int{CL_INVALID_VALUE};
+			auto bufferSize = cl_uint{0};
+			error           = getInfo(objId, infoId, 0, nullptr, std::addressof(bufferSize));
+			error::handle(error);
+			auto countElems = countElementWise ? bufferSize : bufferSize / sizeof(T);
+			auto info = std::vector<T>(countElems);
+			error = get_info(objId, infoid, bufferSize, info.data(), nullptr);
+			error::handle(error);
 			return info;
 		}
 
-		template<typename ObjectIdType, typename InfoIdType, typename InfoFunc>
+		template<typename InfoFunc, typename ObjectIdType, typename InfoIdType>
 		auto getInfoString(
-			ObjectIdType m_id,
-			InfoIdType info_id,
-			InfoFunc get_info,
-			bool count_element_wise
+			ObjectIdType objId,
+			InfoIdType infoId,
+			InfoFunc getInfo,
+			bool countElementWise
 		)
 			-> std::string
 		{
-			auto info = getInfoVector<char, ObjectIdType, InfoIdType, InfoFunc>(
-				m_id, info_id, get_info, count_element_wise);
+			const auto info = getInfoVector<char>(
+				objId, infoId, getInfo, countElementWise);
 			return {info.begin(), info.end()};
 		}
 	}
