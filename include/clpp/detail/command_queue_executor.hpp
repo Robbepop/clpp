@@ -32,7 +32,7 @@ namespace cl {
 		private:
 			CommandQueueExecutor(CommandQueue const& queue);
 
-			template<typename EventRange>
+			template<typename EventIterator>
 			CommandQueueExecutor(CommandQueue const& queue, EventRange const& waitList);
 
 			CommandQueueExecutor(CommandQueueExecutor const& rhs) = delete;
@@ -47,18 +47,26 @@ namespace cl {
 		public:
 
 			template<typename OutputIterator, typename T>
-			void readBufferBlocked(Buffer<T> const& buffer, size_t offset,
-				OutputIterator first, OutputIterator last) const;
+			void readBufferBlocked(
+				Buffer<T> const& buffer, size_t offset,
+				OutputIterator first, OutputIterator last
+			) const;
 
 			template<typename OutputIterator, typename T>
-			void readBufferBlocked(Buffer<T> const& buffer, OutputIterator first) const;
+			void readBufferBlocked(
+				Buffer<T> const& buffer, OutputIterator first, OutputIterator last
+			) const;
 
 			template<typename OutputIterator, typename T>
-			auto readBuffer(Buffer<T> const& buffer, size_t offset,
-				OutputIterator first, OutputIterator last) const -> Event;
+			auto readBuffer(
+				Buffer<T> const& buffer, size_t offset,
+				OutputIterator first, OutputIterator last
+			) const -> Event;
 
 			template<typename OutputIterator, typename T>
-			auto readBuffer(Buffer<T> const& buffer, OutputIterator first) const -> Event;
+			auto readBuffer(
+				Buffer<T> const& buffer, OutputIterator first, OutputIterator last
+			) const -> Event;
 
 			//============================================================================
 			// Overloads to access clEnqueueWriteBuffer
@@ -66,18 +74,26 @@ namespace cl {
 		public:
 
 			template<typename InputIterator, typename T>
-			void writeBufferBlocked(Buffer<T> const& buffer, size_t offset,
-				InputIterator first, InputIterator last) const;
+			void writeBufferBlocked(
+				Buffer<T> const& buffer, size_t offset,
+				InputIterator first, InputIterator last
+			) const;
 
 			template<typename InputIterator, typename T>
-			void writeBufferBlocked(Buffer<T> const& buffer, InputIterator first) const;
+			void writeBufferBlocked(
+				Buffer<T> const& buffer, InputIterator first
+			) const;
 
 			template<typename InputIterator, typename T>
-			auto writeBuffer(Buffer<T> const& buffer, size_t offset,
-				InputIterator first, InputIterator last) const -> Event;
+			auto writeBuffer(
+				Buffer<T> const& buffer, size_t offset,
+				InputIterator first, InputIterator last
+			) const -> Event;
 
 			template<typename InputIterator, typename T>
-			auto writeBuffer(Buffer<T> const& buffer, InputIterator first) const -> Event;
+			auto writeBuffer(
+				Buffer<T> const& buffer, InputIterator first, OutputIterator last
+			) const -> Event;
 
 			//============================================================================
 			// Overloads to access clEnqueueReadBufferRect
@@ -92,7 +108,8 @@ namespace cl {
 				std::array<size_t, 3> const& region,
 				size_t bufferRowPitch, size_t bufferSlicePitch,
 				size_t hostRowPitch, size_t hostSlicePitch,
-				OutIterator first) const;
+				OutIterator first
+			) const;
 
 			template<typename OutIterator, typename T>
 			auto readBufferRect(
@@ -102,14 +119,15 @@ namespace cl {
 				std::array<size_t, 3> const& region,
 				size_t bufferRowPitch, size_t bufferSlicePitch,
 				size_t hostRowPitch, size_t hostSlicePitch,
-				OutIterator first) const -> Event;
+				OutIterator first
+			) const -> Event;
 
 			//============================================================================
 			// Overloads to access clEnqueueWriteBufferRect
 			//============================================================================
 		public:
 
-			template<typename OutIterator, typename T>
+			template<typename InputIterator, typename T>
 			void writeBufferRectBlocked(
 				Buffer<T> const& buffer,
 				std::array<size_t, 3> const& bufferOrigin,
@@ -117,9 +135,10 @@ namespace cl {
 				std::array<size_t, 3> const& region,
 				size_t bufferRowPitch, size_t bufferSlicePitch,
 				size_t hostRowPitch, size_t hostSlicePitch,
-				OutIterator out) const;
+				InputIterator first
+			) const;
 
-			template<typename OutIterator, typename T>
+			template<typename InputIterator, typename T>
 			auto writeBufferRect(
 				Buffer<T> const& buffer,
 				std::array<size_t, 3> const& bufferOrigin,
@@ -127,7 +146,8 @@ namespace cl {
 				std::array<size_t, 3> const& region,
 				size_t bufferRowPitch, size_t bufferSlicePitch,
 				size_t hostRowPitch, size_t hostSlicePitch,
-				OutIterator out) const -> Event;
+				InputIterator first
+			) const -> Event;
 
 			//============================================================================
 			// Overloads to access clEnqueueCopyBuffer
@@ -135,11 +155,15 @@ namespace cl {
 		public:
 
 			template<typename T, typename V>
-			auto copyBuffer(Buffer<T> const& src, Buffer<V> const& dst,
-				size_t srcOffset, size_t dstOffset, size_t size) const -> Event;
+			auto copyBuffer(
+				Buffer<T> const& src, Buffer<V> const& dst,
+				size_t srcOffset, size_t dstOffset, size_t size
+			) const -> Event;
 
 			template<typename T, typename V>
-			auto copyBuffer(Buffer<T> const& src, Buffer<V> const& dst) const -> Event;
+			auto copyBuffer(
+				Buffer<T> const& src, Buffer<V> const& dst
+			) const -> Event;
 
 			//============================================================================
 			// Overloads to access clEnqueueCopyBufferRect
@@ -153,7 +177,8 @@ namespace cl {
 				std::array<size_t, 3> const& dstOrigin,
 				std::array<size_t, 3> const& region,
 				size_t srcRowPitch, size_t srcSlicePitch,
-				size_t dstRowPitch, size_t dstSlidePitch) const -> Event;
+				size_t dstRowPitch, size_t dstSlidePitch
+			) const -> Event;
 
 			//============================================================================
 			// Overloads to access clEnqueueFillBuffer
@@ -161,11 +186,14 @@ namespace cl {
 		public:
 
 			template<typename T>
-			auto fillBuffer(Buffer<T> const& buffer, T const& value, size_t offset, size_t size) const
-				-> Event;
+			auto fillBuffer(
+				Buffer<T> const& buffer, T const& value, size_t offset, size_t size
+			) const -> Event;
 
 			template<typename T>
-			auto fillBuffer(Buffer<T> const& buffer, T const& value) const -> Event;
+			auto fillBuffer(
+				Buffer<T> const& buffer, T const& value
+			) const -> Event;
 
 			//============================================================================
 			// Overloads to access clEnqueueMapBuffer
@@ -173,16 +201,21 @@ namespace cl {
 		public:
 
 			template<typename T>
-			void mapBufferBlocked(Buffer<T> const& buffer, MapAccess access,
-				size_t offset, size_t size, MappedMemory<T> & result) const;
+			void mapBufferBlocked(
+				Buffer<T> const& buffer, MapAccess access,
+				size_t offset, size_t size, MappedMemory<T> & result
+			) const;
 
 			template<typename T>
 			void mapBufferBlocked(
-				Buffer<T> const& buffer, MapAccess access, MappedMemory<T> & result) const;
+				Buffer<T> const& buffer, MapAccess access, MappedMemory<T> & result
+			) const;
 
 			template<typename T>
-			auto mapBuffer(Buffer<T> const& buffer, MapAccess access,
-				size_t offset, size_t size, MappedMemory<T> & result) const -> Event;
+			auto mapBuffer(
+				Buffer<T> const& buffer, MapAccess access,
+				size_t offset, size_t size, MappedMemory<T> & result
+			) const -> Event;
 
 			template<typename T>
 			auto mapBuffer(
@@ -225,7 +258,8 @@ namespace cl {
 			//============================================================================
 		private:
 			CommandQueue const& m_queue;
-			std::vector<Event>  m_wait_list;
+			Event const*        m_first_event;
+			size_t              m_count_events;
 		};
 	}
 }

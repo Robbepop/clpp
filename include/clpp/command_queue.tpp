@@ -12,7 +12,7 @@ namespace cl {
 	//================================================================================
 
 	auto CommandQueue::getExecutor() const -> CommandQueueExecutor {
-		return {};
+		return {*this};
 	}
 
 	//================================================================================
@@ -273,13 +273,14 @@ namespace cl {
 	//================================================================================
 
 	template<typename EventRange>
-	auto CommandQueue::when(EventRange const& waitList) -> CommandQueue & {
-		// TODO
+	auto when(EventRange const& waitList) const -> CommandQueueExecutor {
+		return {*this, waitList.begin(), waitList.end()};
 	}
 
-	template<typename EventRange>
-	auto CommandQueue::when(EventRange const& waitList) const -> CommandQueue const& {
-		// TODO
+	template<typename...Events>
+	auto when(Events... events) const -> CommandQueueExecutor {
+		auto waitList = utility::make_array(events...);
+		return {*this, waitList.begin(), waitList.end()};
 	}
 
 	auto CommandQueue::marker() const -> Event {
