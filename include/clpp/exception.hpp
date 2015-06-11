@@ -2,6 +2,7 @@
 #define CLPP_EXCEPTION_H
 
 #include "clpp/detail/common.hpp"
+#include "clpp/ret_code.hpp"
 
 #include <stdexcept>
 
@@ -23,13 +24,13 @@ namespace cl {
 				auto code() const override noexcept -> RetCode;     \
 			};                                                      \
 			                                                        \
-			auto ExceptionName::what() const override noexcept      \
+			auto ExceptionName::what() const noexcept               \
 				-> const char *                                     \
 			{                                                       \
 				return Msg;                                         \
 			}                                                       \
 			                                                        \
-			auto ExceptionName::code() const override noexcept      \
+			auto ExceptionName::code() const noexcept               \
 				-> RetCode                                          \
 			{                                                       \
 				return RetCode;                                     \
