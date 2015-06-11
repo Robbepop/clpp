@@ -49,28 +49,53 @@ namespace cl {
 		void CommandQueueExecutor::readBuffer(
 			Buffer<T> buffer, size_t offset, OutputIterator first, OutputIterator last
 		) const {
-			// TODO
+			auto error = clEnqueueReadBuffer(
+				getQueueId(), buffer.get(), CL_BLOCKING,
+				offset * sizeof(T), std::distance(first, last) * sizeof(T),
+				std::addressof(first[0]),
+				getWaitListSize(), getWaitListData(), nullptr);
+			detail::error::handle(error);
 		}
 
 		template<typename OutputIterator, typename T>
 		void CommandQueueExecutor::readBuffer(
 			Buffer<T> buffer, OutputIterator first
 		) const {
-			// TODO
+			auto error = clEnqueueReadBuffer(
+				getQueueId(), buffer.get(), CL_BLOCKING,
+				0, buffer.getSizeInBytes(),
+				std::addressof(first[0]),
+				getWaitListSize(), getWaitListData(), nullptr);
+			detail::error::handle(error);
 		}
 
 		template<typename OutputIterator, typename T>
 		auto CommandQueueExecutor::readBufferAsync(
 			Buffer<T> buffer, size_t offset, OutputIterator first, OutputIterator last
 		) const -> Event {
-			// TODO
+			auto eventId = cl_event{nullptr};
+			auto error   = clEnqueueReadBuffer(
+				getQueueId(), buffer.get(), CL_NON_BLOCKING,
+				offset * sizeof(T), std::distance(first, last) * sizeof(T),
+				std::addressof(first[0]),
+				getWaitListSize(), getWaitListData(),
+				std::addressof(eventId));
+			detail::error::handle(error);
+			return {eventId};
 		}
 
 		template<typename OutputIterator, typename T>
 		auto CommandQueueExecutor::readBufferAsync(
 			Buffer<T> buffer, OutputIterator first
 		) const -> Event {
-			// TODO
+			auto eventId = cl_event{nullptr};
+			auto error   = clEnqueueReadBuffer(
+				getQueueId(), buffer.get(), CL_NON_BLOCKING,
+				0, buffer.getSizeInBytes(),
+				std::addressof(first[0]),
+				getWaitListSize(), getWaitListData(), nullptr);
+			detail::error::handle(error);
+			return {eventId};
 		}
 
 		//============================================================================
@@ -107,7 +132,7 @@ namespace cl {
 		) const -> Event {
 			auto eventId = cl_event{nullptr};
 			auto error   = clEnqueueWriteBuffer(
-				getQueueId(), buffer.get(), CL_BLOCKING,
+				getQueueId(), buffer.get(), CL_NON_BLOCKING,
 				offset * sizeof(T), std::distance(first, last) * sizeof(T),
 				std::addressof(first[0]),
 				getWaitListSize(), getWaitListData(),
@@ -122,7 +147,7 @@ namespace cl {
 		) const -> Event {
 			auto eventId = cl_event{nullptr};
 			auto error   = clEnqueueWriteBuffer(
-				getQueueId(), buffer.get(), CL_BLOCKING,
+				getQueueId(), buffer.get(), CL_NON_BLOCKING,
 				0, buffer.getSizeInBytes(),
 				std::addressof(first[0]),
 				getWaitListSize(), getWaitListData(),
@@ -534,7 +559,7 @@ namespace cl {
 		auto CommandQueueExecutor::marker() const -> Event {
 			auto eventId = cl_event{nullptr};
 			auto error   = clEnqueueMarkerWithWaitList(
-				getQueueId(), getWaitListSize(), getWaitListData(), &eventId);
+				getQueueId(), getWaitListSize(), getWaitListData(), std::addressof(eventId));
 			detail::error::handle(error);
 			return {eventId};
 		}
@@ -543,7 +568,7 @@ namespace cl {
 		auto CommandQueueExecutor::barrier() const -> Event {
 			auto eventId = cl_event{nullptr};
 			auto error   = clEnqueueBarrierWithWaitList(
-				getQueueId(), getWaitListSize(), getWaitListData(), &eventId);
+				getQueueId(), getWaitListSize(), getWaitListData(), std::addressof(eventId));
 			detail::error::handle(error);
 			return {eventId};
 		}
