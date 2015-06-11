@@ -47,6 +47,15 @@ namespace cl {
 	}
 
 	//================================================================================
+	// Wrapper API for clUnloadPlatformCompiler
+	//================================================================================
+
+	void Platform::unloadCompiler() const {
+		const auto error = clUnloadPlatformCompiler(get());
+		detail::error::handle(error);
+	}
+
+	//================================================================================
 	// Information access methods
 	//================================================================================
 
