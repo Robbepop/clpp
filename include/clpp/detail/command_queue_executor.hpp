@@ -47,18 +47,18 @@ namespace cl {
 		public:
 
 			template<typename OutputIterator, typename T>
-			void readBuffer(Buffer<T> buffer, size_t offset,
+			void readBufferBlocked(Buffer<T> const& buffer, size_t offset,
 				OutputIterator first, OutputIterator last) const;
 
 			template<typename OutputIterator, typename T>
-			void readBuffer(Buffer<T> buffer, OutputIterator first) const;
+			void readBufferBlocked(Buffer<T> const& buffer, OutputIterator first) const;
 
 			template<typename OutputIterator, typename T>
-			auto readBufferAsync(Buffer<T> buffer, size_t offset,
+			auto readBuffer(Buffer<T> const& buffer, size_t offset,
 				OutputIterator first, OutputIterator last) const -> Event;
 
 			template<typename OutputIterator, typename T>
-			auto readBufferAsync(Buffer<T> buffer, OutputIterator first) const -> Event;
+			auto readBuffer(Buffer<T> const& buffer, OutputIterator first) const -> Event;
 
 			//============================================================================
 			// Overloads to access clEnqueueWriteBuffer
@@ -66,18 +66,18 @@ namespace cl {
 		public:
 
 			template<typename InputIterator, typename T>
-			void writeBuffer(Buffer<T> buffer, size_t offset,
+			void writeBufferBlocked(Buffer<T> const& buffer, size_t offset,
 				InputIterator first, InputIterator last) const;
 
 			template<typename InputIterator, typename T>
-			void writeBuffer(Buffer<T> buffer, InputIterator first) const;
+			void writeBufferBlocked(Buffer<T> const& buffer, InputIterator first) const;
 
 			template<typename InputIterator, typename T>
-			auto writeBufferAsync(Buffer<T> buffer, size_t offset,
+			auto writeBuffer(Buffer<T> const& buffer, size_t offset,
 				InputIterator first, InputIterator last) const -> Event;
 
 			template<typename InputIterator, typename T>
-			auto writeBufferAsync(Buffer<T> buffer, InputIterator first) const -> Event;
+			auto writeBuffer(Buffer<T> const& buffer, InputIterator first) const -> Event;
 
 			//============================================================================
 			// Overloads to access clEnqueueReadBufferRect
@@ -85,8 +85,8 @@ namespace cl {
 		public:
 
 			template<typename OutIterator, typename T>
-			void readBufferRect(
-				Buffer<T> buffer,
+			void readBufferRectBlocked(
+				Buffer<T> const& buffer,
 				std::array<size_t, 3> const& bufferOrigin,
 				std::array<size_t, 3> const& hostOrigin,
 				std::array<size_t, 3> const& region,
@@ -95,8 +95,8 @@ namespace cl {
 				OutIterator first) const;
 
 			template<typename OutIterator, typename T>
-			auto readBufferRectAsync(
-				Buffer<T> buffer,
+			auto readBufferRect(
+				Buffer<T> const& buffer,
 				std::array<size_t, 3> const& bufferOrigin,
 				std::array<size_t, 3> const& hostOrigin,
 				std::array<size_t, 3> const& region,
@@ -110,8 +110,8 @@ namespace cl {
 		public:
 
 			template<typename OutIterator, typename T>
-			void writeBufferRect(
-				Buffer<T> buffer,
+			void writeBufferRectBlocked(
+				Buffer<T> const& buffer,
 				std::array<size_t, 3> const& bufferOrigin,
 				std::array<size_t, 3> const& hostOrigin,
 				std::array<size_t, 3> const& region,
@@ -120,8 +120,8 @@ namespace cl {
 				OutIterator out) const;
 
 			template<typename OutIterator, typename T>
-			auto writeBufferRectAsync(
-				Buffer<T> buffer,
+			auto writeBufferRect(
+				Buffer<T> const& buffer,
 				std::array<size_t, 3> const& bufferOrigin,
 				std::array<size_t, 3> const& hostOrigin,
 				std::array<size_t, 3> const& region,
@@ -135,18 +135,11 @@ namespace cl {
 		public:
 
 			template<typename T, typename V>
-			void copyBuffer(Buffer<T> src, Buffer<V> dst,
-				size_t srcOffset, size_t dstOffset, size_t size) const;
-
-			template<typename T, typename V>
-			void copyBuffer(Buffer<T> src, Buffer<V> dst) const;
-
-			template<typename T, typename V>
-			auto copyBufferAsync(Buffer<T> src, Buffer<V> dst,
+			auto copyBuffer(Buffer<T> const& src, Buffer<V> const& dst,
 				size_t srcOffset, size_t dstOffset, size_t size) const -> Event;
 
 			template<typename T, typename V>
-			auto copyBufferAsync(Buffer<T> src, Buffer<V> dst) const -> Event;
+			auto copyBuffer(Buffer<T> const& src, Buffer<V> const& dst) const -> Event;
 
 			//============================================================================
 			// Overloads to access clEnqueueCopyBufferRect
@@ -154,15 +147,8 @@ namespace cl {
 		public:
 
 			template<typename T, typename V>
-			void copyBufferRect(Buffer<T> src, Buffer<V> dest,
-				std::array<size_t, 3> const& srcOrigin,
-				std::array<size_t, 3> const& dstOrigin,
-				std::array<size_t, 3> const& region,
-				size_t srcRowPitch, size_t srcSlicePitch,
-				size_t dstRowPitch, size_t dstSlidePitch) const;
-
-			template<typename T, typename V>
-			auto copyBufferRectAsync(Buffer<T> src, Buffer<V> dest,
+			auto copyBufferRect(
+				Buffer<T> const& src, Buffer<V> const& dest,
 				std::array<size_t, 3> const& srcOrigin,
 				std::array<size_t, 3> const& dstOrigin,
 				std::array<size_t, 3> const& region,
@@ -175,17 +161,11 @@ namespace cl {
 		public:
 
 			template<typename T>
-			void fillBuffer(Buffer<T> buffer, T const& value, size_t offset, size_t size) const;
-
-			template<typename T>
-			void fillBuffer(Buffer<T> buffer, T const& value) const;
-
-			template<typename T>
-			auto fillBufferAsync(Buffer<T> buffer, T const& value, size_t offset, size_t size) const
+			auto fillBuffer(Buffer<T> const& buffer, T const& value, size_t offset, size_t size) const
 				-> Event;
 
 			template<typename T>
-			auto fillBufferAsync(Buffer<T> buffer, T const& value) const -> Event;
+			auto fillBuffer(Buffer<T> const& buffer, T const& value) const -> Event;
 
 			//============================================================================
 			// Overloads to access clEnqueueMapBuffer
@@ -193,19 +173,21 @@ namespace cl {
 		public:
 
 			template<typename T>
-			void mapBuffer(Buffer<T> const& buffer, MapAccess access,
+			void mapBufferBlocked(Buffer<T> const& buffer, MapAccess access,
 				size_t offset, size_t size, MappedMemory<T> & result) const;
 
 			template<typename T>
-			void mapBuffer(Buffer<T> const& buffer, MapAccess access, MappedMemory<T> & result) const;
+			void mapBufferBlocked(
+				Buffer<T> const& buffer, MapAccess access, MappedMemory<T> & result) const;
 
 			template<typename T>
-			auto mapBufferAsync(Buffer<T> const& buffer, MapAccess access,
+			auto mapBuffer(Buffer<T> const& buffer, MapAccess access,
 				size_t offset, size_t size, MappedMemory<T> & result) const -> Event;
 
 			template<typename T>
-			auto mapBufferAsync(Buffer<T> const& buffer, MapAccess access,
-				MappedMemory<T> & result) const -> Event;
+			auto mapBuffer(
+				Buffer<T> const& buffer, MapAccess access, MappedMemory<T> & result
+			) const -> Event;
 
 			//============================================================================
 			// ND Range Kernel Execution

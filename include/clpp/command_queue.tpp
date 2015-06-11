@@ -8,31 +8,45 @@ namespace cl {
 	}
 
 	//================================================================================
+	// Returns the CommandQueueExecutor for non-delayed execution
+	//================================================================================
+
+	auto CommandQueue::getExecutor() const -> CommandQueueExecutor {
+		return {};
+	}
+
+	//================================================================================
 	// Overloads to access clEnqueueReadBuffer
 	//================================================================================
 
 	template<typename OutputIterator, typename T>
-	void CommandQueue::readBuffer(Buffer<T> buffer, size_t offset,
+	void CommandQueue::readBufferBlocked(
+		Buffer<T> const& buffer, size_t offset,
 		OutputIterator first, OutputIterator last
 	) const {
-
+		getExecutor().readBufferBlocked(buffer, offset, first, last);
 	}
 
 	template<typename OutputIterator, typename T>
-	void CommandQueue::readBuffer(Buffer<T> buffer, OutputIterator first) const {
-
+	void CommandQueue::readBufferBlocked(
+		Buffer<T> const& buffer, OutputIterator first, OutputIterator last
+	) const {
+		getExecutor().readBufferBlocked(buffer, first, last);
 	}
 
 	template<typename OutputIterator, typename T>
-	auto CommandQueue::readBufferAsync(Buffer<T> buffer, size_t offset,
+	auto CommandQueue::readBuffer(
+		Buffer<T> const& buffer, size_t offset,
 		OutputIterator first, OutputIterator last
 	) const -> Event {
-
+		return getExecutor().readBuffer(buffer, offset, first, last);
 	}
 
 	template<typename OutputIterator, typename T>
-	auto CommandQueue::readBufferAsync(Buffer<T> buffer, OutputIterator first) const -> Event {
-
+	auto CommandQueue::readBuffer(
+		Buffer<T> const& buffer, OutputIterator first, OutputIterator last
+	) const -> Event {
+		return getExecutor().readBuffer(buffer, first, last);
 	}
 
 	//================================================================================
@@ -40,27 +54,33 @@ namespace cl {
 	//================================================================================
 
 	template<typename InputIterator, typename T>
-	void CommandQueue::writeBuffer(Buffer<T> buffer, size_t offset,
+	void CommandQueue::writeBufferBlocked(
+		Buffer<T> const& buffer, size_t offset,
 		InputIterator first, InputIterator last
 	) const {
-
+		getExecutor().writeBufferBlocked(buffer, offset, first, last);
 	}
 
 	template<typename InputIterator, typename T>
-	void CommandQueue::writeBuffer(Buffer<T> buffer, InputIterator first) const {
-
+	void CommandQueue::writeBufferBlocked(
+		Buffer<T> const& buffer, InputIterator first, OutputIterator last
+	) const {
+		getExecutor().writeBufferBlocked(buffer, first, last);
 	}
 
 	template<typename InputIterator, typename T>
-	auto CommandQueue::writeBufferAsync(Buffer<T> buffer, size_t offset,
+	auto CommandQueue::writeBuffer(
+		Buffer<T> const& buffer, size_t offset,
 		InputIterator first, InputIterator last
 	) const -> Event {
-
+		return getExecutor().writeBuffer(buffer, offset, first, last);
 	}
 
 	template<typename InputIterator, typename T>
-	auto CommandQueue::writeBufferAsync(Buffer<T> buffer, InputIterator first) const -> Event {
-
+	auto CommandQueue::writeBuffer(
+		Buffer<T> const& buffer, InputIterator first, OutputIterator last
+	) const -> Event {
+		return getExecutor().writeBuffer(buffer, first, last);
 	}
 
 	//================================================================================
@@ -68,8 +88,8 @@ namespace cl {
 	//================================================================================
 
 	template<typename OutIterator, typename T>
-	void CommandQueue::readBufferRect(
-		Buffer<T> buffer,
+	void CommandQueue::readBufferRectBlocked(
+		Buffer<T> const& buffer,
 		std::array<size_t, 3> const& bufferOrigin,
 		std::array<size_t, 3> const& hostOrigin,
 		std::array<size_t, 3> const& region,
@@ -77,13 +97,16 @@ namespace cl {
 		size_t hostRowPitch, size_t hostSlicePitch,
 		OutIterator first
 	) const {
-
+		getExecutor().readBufferBlocked(
+			buffer, bufferOrigin, hostOrigin, region,
+			bufferRowPitch, bufferSlicePitch,
+			hostRowPitch, hostSlicePitch, first);
 	}
 
 
 	template<typename OutIterator, typename T>
-	auto CommandQueue::readBufferRectAsync(
-		Buffer<T> buffer,
+	auto CommandQueue::readBufferRect(
+		Buffer<T> const& buffer,
 		std::array<size_t, 3> const& bufferOrigin,
 		std::array<size_t, 3> const& hostOrigin,
 		std::array<size_t, 3> const& region,
@@ -91,7 +114,10 @@ namespace cl {
 		size_t hostRowPitch, size_t hostSlicePitch,
 		OutIterator first
 	) const -> Event {
-
+		return getExecutor().readBufferRect(
+			buffer, bufferOrigin, hostOrigin, region,
+			bufferRowPitch, bufferSlicePitch,
+			hostRowPitch, hostSlicePitch, first)
 	}
 
 	//================================================================================
@@ -99,29 +125,35 @@ namespace cl {
 	//================================================================================
 
 	template<typename OutIterator, typename T>
-	void CommandQueue::writeBufferRect(
-		Buffer<T> buffer,
+	void CommandQueue::writeBufferRectBlocked(
+		Buffer<T> const& buffer,
 		std::array<size_t, 3> const& bufferOrigin,
 		std::array<size_t, 3> const& hostOrigin,
 		std::array<size_t, 3> const& region,
 		size_t bufferRowPitch, size_t bufferSlicePitch,
 		size_t hostRowPitch, size_t hostSlicePitch,
-		OutIterator out
+		OutIterator first
 	) const {
-
+		getExecutor().writeBufferRectBlocked(
+			buffer, bufferOrigin, hostOrigin, region,
+			bufferRowPitch, bufferSlicePitch,
+			hostRowPitch, hostSlicePitch, first)
 	}
 
 	template<typename OutIterator, typename T>
-	auto CommandQueue::writeBufferRectAsync(
-		Buffer<T> buffer,
+	auto CommandQueue::writeBufferRect(
+		Buffer<T> const& buffer,
 		std::array<size_t, 3> const& bufferOrigin,
 		std::array<size_t, 3> const& hostOrigin,
 		std::array<size_t, 3> const& region,
 		size_t bufferRowPitch, size_t bufferSlicePitch,
 		size_t hostRowPitch, size_t hostSlicePitch,
-		OutIterator out
+		OutIterator first
 	) const -> Event {
-
+		return getExecutor().writeBufferRect(
+			buffer, bufferOrigin, hostOrigin, region,
+			bufferRowPitch, bufferSlicePitch,
+			hostRowPitch, hostSlicePitch, first);
 	}
 
 	//================================================================================
@@ -129,27 +161,19 @@ namespace cl {
 	//================================================================================
 
 	template<typename T, typename V>
-	void CommandQueue::copyBuffer(Buffer<T> src, Buffer<V> dst,
-		size_t srcOffset, size_t dstOffset, size_t size
-	) const {
-
-	}
-
-	template<typename T, typename V>
-	void CommandQueue::copyBuffer(Buffer<T> src, Buffer<V> dst) const {
-
-	}
-
-	template<typename T, typename V>
-	auto CommandQueue::copyBufferAsync(Buffer<T> src, Buffer<V> dst,
+	auto CommandQueue::copyBuffer(
+		Buffer<T> const& src, Buffer<V> const& dst,
 		size_t srcOffset, size_t dstOffset, size_t size
 	) const -> Event {
-
+		return getExecutor().copyBuffer(
+			src, dst, srcOffset, dstOffset, size);
 	}
 
 	template<typename T, typename V>
-	auto CommandQueue::copyBufferAsync(Buffer<T> src, Buffer<V> dst) const -> Event {
-
+	auto CommandQueue::copyBuffer(
+		Buffer<T> const& src, Buffer<V> const& dst
+	) const -> Event {
+		return getExecutor().copyBuffer(src, dst);
 	}
 
 	//================================================================================
@@ -157,25 +181,18 @@ namespace cl {
 	//================================================================================
 
 	template<typename T, typename V>
-	void CommandQueue::copyBufferRect(Buffer<T> src, Buffer<V> dest,
-		std::array<size_t, 3> const& srcOrigin,
-		std::array<size_t, 3> const& dstOrigin,
-		std::array<size_t, 3> const& region,
-		size_t srcRowPitch, size_t srcSlicePitch,
-		size_t dstRowPitch, size_t dstSlidePitch
-	) const {
-
-	}
-
-	template<typename T, typename V>
-	auto CommandQueue::copyBufferRectAsync(Buffer<T> src, Buffer<V> dest,
+	auto CommandQueue::copyBufferRect(
+		Buffer<T> const& src, Buffer<V> const& dst,
 		std::array<size_t, 3> const& srcOrigin,
 		std::array<size_t, 3> const& dstOrigin,
 		std::array<size_t, 3> const& region,
 		size_t srcRowPitch, size_t srcSlicePitch,
 		size_t dstRowPitch, size_t dstSlidePitch
 	) const -> Event {
-
+		return getExecutor().copyBufferRect(
+			src, dst, srcOrigin, dstOrigin, region,
+			srcRowPitch, srcSlicePitch,
+			dstRowPitch, dstSlidePitch);
 	}
 
 	//================================================================================
@@ -183,23 +200,15 @@ namespace cl {
 	//================================================================================
 
 	template<typename T>
-	void CommandQueue::fillBuffer(Buffer<T> buffer, T const& value, size_t offset, size_t size) const {
-
+	auto CommandQueue::fillBuffer(
+		Buffer<T> const& buffer, T const& value, size_t offset, size_t size
+	) const -> Event {
+		return getExecutor().fillBuffer(buffer, value, offset, size);
 	}
 
 	template<typename T>
-	void CommandQueue::fillBuffer(Buffer<T> buffer, T const& value) const {
-
-	}
-
-	template<typename T>
-	auto CommandQueue::fillBufferAsync(Buffer<T> buffer, T const& value, size_t offset, size_t size) const -> Event {
-
-	}
-
-	template<typename T>
-	auto CommandQueue::fillBufferAsync(Buffer<T> buffer, T const& value) const -> Event {
-
+	auto CommandQueue::fillBuffer(Buffer<T> const& buffer, T const& value) const -> Event {
+		return getExecutor().fillBuffer(buffer, value);
 	}
 
 	//================================================================================
@@ -207,31 +216,31 @@ namespace cl {
 	//================================================================================
 
 	template<typename T>
-	void CommandQueue::mapBuffer(
+	void CommandQueue::mapBufferBlocked(
 		Buffer<T> const& buffer, MapAccess access, size_t offset, size_t size, MappedMemory<T> & result
 	) const {
-
+		getExecutor().mapBufferBlocked(buffer, access, offset, size, result);
 	}
 
 	template<typename T>
-	void CommandQueue::mapBuffer(
+	void CommandQueue::mapBufferBlocked(
 		Buffer<T> const& buffer, MapAccess access, MappedMemory<T> & result
 	) const {
-
+		getExecutor().mapBufferBlocked(buffer, access, result);
 	}
 
 	template<typename T>
-	auto CommandQueue::mapBufferAsync(
+	auto CommandQueue::mapBuffer(
 		Buffer<T> const& buffer, MapAccess access, size_t offset, size_t size, MappedMemory<T> & result
 	) const -> Event {
-
+		return getExecutor().mapBuffer(buffer, access, offset, size, result);
 	}
 
 	template<typename T>
-	auto CommandQueue::mapBufferAsync(
+	auto CommandQueue::mapBuffer(
 		Buffer<T> const& buffer, MapAccess access, MappedMemory<T> & result
 	) const -> Event {
-
+		return getExecutor().mapBuffer(buffer, access, result);
 	}
 
 	//================================================================================
@@ -244,7 +253,8 @@ namespace cl {
 		size_t globalWorkSize,
 		size_t localWorkSize
 	) const -> Event {
-
+		return getExecutor().execute1DRange(
+			kernel, globalWorkOffset, globalWorkSize, localWorkSize);
 	}
 
 	template<size_t N>
@@ -254,7 +264,8 @@ namespace cl {
 		NDRange<N> const& globalWorkSize,
 		NDRange<N> const& localWorkSize
 	) const -> Event {
-
+		return getExecutor().executeNDRange<N>(
+			kernel, globalWorkOffset, globalWorkSize, localWorkSize);
 	}
 
 	//================================================================================
@@ -263,20 +274,20 @@ namespace cl {
 
 	template<typename EventRange>
 	auto CommandQueue::when(EventRange const& waitList) -> CommandQueue & {
-
+		// TODO
 	}
 
 	template<typename EventRange>
 	auto CommandQueue::when(EventRange const& waitList) const -> CommandQueue const& {
-
+		// TODO
 	}
 
 	auto CommandQueue::marker() const -> Event {
-
+		return getExecutor().marker();
 	}
 
 	auto CommandQueue::barrier() const -> Event {
-
+		return getExecutor().barrier();
 	}
 
 	//================================================================================
