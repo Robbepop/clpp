@@ -58,7 +58,7 @@ namespace cl {
 		auto Object<CLType>::getInfo(Object<CLType>::info_type infoId) const
 			-> T
 		{
-			return detail::getInfo<T>(get(), infoId, ObjectHandler<cl_type>::getInfo);
+			return utility::getInfo<T>(get(), infoId, ObjectHandler<cl_type>::getInfo);
 //			auto error = cl_int{CL_INVALID_VALUE};
 //			auto data  = InfoType{};
 //			error = ObjectHandler<CLType>::getInfo(
@@ -72,7 +72,7 @@ namespace cl {
 		auto Object<CLType>::getInfoVector(Object<CLType>::info_type infoId) const
 			-> std::vector<T>
 		{
-			return detail::getInfoVector<T>(get(), infoId, ObjectHandler<cl_type>::getInfo);
+			return utility::getInfoVector<T>(get(), infoId, ObjectHandler<cl_type>::getInfo);
 //			auto error    = cl_int{CL_INVALID_VALUE};
 //			auto req_size = size_t{0};
 //			error = ObjectHandler<CLType>::getInfo(
@@ -89,7 +89,8 @@ namespace cl {
 		auto Object<CLType>::getInfoString(Object<CLType>::info_type infoId) const
 			-> std::string
 		{
-			return detail::getInfoString(get(), infoId, ObjectHandler<cl_type>::getInfo);
+			return detail::utility::getInfoString(
+				get(), infoId, ObjectHandler<cl_type>::getInfo);
 //			const auto data = getInfoVector<char>(p_info);
 //			return {data.begin(), data.end()};
 		}
