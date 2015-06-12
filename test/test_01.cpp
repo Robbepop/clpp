@@ -2,11 +2,13 @@
 #include <iomanip>
 #include <string>
 
+#include "utility/read_file.hpp"
 #include "clpp.hpp"
 
 #include <type_traits>
 #include <unordered_map>
 #include <map>
+#include <random>
 
 template <typename T>
 auto operator<<(std::ostream& out, const std::vector<T>& v) -> std::ostream & {
@@ -399,11 +401,38 @@ void test_01() {
 	std::cout << "Context created successfully!\n";
 	std::cout << context << "\n\n";
 
-	auto bufferA = context.createBuffer<cl_int>(1000);
-	auto bufferB = context.createBuffer<cl_int>(1000);
+	auto vectorA = std::vector<cl_int>(1000);
+	auto vectorB = std::vector<cl_int>(1000);
+	auto vectorC = std::vector<cl_int>(1000);
+
+	//std::random_device seeder;
+	auto dist   = std::uniform_int_distribution<cl_int>{0, 1000};
+	auto engine = std::default_random_engine{};
+	for (auto&& elem : vectorA) {
+		elem = dist(engine);
+	}
+	for (auto&& elem : vectorB) {
+		elem = dist(engine);
+	}
+	for (auto&& elem : vectorC) {
+		elem = dist(engine);
+	}
+
+	auto bufferA = context.createBuffer<cl_int>(vectorA.begin(), vectorA.end());
+	auto bufferB = context.createBuffer<cl_int>(vectorB);
+	auto bufferC = context.createBuffer<cl_int>(1000);
 
 	std::cout << "bufferA" << bufferA << "\n\n";
 	std::cout << "bufferB" << bufferB << "\n\n";
+	std::cout << "bufferC" << bufferC << "\n\n";
+
+	auto programSource = utility::readFile("../test/kernel_add.cl");
+	auto program = context.createProgramWithSource(programSource);
+
+	auto defaultDevice = devices[0];
+	program.build(defaultDevice);
+
+
 
 //	std::ignore = context;
 	//std::cout << "Context information ...\n";

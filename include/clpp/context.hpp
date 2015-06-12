@@ -11,6 +11,8 @@
 #include "clpp/buffer.hpp"
 #include "clpp/program.hpp"
 
+#include "utility/type_traits.hpp"
+
 #include <cstdint>
 
 namespace cl {
@@ -98,15 +100,16 @@ namespace cl {
 		auto createBuffer(
 			InputIterator first,
 			InputIterator last,
-			TransferMode transferMode,
+			TransferMode transferMode = TransferMode::copy,
 			DeviceAccess deviceAccess = DeviceAccess::readWrite,
 			HostAccess hostAccess     = HostAccess::readWrite
 		) const -> Buffer<T>;
 
-		template<typename T, typename InputRange>
+		template<typename T, typename InputRange,
+			typename = std::enable_if_t<utility::is_range<InputRange>::value>>
 		auto createBuffer(
 			InputRange const& range,
-			TransferMode transferMode,
+			TransferMode transferMode = TransferMode::copy,
 			DeviceAccess deviceAccess = DeviceAccess::readWrite,
 			HostAccess hostAccess     = HostAccess::readWrite
 		) const -> Buffer<T>;

@@ -187,12 +187,12 @@ namespace cl {
 		           | to_underlying(deviceAccess)
 		           | to_underlying(hostAccess);
 		auto sizeInBytes = std::distance(first, last) * sizeof(T);
-		auto id    = clCreateBuffer(get(), flags, sizeInBytes, first, std::addressof(error));
+		auto id    = clCreateBuffer(get(), flags, sizeInBytes, (void *) &*first, std::addressof(error));
 		detail::error::handle(error);
 		return {id};
 	}
 
-	template<typename T, typename InputRange>
+	template<typename T, typename InputRange, typename>
 	auto Context::createBuffer(
 		InputRange const& range,
 		TransferMode transferMode,
