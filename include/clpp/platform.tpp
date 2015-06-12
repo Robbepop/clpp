@@ -99,11 +99,6 @@ namespace cl {
 	auto Platform::getDevices(DeviceType deviceType) const
 		-> std::vector<Device>
 	{
-// cl_int clGetDeviceIDs ( 	cl_platform_id  platform ,
-//  	cl_device_type  device_type ,
-//  	cl_uint  num_entries ,
-//  	cl_device_id  *devices ,
-//  	cl_uint  *num_devices )
 		using namespace utility;
 		auto numDevices = cl_uint{0};
 		auto error = clGetDeviceIDs(
@@ -115,14 +110,5 @@ namespace cl {
 			reinterpret_cast<cl_device_id*>(deviceIds.data()), nullptr);
 		detail::error::handle(error);
 		return deviceIds;
-//		using device_type_t = std::underlying_type<DeviceType>::type;
-//		auto deviceIds = detail::utility::getInfoVector<Device::cl_type>(
-//			m_object, static_cast<device_type_t>(deviceType), clGetDeviceIDs);
-//		auto devices = std::vector<Device>{};
-//			 devices.reserve(deviceIds.size());
-//		for (auto&& id : deviceIds) {
-//			devices.emplace_back(id);
-//		}
-//		return devices;
 	}
 }

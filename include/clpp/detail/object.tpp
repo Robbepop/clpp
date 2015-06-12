@@ -59,12 +59,6 @@ namespace cl {
 			-> T
 		{
 			return utility::getInfo<T>(get(), infoId, ObjectHandler<cl_type>::getInfo);
-//			auto error = cl_int{CL_INVALID_VALUE};
-//			auto data  = InfoType{};
-//			error = ObjectHandler<CLType>::getInfo(
-//				m_object, p_info, sizeof(InfoType), std::addressof(data), nullptr);
-//			error::handle<Object<CLType>::exception_type>(error);
-//			return data;
 		}
 
 		template<typename CLType>
@@ -73,16 +67,6 @@ namespace cl {
 			-> std::vector<T>
 		{
 			return utility::getInfoVector<T>(get(), infoId, ObjectHandler<cl_type>::getInfo);
-//			auto error    = cl_int{CL_INVALID_VALUE};
-//			auto req_size = size_t{0};
-//			error = ObjectHandler<CLType>::getInfo(
-//				m_object, p_info, 0, nullptr, std::addressof(req_size));
-//			error::handle(error);
-//			const auto count_elems = req_size / sizeof(InfoType);
-//				  auto info        = std::vector<InfoType>(count_elems);
-//			error = ObjectHandler<CLType>::getInfo(m_object, p_info, req_size, info.data(), nullptr);
-//			error::handle(error);
-//			return info;
 		}
 
 		template<typename CLType>
@@ -91,8 +75,6 @@ namespace cl {
 		{
 			return detail::utility::getInfoString(
 				get(), infoId, ObjectHandler<cl_type>::getInfo);
-//			const auto data = getInfoVector<char>(p_info);
-//			return {data.begin(), data.end()};
 		}
 
 		//================================================================================
@@ -104,8 +86,8 @@ namespace cl {
 		void Object<CLType>::release() {
 			if (m_object != nullptr) {
 				ObjectHandler<CLType>::release(m_object);
-				//error::handle(
-				//	ObjectHandler<CLType>::release(m_object));
+//				detail::error::handle(
+//					ObjectHandler<CLType>::release(m_object));
 			}
 		}
 
@@ -113,7 +95,7 @@ namespace cl {
 		void Object<CLType>::retain() {
 			if (m_object != nullptr) {
 				ObjectHandler<CLType>::retain(m_object);
-//				error::handle(
+//				detail::error::handle(
 //					ObjectHandler<CLType>::retain(m_object));
 			}
 		}
