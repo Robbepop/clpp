@@ -6,6 +6,8 @@
 #include <unordered_map>
 #include <vector>
 
+#include "boost/optional.hpp"
+
 namespace cl {
 	class Platform;
 
@@ -25,11 +27,11 @@ namespace cl {
 		template<typename Value>
 		auto set(key_type property, Value value) -> ContextProperties &;
 
-		auto getPlatform()        -> Platform;
-		auto getInteropUserSync() -> bool;
+		auto getPlatform() const        -> Platform;
+		auto getInteropUserSync() const -> bool;
 
 		template<typename RetType>
-		auto get(key_type property) -> RetType;
+		auto get(key_type property) const -> boost::optional<RetType>;
 
 		auto data() const -> std::vector<cl_context_properties>;
 

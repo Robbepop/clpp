@@ -30,35 +30,35 @@ namespace cl {
 			std::addressof(cbw));
 	}
 
-	auto MemObject::getType() -> MemObjectType {
+	auto MemObject::getType() const -> MemObjectType {
 		return static_cast<MemObjectType>(getInfo<cl_mem_object_type>(CL_MEM_TYPE));
 	}
 
-	auto MemObject::getFlags() -> MemoryFlags {
+	auto MemObject::getFlags() const -> MemoryFlags {
 		return {getInfo<cl_mem_flags>(CL_MEM_FLAGS)};
 	}
 
-	auto MemObject::getSize() -> size_t {
+	auto MemObject::getSize() const -> size_t {
 		return getInfo<size_t>(CL_MEM_SIZE);
 	}
 
-	auto MemObject::getHostPtr() -> void* {
+	auto MemObject::getHostPtr() const -> void* {
 		return getInfo<void*>(CL_MEM_HOST_PTR);
 	}
 
-	auto MemObject::getMapCount() -> cl_uint {
+	auto MemObject::getMapCount() const -> cl_uint {
 		return getInfo<cl_uint>(CL_MEM_MAP_COUNT);
 	}
 
-	auto MemObject::getReferenceCount() -> cl_uint {
+	auto MemObject::getReferenceCount() const -> cl_uint {
 		return getInfo<cl_uint>(CL_MEM_REFERENCE_COUNT);
 	}
 
-	auto MemObject::getContext() -> std::unique_ptr<Context> {
+	auto MemObject::getContext() const -> std::unique_ptr<Context> {
 		return std::make_unique<Context>(getInfo<cl_context>(CL_MEM_CONTEXT));
 	}
 
-	auto MemObject::getAssociatedMemObject() -> boost::optional<std::unique_ptr<MemObject>> {
+	auto MemObject::getAssociatedMemObject() const -> boost::optional<std::unique_ptr<MemObject>> {
 		const auto memId = getInfo<cl_mem>(CL_MEM_ASSOCIATED_MEMOBJECT);
 		if (memId == nullptr) {
 			return {};
@@ -66,11 +66,11 @@ namespace cl {
 		return {std::make_unique<MemObject>(memId)};
 	}
 
-	auto MemObject::getOffset() -> size_t {
+	auto MemObject::getOffset() const -> size_t {
 		return getInfo<size_t>(CL_MEM_OFFSET);
 	}
 
-	auto MemObject::usesSvmPointer() -> cl_bool {
+	auto MemObject::usesSvmPointer() const -> cl_bool {
 		return getInfo<cl_bool>(CL_MEM_USES_SVM_POINTER);
 	}
 }

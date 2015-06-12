@@ -21,11 +21,11 @@ namespace cl {
 			//============================================================================
 			using code_type = std::underlying_type<RetCode>::type;
 
-			static auto isError(code_type code) -> cl_bool;
-			static auto isError(RetCode code)   -> cl_bool;
+			static auto isError(code_type code) -> bool;
+			static auto isError(RetCode code)   -> bool;
 
-			static auto isSuccess(code_type code) -> cl_bool;
-			static auto isSuccess(RetCode code)   -> cl_bool;
+			static auto isSuccess(code_type code) -> bool;
+			static auto isSuccess(RetCode code)   -> bool;
 
 			static void throwException(cl::RetCode code);
 
@@ -43,12 +43,12 @@ namespace cl {
 			// arguments to the third handle function.
 			//============================================================================
 
-			static auto handle(RetCode   code, info_map const* local_info_map) -> cl_bool;
+			static auto handle(RetCode   code, info_map const* local_info_map) -> bool;
 
 		public:
-			static auto handle(code_type code, info_map const& local_info_map) -> cl_bool;
+			static auto handle(code_type code, info_map const& local_info_map) -> bool;
 
-			static auto handle(code_type code) -> cl_bool;
+			static auto handle(code_type code) -> bool;
 		};
 	}
 }

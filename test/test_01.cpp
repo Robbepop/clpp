@@ -183,6 +183,37 @@ auto operator<<(std::ostream & os, const cl::Platform & platform) -> std::ostrea
 	return os;
 }
 
+auto operator<<(std::ostream & os, const cl::ContextProperties & properties) -> std::ostream & {
+	auto tab = test::tabular{10, 30};
+	os << tab << "Platform Name" << properties.getPlatform().getName()
+	   << tab << "InteropUserSync" << properties.getInteropUserSync();
+	return os;
+}
+
+auto operator<<(std::ostream & os, const cl::Context & context) -> std::ostream & {
+	auto tab = test::tabular{5, 35};
+	os << "Context" << std::left
+	   << tab    << "Reference Count" << context.getReferenceCount()
+	   << tab    << "Num Devices"     << context.getNumDevices()
+	   << tab(1) << "Devices";
+	for (auto&& device : context.getDevices()) {
+		os << tab(2) << device.getName();
+	}
+	os << tab << "Properties" << context.getProperties();
+	return os;
+}
+
+template<typename T>
+auto operator<<(std::ostream & os, const cl::Buffer<T> & buffer) -> std::ostream & {
+	auto tab = test::tabular{5, 35};
+	os << tab << "Size"              << buffer.getSize()
+	   << tab << "Size (in Bytes)"   << buffer.getSizeInBytes()
+	   << tab << "Offset"            << buffer.getOffset()
+	   << tab << "Host Pointer"      << buffer.getHostPtr()
+	   << tab << "Associated Buffer" << (buffer.getAssociatedBuffer() ? "has Parent" : "no Parent");
+	return os;
+}
+
 auto operator<<(std::ostream & os, const cl::Device & device) -> std::ostream & {
 	using cast::to;
 	auto tab = test::tabular{5, 35};
@@ -256,7 +287,7 @@ auto operator<<(std::ostream & os, const cl::Device & device) -> std::ostream & 
 	   << tab << "Max Write Image Args"       << device.getMaxWriteImageArgs()
 
 	   << tab << "Memory Base Address Align" << device.getMemoryBaseAddressAlign()
-	   << tab << "Name" << device.getName()
+	   << tab << "Name"                      << device.getName()
 
 	   << '\n'
 
@@ -366,8 +397,15 @@ void test_01() {
 
 	auto context = cl::Context(properties, cl::DeviceType::cpu);
 	std::cout << "Context created successfully!\n";
+	std::cout << context << "\n\n";
 
-	std::ignore = context;
+	auto bufferA = context.createBuffer<cl_int>(1000);
+	auto bufferB = context.createBuffer<cl_int>(1000);
+
+	std::cout << "bufferA" << bufferA << "\n\n";
+	std::cout << "bufferB" << bufferB << "\n\n";
+
+//	std::ignore = context;
 	//std::cout << "Context information ...\n";
 	//std::cout << "\tReference Count = " << context.referenceCount() << '\n';
 

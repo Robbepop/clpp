@@ -12,19 +12,19 @@
 namespace cl {
 	namespace detail {
 
-		auto error::isError(code_type code) -> cl_bool {
+		auto error::isError(code_type code) -> bool {
 			return code != CL_SUCCESS;
 		}
 
-		auto error::isError(RetCode code) -> cl_bool {
+		auto error::isError(RetCode code) -> bool {
 			return isError(static_cast<code_type>(code));
 		}
 
-		auto error::isSuccess(code_type code) -> cl_bool {
+		auto error::isSuccess(code_type code) -> bool {
 			return code == CL_SUCCESS;
 		}
 
-		auto error::isSuccess(RetCode code) -> cl_bool {
+		auto error::isSuccess(RetCode code) -> bool {
 			return isSuccess(static_cast<code_type>(code));
 		}
 
@@ -158,36 +158,40 @@ namespace cl {
 			RetCode code,
 			error::info_map const* local_info_map
 		)
-			-> cl_bool
+			-> bool
 		{
 			using namespace std::literals;
 			static const auto global_info_map = info_map{
 				{RetCode::outOfResources, "there was a failure to allocate resources required by the OpenCL implementation on the device."},
 				{RetCode::outOfHostMemory, "there was a failure to allocate resources required by the OpenCL implementation on the host."}
 			};
-			if (isSuccess(code)) { return CL_SUCCESS; }
-			if (local_info_map != nullptr) {
-				const auto it = local_info_map->find(code);
+			if (isError(code)) {
+				if (local_info_map != nullptr) {
+					const auto it = local_info_map->find(code);
+					const auto errorMessage =
+						it != local_info_map->end() ? it->second : ""s;
+					throwException(code);
+				}
+				const auto it = global_info_map.find(code);
 				const auto errorMessage =
 					it != local_info_map->end() ? it->second : ""s;
 				throwException(code);
 			}
-			const auto it = global_info_map.find(code);
-			throw std::runtime_error{it != global_info_map.end() ? it->second : ""s};
+			return true;
 		}
 
 		auto error::handle(
 			error::code_type code,
 			error::info_map const& local_info_map
 		)
-			-> cl_bool
+			-> bool
 		{
 			return handle(
 				static_cast<RetCode>(code),
 				std::addressof(local_info_map));
 		}
 
-		auto error::handle(error::code_type code) -> cl_bool {
+		auto error::handle(error::code_type code) -> bool {
 			return handle(static_cast<RetCode>(code), nullptr);
 		}
 	}

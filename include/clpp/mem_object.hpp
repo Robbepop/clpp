@@ -56,16 +56,16 @@ namespace cl {
 		//================================================================================
 	public:
 
-		auto getType()                -> MemObjectType;
-		auto getFlags()               -> MemoryFlags;
-		auto getSize()                -> size_t;
-		auto getHostPtr()             -> void*;
-		auto getMapCount()            -> cl_uint;
-		auto getReferenceCount()      -> cl_uint;
-		auto getContext()             -> std::unique_ptr<Context>;
-		auto getAssociatedMemObject() -> boost::optional<std::unique_ptr<MemObject>>;
-		auto getOffset()              -> size_t;
-		auto usesSvmPointer()         -> cl_bool;
+		auto getType() const                -> MemObjectType;
+		auto getFlags() const               -> MemoryFlags;
+		auto getSize()  const               -> size_t;
+		auto getHostPtr() const             -> void*;
+		auto getMapCount() const            -> cl_uint;
+		auto getReferenceCount() const      -> cl_uint;
+		auto getContext() const             -> std::unique_ptr<Context>;
+		auto getAssociatedMemObject() const -> boost::optional<std::unique_ptr<MemObject>>;
+		auto getOffset() const              -> size_t;
+		auto usesSvmPointer() const         -> cl_bool;
 	};
 }
 

@@ -26,7 +26,7 @@ namespace cl {
 		auto getOffset() const  -> size_t;
 
 		auto getHostPtr() const -> T*;
-		auto getAssociatedBuffer() const -> boost::optional<Buffer<T>>;
+		auto getAssociatedBuffer() const -> boost::optional<std::unique_ptr<Buffer<T>>>;
 	};
 }
 

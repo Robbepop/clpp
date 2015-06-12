@@ -47,7 +47,7 @@ namespace cl {
 
 	template<typename T>
 	auto Buffer<T>::getOffset() const -> size_t {
-		return getSizeInBytes() / sizeof(T);
+		return MemObject::getOffset() / sizeof(T);
 	}
 
 	template<typename T>
@@ -56,7 +56,13 @@ namespace cl {
 	}
 
 	template<typename T>
-	auto Buffer<T>::getAssociatedBuffer() const -> boost::optional<Buffer<T>> {
-		return static_cast<boost::optional<Buffer<T>>>(MemObject::getAssociatedMemObject());
+	auto Buffer<T>::getAssociatedBuffer() const
+		-> boost::optional<std::unique_ptr<Buffer<T>>>
+	{
+		const auto memId = getInfo<cl_mem>(CL_MEM_ASSOCIATED_MEMOBJECT);
+		if (memId == nullptr) {
+			return {};
+		}
+		return {std::make_unique<Buffer<T>>(memId)};
 	}
 }

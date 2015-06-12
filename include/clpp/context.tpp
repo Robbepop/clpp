@@ -165,7 +165,8 @@ namespace cl {
 		using namespace utility;
 		auto error = cl_int{CL_INVALID_VALUE};
 		auto flags = to_underlying(deviceAccess) | to_underlying(hostAccess);
-		auto id    = clCreateBuffer(get(), flags, size, nullptr, std::addressof(error));
+		auto sizeInBytes = size * sizeof(T);
+		auto id    = clCreateBuffer(get(), flags, sizeInBytes, nullptr, std::addressof(error));
 		detail::error::handle(error);
 		return {id};
 	}
@@ -185,8 +186,8 @@ namespace cl {
 		auto flags = to_underlying(transferMode)
 		           | to_underlying(deviceAccess)
 		           | to_underlying(hostAccess);
-		auto size  = std::distance(first, last);
-		auto id    = clCreateBuffer(get(), flags, size, first, std::addressof(error));
+		auto sizeInBytes = std::distance(first, last) * sizeof(T);
+		auto id    = clCreateBuffer(get(), flags, sizeInBytes, first, std::addressof(error));
 		detail::error::handle(error);
 		return {id};
 	}

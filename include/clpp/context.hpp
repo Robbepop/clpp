@@ -22,7 +22,6 @@ namespace cl {
 		struct ObjectHandler<cl_context> final {
 			using cl_type = cl_context;
 			using info_type = cl_context_info;
-			using exception_type = ContextError;
 
 			static auto release(cl_type id) { return clReleaseContext(id); }
 

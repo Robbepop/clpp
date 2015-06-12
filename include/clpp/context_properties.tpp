@@ -6,15 +6,19 @@ namespace cl {
 	template<typename InputRange>
 	ContextProperties::ContextProperties(InputRange properties) {
 		assert(properties.size() % 2 == 1 && "size of properties must be odd");
-		for (auto it = properties.begin(); it != properties.end(); it += 2) {
+		for (auto it = properties.begin();; std::next(it)) {
 			const auto key = static_cast<ContextProperties::key_type>(*it);
 			const auto val = static_cast<ContextProperties::val_type>(*(it + 1));
 			m_properties[key] = val;
+			std::next(it);
+			if (it != properties.end()) { break; }
 		}
 	}
 
 	template<typename Value>
-	auto ContextProperties::set(key_type property, Value value) -> ContextProperties & {
+	auto ContextProperties::set(
+		key_type property, Value value
+	) -> ContextProperties & {
 //		const auto val = static_cast<ContextProperties::val_type>(value);       // doesn't work!
 //		const auto val = reinterpret_cast<ContextProperties::val_type>(value);  // doesn't work either!
 		const auto val = (ContextProperties::val_type) value;
@@ -31,19 +35,25 @@ namespace cl {
 	}
 
 	template<typename RetType>
-	auto ContextProperties::get(ContextProperties::key_type property) -> RetType {
-		const auto val = m_properties[property];
+	auto ContextProperties::get(
+		ContextProperties::key_type property
+	) const -> boost::optional<RetType> {
+		//const auto val = m_properties[property];
 		//return reinterpret_cast<RetType>(val); doesn't work!
 		//return static_cast<RetType>(val);      doesn't work either!
-		return (RetType) val;
+		const auto it = m_properties.find(property);
+		if (it == m_properties.end()) {
+			return {};
+		}
+		return {(RetType) it->second};
 	}
 
-	auto ContextProperties::getPlatform() -> Platform {
-		return {get<cl_platform_id>(CL_CONTEXT_PLATFORM)};
+	auto ContextProperties::getPlatform() const -> Platform {
+		return {get<cl_platform_id>(CL_CONTEXT_PLATFORM).value_or(nullptr)};
 	}
 
-	auto ContextProperties::getInteropUserSync() -> bool {
-		return get<cl_bool>(CL_CONTEXT_INTEROP_USER_SYNC);
+	auto ContextProperties::getInteropUserSync() const -> bool {
+		return get<cl_bool>(CL_CONTEXT_INTEROP_USER_SYNC).value_or(false);
 	}
 
 	auto ContextProperties::data() const -> std::vector<cl_context_properties> {
