@@ -27,6 +27,8 @@ namespace cl {
 			static auto isSuccess(code_type code) -> cl_bool;
 			static auto isSuccess(RetCode code)   -> cl_bool;
 
+			static void throwException(cl::RetCode code);
+
 			//============================================================================
 			// Error handler functions and their overloads in order
 			// to centralize the error handling mechanism and throwing
