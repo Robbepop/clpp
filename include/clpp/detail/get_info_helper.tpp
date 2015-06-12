@@ -24,7 +24,8 @@ namespace cl {
 			return info;
 		}
 
-		template<typename T, typename ObjectIdType, typename InfoIdType, typename InfoFunc>
+		template<typename T, typename ObjectIdType, typename InfoIdType,
+			typename InfoFunc, typename BufferSizeType = size_t>
 		auto getInfoVector(
 			ObjectIdType objId,
 			InfoIdType infoId,
@@ -34,7 +35,7 @@ namespace cl {
 			-> std::vector<T>
 		{
 			auto error      = cl_int{CL_INVALID_VALUE};
-			auto bufferSize = size_t{0};
+			auto bufferSize = BufferSizeType{0};
 			error           = getInfo(objId, infoId, 0, nullptr, std::addressof(bufferSize));
 			error::handle(error);
 			auto countElems = countElementWise ? bufferSize : bufferSize / sizeof(T);

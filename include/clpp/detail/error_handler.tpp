@@ -38,12 +38,13 @@ namespace cl {
 				{RetCode::outOfResources, "there was a failure to allocate resources required by the OpenCL implementation on the device."},
 				{RetCode::outOfHostMemory, "there was a failure to allocate resources required by the OpenCL implementation on the host."}
 			};
-			if (isSuccess(code)) return CL_SUCCESS;
+			if (isSuccess(code)) { return CL_SUCCESS; }
 			if (local_info_map != nullptr) {
 				const auto it = local_info_map->find(code);
-				throw std::runtime_error{""};
-//				throw ExceptionType{code,
-//					it != local_info_map->end() ? it->second : ""s};
+				const auto errorMessage =
+					it != local_info_map->end() ? it->second : ""s;
+				throw std::runtime_error{errorMessage};
+//				throw ExceptionType{code, errorMessage};
 			}
 			const auto it = global_info_map.find(code);
 			throw std::runtime_error{it != global_info_map.end() ? it->second : ""s};

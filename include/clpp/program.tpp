@@ -50,8 +50,10 @@ namespace cl {
 		DeviceIterator firstDevice,
 		DeviceIterator lastDevice
 	) const {
+		const auto deviceIt = reinterpret_cast<const cl_device_id*>(
+			std::addressof(*firstDevice));
 		auto error = clBuildProgram(
-			get(), std::distance(firstDevice, lastDevice), std::addressof(*firstDevice),
+			get(), std::distance(firstDevice, lastDevice), deviceIt,
 			nullptr, nullptr, nullptr);
 		detail::error::handle(error);
 	}
@@ -61,7 +63,8 @@ namespace cl {
 		Device const& device,
 		Function callback, T&& data
 	) const {
-		const auto deviceIt = std::addressof(device);
+		const auto deviceId = device.get();
+		const auto deviceIt = std::addressof(deviceId);
 		build(deviceIt, deviceIt + 1, callback, std::forward(data));
 	}
 
@@ -146,7 +149,7 @@ namespace cl {
 	auto Program::getBuildInfo(
 		Device const& device, cl_program_build_info infoId
 	) const -> T {
-		const auto error = cl_int{CL_INVALID_VALUE};
+		auto error = cl_int{CL_INVALID_VALUE};
 		auto info        = T{};
 		error = clGetProgramBuildInfo(
 			get(), device.get(), infoId, sizeof(T), std::addressof(info), nullptr);

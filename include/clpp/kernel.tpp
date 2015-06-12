@@ -58,7 +58,7 @@ namespace cl {
 
 	auto Kernel::getProgram() const -> std::unique_ptr<Program> {
 		return std::make_unique<Program>(
-			getInfo<cl_context>(CL_KERNEL_PROGRAM));
+			getInfo<cl_program>(CL_KERNEL_PROGRAM));
 	}
 
 	auto Kernel::getAttributes() const -> std::vector<std::string> {

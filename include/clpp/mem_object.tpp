@@ -59,7 +59,7 @@ namespace cl {
 	}
 
 	auto MemObject::getAssociatedMemObject() -> boost::optional<std::unique_ptr<MemObject>> {
-		const auto memId = getInfo<cl_device_id>(CL_MEM_ASSOCIATED_MEMOBJECT);
+		const auto memId = getInfo<cl_mem>(CL_MEM_ASSOCIATED_MEMOBJECT);
 		if (memId == nullptr) {
 			return {};
 		}
