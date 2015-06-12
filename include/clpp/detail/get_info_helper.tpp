@@ -18,7 +18,7 @@ namespace cl {
 			-> T
 		{
 			auto error = cl_int{CL_INVALID_VALUE};
-			auto info  = ReturnType{};
+			auto info  = T{};
 			error      = getInfo(objId, infoId, sizeof(T), std::addressof(info), nullptr);
 			error::handle(error);
 			return info;
@@ -34,12 +34,12 @@ namespace cl {
 			-> std::vector<T>
 		{
 			auto error      = cl_int{CL_INVALID_VALUE};
-			auto bufferSize = cl_uint{0};
+			auto bufferSize = size_t{0};
 			error           = getInfo(objId, infoId, 0, nullptr, std::addressof(bufferSize));
 			error::handle(error);
 			auto countElems = countElementWise ? bufferSize : bufferSize / sizeof(T);
 			auto info = std::vector<T>(countElems);
-			error = get_info(objId, infoid, bufferSize, info.data(), nullptr);
+			error = getInfo(objId, infoId, bufferSize, info.data(), nullptr);
 			error::handle(error);
 			return info;
 		}

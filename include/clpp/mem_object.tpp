@@ -2,6 +2,8 @@
 	#error "Do not include this file directly."
 #endif
 
+#include <memory>
+
 namespace cl {
 	MemObject& MemObject::operator=(const MemObject & rhs) {
 		if (this != &rhs) {
@@ -11,7 +13,7 @@ namespace cl {
 	}
 
 	template<typename Function, typename T>
-	auto MemObject::setDestructorCallback(Function callback, T&& data) {
+	void MemObject::setDestructorCallback(Function callback, T&& data) const {
 		struct CallbackWrapper {
 			Function m_callback;
 			T&& m_data;
@@ -32,7 +34,7 @@ namespace cl {
 		return static_cast<MemObjectType>(getInfo<cl_mem_object_type>(CL_MEM_TYPE));
 	}
 
-	auto MemObject::getFlags() -> MemObjectFlags {
+	auto MemObject::getFlags() -> MemoryFlags {
 		return {getInfo<cl_mem_flags>(CL_MEM_FLAGS)};
 	}
 
@@ -52,16 +54,16 @@ namespace cl {
 		return getInfo<cl_uint>(CL_MEM_REFERENCE_COUNT);
 	}
 
-	auto MemObject::getContext() -> Context {
-		return {getInfo<cl_context>(CL_MEM_CONTEXT)};
+	auto MemObject::getContext() -> std::unique_ptr<Context> {
+		return std::make_unique<Context>(getInfo<cl_context>(CL_MEM_CONTEXT));
 	}
 
-	auto MemObject::getAssociatedMemObject() -> boost::optional<MemObject> {
+	auto MemObject::getAssociatedMemObject() -> boost::optional<std::unique_ptr<MemObject>> {
 		const auto memId = getInfo<cl_device_id>(CL_MEM_ASSOCIATED_MEMOBJECT);
 		if (memId == nullptr) {
 			return {};
 		}
-		return {{memId}};
+		return {std::make_unique<MemObject>(memId)};
 	}
 
 	auto MemObject::getOffset() -> size_t {

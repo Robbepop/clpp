@@ -2,50 +2,69 @@
 	#error "Do not include this file directly."
 #endif
 
+#include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string/classification.hpp>
+
 namespace cl {
 	auto Kernel::operator=(Kernel const& rhs) -> Kernel& {
-		// TODO
+		if (this != &rhs) {
+		    detail::Object<cl_type>::operator=(rhs);
+		}
+		return *this;
 	}
 
 	template<typename T>
 	void Kernel::setArg(cl_uint index, T&& arg) const {
-		// TODO
+		auto error = clSetKernelArg(get(), index, sizeof(T), std::addressof(arg));
 	}
 
 	template<typename T, typename... Args>
-	void Kernel::setArgs(T&& head, Args&&... tail) const {
-		// TODO
+	void Kernel::setArgsHelper(cl_uint index, T&& head, Args&&... tail) const {
+		setArg(index, head);
+		if (sizeof...(tail) > 0) {
+			setArgsAcc(index + 1, std::forward(tail)...);
+		}
 	}
 
-	auto Kernel::getArg(cl_uint index) const -> KernelArg {
-		// TODO
+	template<typename... Args>
+	void Kernel::setArgs(Args&&... tail) const {
+		setArgsHelper(0, std::forward(tail)...);
 	}
 
-	auto Kernel::getWorkGroup(Device const& device) const -> KernelWorkGroup {
-		// TODO
-	}
+//	auto Kernel::getArg(cl_uint index) const -> KernelArg {
+//		// TODO
+//	}
+
+//	auto Kernel::getWorkGroup(Device const& device) const -> KernelWorkGroup {
+//		// TODO
+//	}
 
 	auto Kernel::getFunctionName() const -> std::string {
-		// TODO
+		return getInfoString(CL_KERNEL_FUNCTION_NAME);
 	}
 
 	auto Kernel::getNumArgs() const -> cl_uint {
-		// TODO
+		return getInfo<cl_uint>(CL_KERNEL_NUM_ARGS);
 	}
 
 	auto Kernel::getReferenceCount() const -> cl_uint {
-		// TODO
+		return getInfo<cl_uint>(CL_KERNEL_REFERENCE_COUNT);
 	}
 
-	auto Kernel::getContext() const -> Context {
-		// TODO
+	auto Kernel::getContext() const -> std::unique_ptr<Context> {
+		return std::make_unique<Context>(
+			getInfo<cl_context>(CL_KERNEL_CONTEXT));
 	}
 
-	auto Kernel::getProgram() const -> Program {
-		// TODO
+	auto Kernel::getProgram() const -> std::unique_ptr<Program> {
+		return std::make_unique<Program>(
+			getInfo<cl_context>(CL_KERNEL_PROGRAM));
 	}
 
-	auto Kernel::getAttributes() const -> std::vector<std::string>> {
-		// TODO
+	auto Kernel::getAttributes() const -> std::vector<std::string> {
+			  auto attributes = std::vector<std::string>{};
+		const auto attrStr    = getInfoString(CL_KERNEL_ATTRIBUTES);
+		boost::split(attributes, attrStr, boost::is_any_of("\t "), boost::token_compress_on);
+		return attributes;
 	}
 }

@@ -41,11 +41,12 @@ namespace cl {
 			if (isSuccess(code)) return CL_SUCCESS;
 			if (local_info_map != nullptr) {
 				const auto it = local_info_map->find(code);
-				throw ExceptionType{code,
-					it != local_info_map->end() ? it->second : ""s};
+				throw std::runtime_error{""};
+//				throw ExceptionType{code,
+//					it != local_info_map->end() ? it->second : ""s};
 			}
 			const auto it = global_info_map.find(code);
-			throw error::InvalidValue{it != global_info_map.end() ? it->second : ""s};
+			throw std::runtime_error{it != global_info_map.end() ? it->second : ""s};
 		}
 
 		auto error::handle(

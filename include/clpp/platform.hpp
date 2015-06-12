@@ -16,7 +16,6 @@ namespace cl {
 		struct ObjectHandler<cl_platform_id> final {
 			using cl_type        = cl_platform_id;
 			using info_type      = cl_platform_info;
-			using exception_type = PlatformError;
 
 			static auto release(cl_type) { return CL_SUCCESS; }
 

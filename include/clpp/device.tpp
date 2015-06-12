@@ -36,10 +36,10 @@ namespace cl {
 		auto error      = cl_int{CL_INVALID_VALUE};
 		auto countElems = cl_uint{0};
 		error = clCreateSubDevices(m_object, partition.data(), 0, nullptr, std::addressof(countElems));
-		detail::error::handle<exception_type>(error);
+		detail::error::handle(error);
 		auto ids = std::vector<Device::cl_type>(countElems);
 		error = clCreateSubDevices(m_object, partition.data(), countElems, ids.data(), nullptr);
-		detail::error::handle<exception_type>(error);
+		detail::error::handle(error);
 		return {ids.begin(), ids.end()};
 	}
 
@@ -72,7 +72,7 @@ namespace cl {
 		return getInfo<cl_bool>(CL_DEVICE_AVAILABLE);
 	}
 
-	auto Device::getBuiltinKernels() const -> std::vector<std::string>> {
+	auto Device::getBuiltinKernels() const -> std::vector<std::string> {
 			  auto kernels       = std::vector<std::string>{};
 		const auto kernelsString = getInfoString(CL_DEVICE_BUILT_IN_KERNELS);
 		boost::split(kernels, kernelsString, boost::is_any_of("\t "), boost::token_compress_on);

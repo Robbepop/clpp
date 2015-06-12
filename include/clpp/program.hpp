@@ -1,7 +1,34 @@
 #ifndef CLPP_PROGRAM_H
 #define CLPP_PROGRAM_H
 
+#include "clpp/kernel.hpp"
+#include "clpp/build_status.hpp"
+#include "clpp/binary_type.hpp"
+
 namespace cl {
+	namespace detail {
+		template<>
+		struct ObjectHandler<cl_program> final {
+			using cl_type        = cl_program;
+			using info_type      = cl_program_info;
+
+			static auto release(cl_type id) { return clReleaseProgram(id); }
+
+			static auto retain(cl_type id) { return clRetainProgram(id); }
+
+			static auto getInfo(
+				cl_type   program,
+				info_type param_name,
+				size_t    param_value_size,
+				void *    param_value,
+				size_t *  param_value_size_ret
+			) {
+				return clGetProgramInfo(
+					program, param_name, param_value_size, param_value, param_value_size_ret);
+			}
+		};
+	}
+
 	class Program final : public detail::Object<cl_program> {
 		//================================================================================
 		// Constructor and Assignment
@@ -78,14 +105,14 @@ namespace cl {
 	public:
 
 		auto getReferenceCount() const -> cl_uint;
-		auto getContext() const        -> Context;
+		auto getContext() const        -> std::unique_ptr<Context>;
 		auto getNumDevices() const     -> cl_uint;
 		auto getDevices() const        -> std::vector<Device>;
 		auto getProgramSource() const  -> std::string;
-		auto getBinarySizes() const     -> std::vector<size_t>;
+		auto getBinarySizes() const    -> std::vector<size_t>;
 //		auto getBinaries() const       -> std::vector<std::vector<unsigned char>>;
 		auto getNumKernels() const     -> cl_uint;
-		auto getKernelNames() const    -> std::vector<std::string>>;
+		auto getKernelNames() const    -> std::vector<std::string>;
 
 		//================================================================================
 		// Information access helper methods for build.

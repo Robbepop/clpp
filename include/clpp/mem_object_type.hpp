@@ -13,7 +13,7 @@ namespace cl {
 		image1D       = CL_MEM_OBJECT_IMAGE1D,
 		image1DArray  = CL_MEM_OBJECT_IMAGE1D_ARRAY,
 		image1DBuffer = CL_MEM_OBJECT_IMAGE1D_BUFFER
-	}
+	};
 }
 
 #endif

@@ -6,6 +6,7 @@
 
 //#include <iostream>
 #include <iterator>
+#include <algorithm>
 
 namespace cl {
 	//====================================================================================
@@ -65,7 +66,7 @@ namespace cl {
 			std::addressof(cbWrapper),
 			std::addressof(error)
 		);
-		if (detail::error::handle<exception_type>(error)) {
+		if (detail::error::handle(error)) {
 			m_object = contex;
 		}
 	}
@@ -89,7 +90,7 @@ namespace cl {
 			nullptr, nullptr,
 			std::addressof(error)
 		);
-		if (detail::error::handle<exception_type>(error)) {
+		if (detail::error::handle(error)) {
 			m_object = contex;
 		}
 	}
@@ -128,7 +129,7 @@ namespace cl {
 			std::addressof(cbWrapper),
 			std::addressof(error)
 		);
-		if (detail::error::handle<exception_type>(error)) {
+		if (detail::error::handle(error)) {
 			m_object = contex;
 		}
 	}
@@ -144,7 +145,7 @@ namespace cl {
 			nullptr, nullptr,
 			std::addressof(error)
 		);
-		if (detail::error::handle<exception_type>(error)) {
+		if (detail::error::handle(error)) {
 			m_object = contex;
 		}
 	}
@@ -154,10 +155,10 @@ namespace cl {
 	//================================================================================
 
 	template<typename T>
-	auto createBuffer(
+	auto Context::createBuffer(
 		size_t size,
-		DeviceAccess deviceAccess = DeviceAccess::readWrite,
-		HostAccess hostAccess     = HostAccess::readWrite
+		DeviceAccess deviceAccess,
+		HostAccess hostAccess
 	) const
 		-> Buffer<T>
 	{
@@ -165,19 +166,19 @@ namespace cl {
 		auto error = cl_int{CL_INVALID_VALUE};
 		auto flags = to_underlying(deviceAccess) | to_underlying(hostAccess);
 		auto id    = clCreateBuffer(get(), flags, size, nullptr, std::addressof(error));
-		detail::error::handle<exception_type>(error);
+		detail::error::handle(error);
 		return {id};
 	}
 
-	template<typename InputIterator>
-	auto createBuffer(
+	template<typename T, typename InputIterator>
+	auto Context::createBuffer(
 		InputIterator first,
 		InputIterator last,
 		TransferMode transferMode,
-		DeviceAccess deviceAccess = DeviceAccess::readWrite,
-		HostAccess hostAccess     = HostAccess::readWrite
+		DeviceAccess deviceAccess,
+		HostAccess hostAccess
 	) const
-		-> Buffer<InputRange::value_type>
+		-> Buffer<T>
 	{
 		using namespace utility;
 		auto error = cl_int{CL_INVALID_VALUE};
@@ -186,30 +187,31 @@ namespace cl {
 		           | to_underlying(hostAccess);
 		auto size  = std::distance(first, last);
 		auto id    = clCreateBuffer(get(), flags, size, first, std::addressof(error));
-		detail::error::handle<exception_type>(error);
+		detail::error::handle(error);
 		return {id};
 	}
 
-	template<typename InputRange>
-	auto createBuffer(
-		InputRange range,
+	template<typename T, typename InputRange>
+	auto Context::createBuffer(
+		InputRange const& range,
 		TransferMode transferMode,
-		DeviceAccess deviceAccess = DeviceAccess::readWrite,
-		HostAccess hostAccess     = HostAccess::readWrite
+		DeviceAccess deviceAccess,
+		HostAccess hostAccess
 	) const
-		-> Buffer<InputRange::value_type>
+		-> Buffer<T>
 	{
-		return createBuffer(range.begin(), range.end(), transferMode, deviceAccess, hostAccess);
+		return createBuffer<T>(range.begin(), range.end(), transferMode, deviceAccess, hostAccess);
 	}
 
 	//================================================================================
 	// Create Program Objects
 	//================================================================================
 
-	auto createProgramWithSource(std::string const& source) const -> Program {
+	auto Context::createProgramWithSource(std::string const& source) const -> Program {
 		auto error     = cl_int{CL_INVALID_VALUE};
+		auto cStr      = source.c_str();
 		auto programId = clCreateProgramWithSource(
-			get(), 1, source.data(), nullptr, std::addressof(error));
+			get(), 1, std::addressof(cStr), nullptr, std::addressof(error));
 		detail::error::handle(error);
 		return {programId};
 	}

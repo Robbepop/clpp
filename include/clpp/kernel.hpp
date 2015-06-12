@@ -27,6 +27,9 @@ namespace cl {
 		};
 	}
 
+	class Context;
+	class Program;
+
 	class Kernel final : public detail::Object<cl_kernel> {
 	public:
 		//================================================================================
@@ -46,16 +49,21 @@ namespace cl {
 		template<typename T>
 		void setArg(cl_uint index, T&& arg) const;
 
+	private:
 		template<typename T, typename... Args>
-		void setArgs(T&& head, Args&&... tail) const;
+		void setArgsHelper(cl_uint index, T&& head, Args&&... tail) const;
+
+	public:
+		template<typename... Args>
+		void setArgs(Args&&... tail) const;
 
 		//================================================================================
 		// Used to retrieve information about kernel arguments and kernel work groups.
 		//================================================================================
 	public:
 
-		auto getArg(cl_uint index) const              -> KernelArg;
-		auto getWorkGroup(Device const& device) const -> KernelWorkGroup;
+//		auto getArg(cl_uint index) const              -> KernelArg;
+//		auto getWorkGroup(Device const& device) const -> KernelWorkGroup;
 
 		//================================================================================
 		// Information access profiling helper methods.
@@ -65,9 +73,9 @@ namespace cl {
 		auto getFunctionName() const   -> std::string;
 		auto getNumArgs() const        -> cl_uint;
 		auto getReferenceCount() const -> cl_uint;
-		auto getContext() const        -> Context;
-		auto getProgram() const        -> Program;
-		auto getAttributes() const     -> std::vector<std::string>>;
+		auto getContext() const        -> std::unique_ptr<Context>;
+		auto getProgram() const        -> std::unique_ptr<Program>;
+		auto getAttributes() const     -> std::vector<std::string>;
 	};
 }
 

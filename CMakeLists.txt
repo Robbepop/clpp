@@ -7,7 +7,7 @@ project (CLPP)
 #-----------------------------------------------------------------------------------------
 set (CMAKE_CXX_FLAGS "-g -Wall -Wextra -pedantic -std=c++14 -fdiagnostics-color=auto")
 
-option(USE_CLANG "build application with clang" ON) # OFF is the default
+option(USE_CLANG "build application with clang" OFF) # OFF is the default
 if (USE_CLANG)
     SET (CMAKE_C_COMPILER             "/usr/bin/clang")
     SET (CMAKE_C_FLAGS                "-Wall -Wextra -pedantic -std=c99 -fdiagnostics-color=auto")

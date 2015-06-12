@@ -2,6 +2,8 @@
 	#error "Do not include this file directly."
 #endif
 
+#include "utility/to_underlying.hpp"
+
 namespace cl {
 	template<typename T>
 	auto Buffer<T>::operator=(Buffer<T> const& rhs) -> Buffer & {
@@ -25,7 +27,7 @@ namespace cl {
 		auto bufferId = clCreateSubBuffer(get(), flags,
 			CL_BUFFER_CREATE_TYPE_REGION, std::addressof(region), std::addressof(error));
 		detail::error::handle(error);
-		return {bufId};
+		return {bufferId};
 	}
 
 	template<typename T>

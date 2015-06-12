@@ -22,10 +22,10 @@ namespace cl {
 		auto error          = cl_int{CL_INVALID_VALUE};
 		auto countPlatforms = cl_uint{0};
 		error               = clGetPlatformIDs(0, nullptr, std::addressof(countPlatforms));
-		detail::error::handle<Platform::exception_type>(error);
+		detail::error::handle(error);
 		auto platformIds    = std::vector<Platform::cl_type>(countPlatforms);
 		error               = clGetPlatformIDs(countPlatforms, platformIds.data(), nullptr);
-		detail::error::handle<Platform::exception_type>(error);
+		detail::error::handle(error);
 		auto platforms = std::vector<Platform>{};
 		for (auto&& id : platformIds) {
 			platforms.emplace_back(id);

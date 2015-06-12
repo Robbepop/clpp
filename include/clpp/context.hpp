@@ -5,6 +5,11 @@
 #include "clpp/detail/object.hpp"
 #include "clpp/device.hpp"
 #include "clpp/context_properties.hpp"
+#include "clpp/device_access.hpp"
+#include "clpp/host_access.hpp"
+#include "clpp/transfer_mode.hpp"
+#include "clpp/buffer.hpp"
+#include "clpp/program.hpp"
 
 #include <cstdint>
 
@@ -90,22 +95,22 @@ namespace cl {
 			HostAccess hostAccess     = HostAccess::readWrite
 		) const -> Buffer<T>;
 
-		template<typename InputIterator>
+		template<typename T, typename InputIterator>
 		auto createBuffer(
 			InputIterator first,
 			InputIterator last,
 			TransferMode transferMode,
 			DeviceAccess deviceAccess = DeviceAccess::readWrite,
 			HostAccess hostAccess     = HostAccess::readWrite
-		) const -> Buffer<InputIterator::value_type>;
+		) const -> Buffer<T>;
 
-		template<typename InputRange>
+		template<typename T, typename InputRange>
 		auto createBuffer(
 			InputRange const& range,
-			TransferMode transferMode = TransferMode::none,
+			TransferMode transferMode,
 			DeviceAccess deviceAccess = DeviceAccess::readWrite,
 			HostAccess hostAccess     = HostAccess::readWrite
-		) const -> Buffer<InputRange::value_type>;
+		) const -> Buffer<T>;
 
 		//================================================================================
 		// Create Program Objects

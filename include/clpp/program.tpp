@@ -23,8 +23,8 @@ namespace cl {
 			get(), 0, nullptr, std::addressof(countKernels));
 		detail::error::handle(error);
 		auto kernels = std::vector<Kernel>(countKernels);
-		auto error = clCreateKernelsInProgram(
-			get(), countKernels, kernels.data(), nullptr);
+		error = clCreateKernelsInProgram(
+			get(), countKernels, reinterpret_cast<cl_kernel*>(kernels.data()), nullptr);
 		detail::error::handle(error);
 		return kernels;
 	}
@@ -33,20 +33,20 @@ namespace cl {
 	// Wrapper API for clBuildProgram
 	//================================================================================
 
-	void build(Device const& device) const {
+	void Program::build(Device const& device) const {
 		const auto deviceIt = std::addressof(device);
 		build(deviceIt, deviceIt + 1);
 	}
 
 	template<typename DeviceRange>
-	void build(
+	void Program::build(
 		DeviceRange const& devices
 	) const {
 		build(devices.begin(), devices.end());
 	}
 
 	template<typename DeviceIterator>
-	void build(
+	void Program::build(
 		DeviceIterator firstDevice,
 		DeviceIterator lastDevice
 	) const {
@@ -57,7 +57,7 @@ namespace cl {
 	}
 
 	template<typename Function, typename T>
-	void build(
+	void Program::build(
 		Device const& device,
 		Function callback, T&& data
 	) const {
@@ -66,7 +66,7 @@ namespace cl {
 	}
 
 	template<typename DeviceRange, typename Function, typename T>
-	void build(
+	void Program::build(
 		DeviceRange const& devices,
 		Function callback, T&& data
 	) const {
@@ -74,7 +74,7 @@ namespace cl {
 	}
 
 	template<typename DeviceIterator, typename Function, typename T>
-	void build(
+	void Program::build(
 		DeviceIterator firstDevice,
 		DeviceIterator lastDevice,
 		Function callback, T&& data
@@ -98,43 +98,44 @@ namespace cl {
 	// Information access helper methods.
 	//================================================================================
 
-	auto getReferenceCount() const -> cl_uint {
+	auto Program::getReferenceCount() const -> cl_uint {
 		return getInfo<cl_uint>(CL_PROGRAM_REFERENCE_COUNT);
 	}
 
-	auto getContext() const -> Context {
-		return {getInfo<cl_context>(CL_PROGRAM_CONTEXT)};
+	auto Program::getContext() const -> std::unique_ptr<Context> {
+		return std::make_unique<Context>(getInfo<cl_context>(CL_PROGRAM_CONTEXT));
 	}
 
-	auto getNumDevices() const -> cl_uint {
+	auto Program::getNumDevices() const -> cl_uint {
 		return getInfo<cl_uint>(CL_PROGRAM_NUM_DEVICES);
 	}
 
-	auto getDevices() const -> std::vector<Device> {
+	auto Program::getDevices() const -> std::vector<Device> {
 		const auto deviceIds = getInfoVector<cl_device_id>(CL_PROGRAM_DEVICES);
 		return {deviceIds.begin(), deviceIds.end()};
 	}
 
-	auto getProgramSource() const -> std::string {
+	auto Program::getProgramSource() const -> std::string {
 		return getInfoString(CL_PROGRAM_SOURCE);
 	}
 
-	auto getBinarySizes() const -> std::vector<size_t> {
+	auto Program::getBinarySizes() const -> std::vector<size_t> {
 		return getInfoVector<size_t>(CL_PROGRAM_BINARY_SIZES);
 	}
 
-//	auto getBinaries() const -> std::vector<std::vector<unsigned char>> {
+//	auto Program::getBinaries() const -> std::vector<std::vector<unsigned char>> {
 //		 TODO
 //	}
 
-	auto getNumKernels() const -> cl_uint {
+	auto Program::getNumKernels() const -> cl_uint {
 		return getInfo<cl_uint>(CL_PROGRAM_NUM_KERNELS);
 	}
 
-	auto getKernelNames() const -> std::vector<std::string>> {
+	auto Program::getKernelNames() const -> std::vector<std::string> {
 		const auto kernelNamesStr = getInfoString(CL_PROGRAM_KERNEL_NAMES);
 		      auto kernelNames    = std::vector<std::string>{};
 		boost::split(kernelNames, kernelNamesStr, boost::is_any_of(";"), boost::token_compress_on);
+		return kernelNames;
 	}
 
 	//================================================================================
@@ -146,9 +147,9 @@ namespace cl {
 		Device const& device, cl_program_build_info infoId
 	) const -> T {
 		const auto error = cl_int{CL_INVALID_VALUE};
-		auto info        = ReturnType{};
+		auto info        = T{};
 		error = clGetProgramBuildInfo(
-			get(), device.get(), info, sizeof(T), std::addressof(info), nullptr);
+			get(), device.get(), infoId, sizeof(T), std::addressof(info), nullptr);
 		detail::error::handle(error);
 		return info;
 	}
@@ -158,7 +159,7 @@ namespace cl {
 		Device const& device, cl_program_build_info infoId
 	) const -> std::vector<T> {
 		auto error      = cl_int{CL_INVALID_VALUE};
-		auto bufferSize = cl_uint{0};
+		auto bufferSize = size_t{0};
 		error = clGetProgramBuildInfo(
 			get(), device.get(), infoId, 0, nullptr, std::addressof(bufferSize));
 		detail::error::handle(error);
@@ -166,7 +167,7 @@ namespace cl {
 		auto info = std::vector<T>(countElems);
 		error = clGetProgramBuildInfo(
 			get(), device.get(), infoId, bufferSize, info.data(), nullptr);
-		error::handle(error);
+		detail::error::handle(error);
 		return info;
 	}
 
@@ -177,25 +178,25 @@ namespace cl {
 		return {info.begin(), info.end()};
 	}
 
-	auto getBuildStatus(Device const& device) const -> BuildStatus {
+	auto Program::getBuildStatus(Device const& device) const -> BuildStatus {
 		return static_cast<BuildStatus>(
 			getBuildInfo<cl_build_status>(device, CL_PROGRAM_BUILD_STATUS));
 	}
 
-	auto getBuildOptions(Device const& device) const -> std::string {
+	auto Program::getBuildOptions(Device const& device) const -> std::string {
 		return getBuildInfoString(device, CL_PROGRAM_BUILD_OPTIONS);
 	}
 
-	auto getBuildLog(Device const& device) const -> std::string {
+	auto Program::getBuildLog(Device const& device) const -> std::string {
 		return getBuildInfoString(device, CL_PROGRAM_BUILD_LOG);
 	}
 
-	auto getBinaryType(Device const& device) const -> BinaryType {
+	auto Program::getBinaryType(Device const& device) const -> BinaryType {
 		return static_cast<BinaryType>(
 			getBuildInfo<cl_program_binary_type>(device, CL_PROGRAM_BINARY_TYPE));
 	}
 
-	auto getBuildGlobalVariableTotalSize(Device const& device) const -> size_t {
+	auto Program::getBuildGlobalVariableTotalSize(Device const& device) const -> size_t {
 		return getBuildInfo<size_t>(
 			device, CL_PROGRAM_BUILD_GLOBAL_VARIABLE_TOTAL_SIZE);
 	}

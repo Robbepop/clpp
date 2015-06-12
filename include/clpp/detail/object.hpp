@@ -36,7 +36,6 @@ namespace cl {
 		class Object {
 		public:
 			using info_type      = typename ObjectHandler<CLType>::info_type;
-			using exception_type = typename ObjectHandler<CLType>::exception_type;
 			using cl_type        = typename ObjectHandler<CLType>::cl_type;
 
 			//============================================================================

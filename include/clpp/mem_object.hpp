@@ -3,6 +3,8 @@
 
 #include "clpp/detail/object.hpp"
 #include "clpp/detail/error_handler.hpp"
+#include "clpp/mem_object_type.hpp"
+#include "clpp/mem_object_flags.hpp"
 
 #include "boost/optional.hpp"
 
@@ -30,6 +32,8 @@ namespace cl {
 		};
 	}
 
+	class Context;
+
 	class MemObject : public detail::Object<cl_mem> {
 		//================================================================================
 		// Constructor and Assignment
@@ -45,7 +49,7 @@ namespace cl {
 		//================================================================================
 
 		template<typename Function, typename T>
-		auto setDestructorCallback(Function callback, T&& data) const;
+		void setDestructorCallback(Function callback, T&& data) const;
 
 		//================================================================================
 		// Information access helper methods.
@@ -53,13 +57,13 @@ namespace cl {
 	public:
 
 		auto getType()                -> MemObjectType;
-		auto getFlags()               -> MemObjectFlags;
+		auto getFlags()               -> MemoryFlags;
 		auto getSize()                -> size_t;
 		auto getHostPtr()             -> void*;
 		auto getMapCount()            -> cl_uint;
 		auto getReferenceCount()      -> cl_uint;
-		auto getContext()             -> Context;
-		auto getAssociatedMemObject() -> boost::optional<MemObject>;
+		auto getContext()             -> std::unique_ptr<Context>;
+		auto getAssociatedMemObject() -> boost::optional<std::unique_ptr<MemObject>>;
 		auto getOffset()              -> size_t;
 		auto usesSvmPointer()         -> cl_bool;
 	};
