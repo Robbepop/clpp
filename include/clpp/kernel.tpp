@@ -20,12 +20,15 @@ namespace cl {
 		detail::error::handle(error);
 	}
 
+	template<typename T>
+	void Kernel::setArgsHelper(cl_uint index, T&& head) const {
+		setArg(index, std::forward<T>(head));
+	}
+
 	template<typename T, typename... Args>
 	void Kernel::setArgsHelper(cl_uint index, T&& head, Args&&... tail) const {
 		setArg(index, std::forward<T>(head));
-		if (sizeof...(tail) > 0) {
-			setArgsHelper(index + 1, std::forward<Args>(tail)...);
-		}
+		setArgsHelper(index + 1, std::forward<Args>(tail)...);
 	}
 
 	template<typename... Args>
