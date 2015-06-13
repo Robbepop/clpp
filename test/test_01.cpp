@@ -401,9 +401,11 @@ void test_01() {
 	std::cout << "Context created successfully!\n";
 	std::cout << context << "\n\n";
 
-	auto vectorA = std::vector<cl_int>(1000);
-	auto vectorB = std::vector<cl_int>(1000);
-	auto vectorC = std::vector<cl_int>(1000);
+	constexpr auto vectorSize = 1000;
+
+	auto vectorA = std::vector<cl_int>(vectorSize);
+	auto vectorB = std::vector<cl_int>(vectorSize);
+	auto vectorC = std::vector<cl_int>(vectorSize);
 
 	std::random_device seeder;
 	auto dist   = std::uniform_int_distribution<cl_int>{0, 1000};
@@ -417,7 +419,7 @@ void test_01() {
 
 	auto bufferA = context.createBuffer<cl_int>(vectorA.begin(), vectorA.end());
 	auto bufferB = context.createBuffer<cl_int>(vectorB);
-	auto bufferC = context.createBuffer<cl_int>(1000);
+	auto bufferC = context.createBuffer<cl_int>(vectorSize);
 
 	std::cout << "bufferA" << bufferA << "\n\n";
 	std::cout << "bufferB" << bufferB << "\n\n";
@@ -429,8 +431,9 @@ void test_01() {
 	auto defaultDevice = devices[0];
 	program.build(defaultDevice);
 
-//	auto kernel = program.createKernel("vectorAdd");
+	auto kernel = program.createKernel("vectorAdd");
 
+	kernel.setArgs(bufferA, bufferB, bufferC, vectorSize);
 
 //	std::ignore = context;
 	//std::cout << "Context information ...\n";

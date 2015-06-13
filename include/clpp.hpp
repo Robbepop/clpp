@@ -12,6 +12,6 @@
 // from other libraries and/or components.
 //===========================================================
 
-#undef REQUIRES // defined in "utility/type_traits.hpp"
+#undef CLPP_REQUIRES // defined in "utility/type_traits.hpp"
 
 #endif

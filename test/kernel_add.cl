@@ -1,6 +1,6 @@
 #pragma OPENCL EXTENSION cl_khr_fp64 : enable
 
-__kernel void vecAdd(
+__kernel void vectorAdd(
 	__global double* bufferA,
 	__global double* bufferB,
 	__global double* result,

@@ -106,7 +106,7 @@ namespace cl {
 		) const -> Buffer<T>;
 
 		template<typename T, typename InputRange,
-			REQUIRES(utility::is_range<InputRange>::value>)
+			CLPP_REQUIRES(utility::is_range<InputRange>::value>)
 		auto createBuffer(
 			InputRange const& range,
 			TransferMode transferMode = TransferMode::copy,

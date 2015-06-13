@@ -17,7 +17,7 @@ namespace cl {
 		}
 
 		auto error::isError(RetCode code) -> bool {
-			return isError(static_cast<code_type>(code));
+			return code != RetCode::success;
 		}
 
 		auto error::isSuccess(code_type code) -> bool {
@@ -25,11 +25,12 @@ namespace cl {
 		}
 
 		auto error::isSuccess(RetCode code) -> bool {
-			return isSuccess(static_cast<code_type>(code));
+			return code == RetCode::success;
 		}
 
 		void error::throwException(RetCode code) {
 			using namespace error;
+			std::cout << "throwException start\n";
 			switch (code) {
 				case RetCode::deviceNotFound:
 					throw DeviceNotFound{"device not found"};
@@ -149,8 +150,7 @@ namespace cl {
 				case RetCode::invalidDevicePartitionCount:
 					throw InvalidDevicePartitionCount{"invalid device partition count"};
 
-				default:
-					assert(false);
+				default: assert(false);
 			}
 		}
 
@@ -176,6 +176,7 @@ namespace cl {
 				const auto errorMessage =
 					it != local_info_map->end() ? it->second : ""s;
 				throwException(code);
+				assert(false);
 			}
 			return true;
 		}

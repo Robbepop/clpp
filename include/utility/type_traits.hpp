@@ -3,7 +3,7 @@
 
 #include <type_traits>
 
-#define REQUIRES(...) typename = std::enable_if_t<__VA_ARGS__>
+#define CLPP_REQUIRES(...) typename = std::enable_if_t<__VA_ARGS__>
 
 namespace utility {
 	template<typename... Ts> struct make_void { using type = void; };
