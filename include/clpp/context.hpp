@@ -106,7 +106,7 @@ namespace cl {
 		) const -> Buffer<T>;
 
 		template<typename T, typename InputRange,
-			typename = std::enable_if_t<utility::is_range<InputRange>::value>>
+			REQUIRES(utility::is_range<InputRange>::value>)
 		auto createBuffer(
 			InputRange const& range,
 			TransferMode transferMode = TransferMode::copy,

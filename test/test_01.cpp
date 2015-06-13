@@ -405,17 +405,14 @@ void test_01() {
 	auto vectorB = std::vector<cl_int>(1000);
 	auto vectorC = std::vector<cl_int>(1000);
 
-	//std::random_device seeder;
+	std::random_device seeder;
 	auto dist   = std::uniform_int_distribution<cl_int>{0, 1000};
-	auto engine = std::default_random_engine{};
-	for (auto&& elem : vectorA) {
-		elem = dist(engine);
-	}
-	for (auto&& elem : vectorB) {
-		elem = dist(engine);
-	}
-	for (auto&& elem : vectorC) {
-		elem = dist(engine);
+	auto engine = std::default_random_engine{seeder()};
+	for (auto&& elem : vectorA) { elem = dist(engine); }
+	for (auto&& elem : vectorB) { elem = dist(engine); }
+	//for (auto&& elem : vectorC) { elem = dist(engine); }
+	for (auto i = 0ul; i < std::min(vectorA.size(), vectorB.size()); ++i) {
+		vectorC[i] = vectorA[i] + vectorB[i];
 	}
 
 	auto bufferA = context.createBuffer<cl_int>(vectorA.begin(), vectorA.end());
@@ -432,6 +429,7 @@ void test_01() {
 	auto defaultDevice = devices[0];
 	program.build(defaultDevice);
 
+//	auto kernel = program.createKernel("vectorAdd");
 
 
 //	std::ignore = context;

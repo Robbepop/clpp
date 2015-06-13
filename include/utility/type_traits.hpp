@@ -3,6 +3,8 @@
 
 #include <type_traits>
 
+#define REQUIRES(...) typename = std::enable_if_t<__VA_ARGS__>
+
 namespace utility {
 	template<typename... Ts> struct make_void { using type = void; };
 	template<typename... Ts> using void_t = typename make_void<Ts...>::type;
