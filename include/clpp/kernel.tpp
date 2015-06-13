@@ -16,21 +16,21 @@ namespace cl {
 	template<typename T>
 	void Kernel::setArg(cl_uint index, T&& arg) const {
 		const auto error = clSetKernelArg(
-			get(), index, sizeof(T), std::addressof(arg));
+			get(), index, sizeof(T), std::addressof(std::forward<T>(arg)));
 		detail::error::handle(error);
 	}
 
 	template<typename T, typename... Args>
 	void Kernel::setArgsHelper(cl_uint index, T&& head, Args&&... tail) const {
-		setArg(index, head);
+		setArg(index, std::forward<T>(head));
 		if (sizeof...(tail) > 0) {
-			setArgsHelper(index + 1, tail...);
+			setArgsHelper(index + 1, std::forward<Args>(tail)...);
 		}
 	}
 
 	template<typename... Args>
 	void Kernel::setArgs(Args&&... tail) const {
-		setArgsHelper(0, tail...);
+		setArgsHelper(0, std::forward<Args>(tail)...);
 	}
 
 //	auto Kernel::getArg(cl_uint index) const -> KernelArg {
