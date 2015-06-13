@@ -1,13 +1,15 @@
 #ifndef CLPP_EVENT_H
 #define CLPP_EVENT_H
 
+#include "clpp/execution_status.hpp"
+#include "clpp/command.hpp"
+
 namespace cl {
 	namespace detail {
 		template<>
 		struct ObjectHandler<cl_event> final {
 			using cl_type        = cl_event;
 			using info_type      = cl_event_info;
-			using exception_type = EventError;
 
 			static auto release(cl_type id) { clReleaseEvent(id); }
 
@@ -88,5 +90,4 @@ namespace cl {
 	};
 }
 
-#include "clpp/event.tpp"
 #endif

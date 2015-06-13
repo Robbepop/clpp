@@ -53,5 +53,4 @@ namespace cl {
 	}
 }
 
-#include "clpp/detail/error_handler.tpp"
 #endif

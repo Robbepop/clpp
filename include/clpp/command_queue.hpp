@@ -1,6 +1,8 @@
 #ifndef CLPP_COMMAND_QUEUE_H
 #define CLPP_COMMAND_QUEUE_H
 
+#include "clpp/detail/command_queue_executor.hpp"
+
 namespace cl {
 	namespace detail {
 		template<>
@@ -21,7 +23,7 @@ namespace cl {
 				size_t *  param_value_size_ret
 			) {
 				return clGetCommandQueueInfo(
-					device, param_name, param_value_size, param_value, param_value_size_ret);
+					queue, param_name, param_value_size, param_value, param_value_size_ret);
 			}
 		};
 	}
@@ -40,7 +42,7 @@ namespace cl {
 		// Returns the CommandQueueExecutor for non-delayed execution
 		//================================================================================
 	private:
-		auto getExecutor() const -> CommandQueueExecutor;
+		auto getExecutor() const -> detail::CommandQueueExecutor;
 
 		//================================================================================
 		// Overloads to access clEnqueueReadBuffer
@@ -66,7 +68,7 @@ namespace cl {
 
 		template<typename OutputIterator, typename T>
 		auto readBuffer(
-			Buffer<T> const& buffer, OutputIterator first, OutIterator last
+			Buffer<T> const& buffer, OutputIterator first, OutputIterator last
 		) const -> Event;
 
 		//================================================================================
@@ -236,6 +238,17 @@ namespace cl {
 			size_t localWorkSize
 		) const -> Event;
 
+		auto execute1DRange(
+			Kernel const& kernel,
+			size_t globalWorkSize,
+			size_t localWorkSize
+		) const -> Event;
+
+		auto execute1DRange(
+			Kernel const& kernel,
+			size_t globalWorkSize
+		) const -> Event;
+
 		template<size_t N>
 		auto executeNDRange(
 			Kernel const& kernel,
@@ -250,10 +263,10 @@ namespace cl {
 	public:
 
 		template<typename EventRange>
-		auto when(EventRange const& waitList) const -> CommandQueueExecutor;
+		auto when(EventRange const& waitList) const -> detail::CommandQueueExecutor;
 
 		template<typename...Events>
-		auto when(Events... events) const -> CommandQueueExecutor;
+		auto when(Events... events) const -> detail::CommandQueueExecutor;
 
 		auto marker() const -> Event;
 
@@ -281,5 +294,4 @@ namespace cl {
 	};
 }
 
-#include "clpp/command_queue.tpp"
 #endif

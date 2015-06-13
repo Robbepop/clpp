@@ -2,6 +2,8 @@
 #define CLPP_BUFFER_H
 
 #include "clpp/mem_object.hpp"
+#include "clpp/device_access.hpp"
+#include "clpp/host_access.hpp"
 
 namespace cl {
 	template<typename T>
@@ -30,5 +32,4 @@ namespace cl {
 	};
 }
 
-#include "clpp/buffer.tpp"
 #endif

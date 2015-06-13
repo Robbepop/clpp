@@ -5,10 +5,17 @@
 #include "clpp/detail/error_handler.hpp"
 
 #include "clpp/affinity_domain.hpp"
+#include "clpp/affinity_domain_capabilities.hpp"
+#include "clpp/command_queue_properties.hpp"
+#include "clpp/execution_capabilities.hpp"
 #include "clpp/fp_type.hpp"
+#include "clpp/fp_config.hpp"
 #include "clpp/memory_cache_type.hpp"
 #include "clpp/local_memory_type.hpp"
+#include "clpp/partition.hpp"
+#include "clpp/partition_capabilities.hpp"
 #include "clpp/scalar_type.hpp"
+#include "clpp/svm_capabilities.hpp"
 
 #include "boost/optional.hpp"
 
@@ -16,23 +23,13 @@
 #include <string>
 
 namespace cl {
-	class AffinityDomainCapabilities;
 	class Platform;
-	class Partition;
-	class PartitionCapabilities;
-	class FPConfig;
-	class ExecutionCapabilities;
-	class CommandQueueProperties;
-	class DeviceError;
-	class SvmCapabilities;
-	class TerminateCapabilities;
 
 	namespace detail {
 		template<>
 		struct ObjectHandler<cl_device_id> final {
 			using cl_type        = cl_device_id;
 			using info_type      = cl_device_info;
-			using exception_type = DeviceError;
 
 			static auto release(cl_type id) { clReleaseDevice(id); }
 
@@ -151,7 +148,7 @@ namespace cl {
 		auto getPipeMaxActiveReservations() const -> cl_uint;
 		auto getPipeMaxPacketSize() const         -> cl_uint;
 
-		auto getPlatform() const                         -> Platform;
+		auto getPlatform() const                         -> std::unique_ptr<Platform>;
 		auto getPreferredGlobalAtomicAlignment() const   -> cl_uint;
 		auto hasPreferredInteropUserSync() const         -> cl_bool;
 		auto getPreferredLocalAtomicAlignment() const    -> cl_uint;
@@ -181,5 +178,4 @@ namespace cl {
 	};
 }
 
-#include "clpp/device.tpp"
 #endif

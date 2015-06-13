@@ -82,5 +82,4 @@ namespace cl {
 	};
 }
 
-#include "clpp/kernel.tpp"
 #endif

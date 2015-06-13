@@ -1,18 +1,20 @@
 #ifndef CLPP_ND_RANGE_H
 #define CLPP_ND_RANGE_H
 
+#include "utility/concepts.hpp"
+
 #include <cstdint>
 
 namespace cl {
 	template<size_t N>
 	class NDRange final {
 	public:
+		NDRange();
 
-		// generic constructor which checks T+Args length against N
-		template<typename T, typename... Args>
-		NDRange(T head, Args tail);
-
-		NDRange(NDRange<N> const& rhs);
+		// generic constructor which checks Args length against N
+		template<typename... Args,
+			CLPP_REQUIRES(sizeof...(Args) == N)>
+		NDRange(Args&&... tail);
 
 		// singleton for the NullRange
 		static auto null() -> NDRange<N> const&;
@@ -29,5 +31,4 @@ namespace cl {
 	};
 }
 
-#include "clpp/nd_range.tpp"
 #endif

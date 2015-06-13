@@ -151,6 +151,18 @@ namespace cl {
 	}
 
 	//================================================================================
+	// Create Command Queue Objects
+	//================================================================================
+
+	auto Context::createCommandQueue(Device const& device) const -> CommandQueue {
+		auto error   = cl_int{CL_INVALID_VALUE};
+		auto queueId = clCreateCommandQueueWithProperties(
+			get(), device.get(), nullptr, std::addressof(error));
+		detail::error::handle(error);
+		return {queueId};
+	}
+
+	//================================================================================
 	// Create Memory Objects
 	//================================================================================
 

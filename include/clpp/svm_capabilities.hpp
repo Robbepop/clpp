@@ -18,5 +18,4 @@ namespace cl {
 	};
 }
 
-#include "clpp/svm_capabilities.tpp"
 #endif

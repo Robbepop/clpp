@@ -4,6 +4,7 @@
 #include "clpp/detail/error_handler.hpp"
 #include "clpp/detail/object.hpp"
 #include "clpp/device.hpp"
+#include "clpp/command_queue.hpp"
 #include "clpp/context_properties.hpp"
 #include "clpp/device_access.hpp"
 #include "clpp/host_access.hpp"
@@ -11,7 +12,7 @@
 #include "clpp/buffer.hpp"
 #include "clpp/program.hpp"
 
-#include "utility/type_traits.hpp"
+#include "utility/concepts.hpp"
 
 #include <cstdint>
 
@@ -86,6 +87,12 @@ namespace cl {
 		);
 
 		//================================================================================
+		// Create Command Queue Objects
+		//================================================================================
+
+		auto createCommandQueue(Device const& device) const -> CommandQueue;
+
+		//================================================================================
 		// Create Memory Objects
 		//================================================================================
 
@@ -106,7 +113,7 @@ namespace cl {
 		) const -> Buffer<T>;
 
 		template<typename T, typename InputRange,
-			CLPP_REQUIRES(utility::is_range<InputRange>::value>)
+			CLPP_REQUIRES(concept::is_range<InputRange>::value>)
 		auto createBuffer(
 			InputRange const& range,
 			TransferMode transferMode = TransferMode::copy,
@@ -131,5 +138,4 @@ namespace cl {
 	};
 }
 
-#include "clpp/context.tpp"
 #endif

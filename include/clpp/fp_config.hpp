@@ -20,5 +20,4 @@ namespace cl {
 	};
 }
 
-#include "clpp/fp_config.tpp"
 #endif

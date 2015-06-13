@@ -71,5 +71,4 @@ namespace cl {
 	};
 }
 
-#include "clpp/platform.tpp"
 #endif

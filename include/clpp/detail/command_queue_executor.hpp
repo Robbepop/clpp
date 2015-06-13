@@ -2,16 +2,21 @@
 #define CLPP_COMMAND_QUEUE_EXECUTOR_H
 
 #include "clpp/nd_range.hpp"
+#include "clpp/buffer.hpp"
+#include "clpp/map_access.hpp"
+#include "clpp/kernel.hpp"
+
+#include "utility/concepts.hpp"
 
 #include <vector>
 
 namespace cl {
+	template<typename T> class MappedMemory;
 	class CommandQueue;
 	class Event;
 
 	namespace detail {
 		class CommandQueueExecutor final {
-			friend class CommandQueue;
 
 			//============================================================================
 			// Helper methods to access members.
@@ -23,16 +28,17 @@ namespace cl {
 			auto getWaitListSize() const -> cl_uint;
 
 			// converts element count based arrays into byte based arrays
-			template<typename T, size_t N>
-			auto toByteArray(std::array<T,N> const& array) const -> std::array<T,N>;
+			template<template<class, size_t> class A, class T, size_t N>
+			auto toByteArray(A<T,N> const& values) const -> A<T,N>;
 
 			//============================================================================
 			// Constructors and Assignment
 			//============================================================================
-		private:
+		public:
 			CommandQueueExecutor(CommandQueue const& queue);
 
-			template<typename EventIterator>
+			template<typename EventRange,
+				CLPP_REQUIRES(concept::is_range<EventRange>::value)>
 			CommandQueueExecutor(CommandQueue const& queue, EventRange const& waitList);
 
 			CommandQueueExecutor(CommandQueueExecutor const& rhs) = delete;
@@ -81,7 +87,7 @@ namespace cl {
 
 			template<typename InputIterator, typename T>
 			void writeBufferBlocked(
-				Buffer<T> const& buffer, InputIterator first
+				Buffer<T> const& buffer, InputIterator first, InputIterator last
 			) const;
 
 			template<typename InputIterator, typename T>
@@ -92,7 +98,7 @@ namespace cl {
 
 			template<typename InputIterator, typename T>
 			auto writeBuffer(
-				Buffer<T> const& buffer, InputIterator first, OutputIterator last
+				Buffer<T> const& buffer, InputIterator first, InputIterator last
 			) const -> Event;
 
 			//============================================================================
@@ -234,7 +240,19 @@ namespace cl {
 				size_t localWorkSize
 			) const -> Event;
 
-			template<size_t N>
+			auto execute1DRange(
+				Kernel const& kernel,
+				size_t globalWorkSize,
+				size_t localWorkSize
+			) const -> Event;
+
+			auto execute1DRange(
+				Kernel const& kernel,
+				size_t globalWorkSize
+			) const -> Event;
+
+			template<size_t N,
+				CLPP_REQUIRES(N >= 1)>
 			auto executeNDRange(
 				Kernel const& kernel,
 				NDRange<N> const& globalWorkOffset,
@@ -247,10 +265,8 @@ namespace cl {
 			//============================================================================
 		public:
 
-			template<typename EventRange>
 			auto marker() const -> Event;
 
-			template<typename EventRange>
 			auto barrier() const -> Event;
 
 			//============================================================================
@@ -264,5 +280,4 @@ namespace cl {
 	}
 }
 
-#include "clpp/detail/command_queue_executor.tpp"
 #endif

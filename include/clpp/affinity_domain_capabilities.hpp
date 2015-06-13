@@ -20,5 +20,4 @@ namespace cl {
 	};
 }
 
-#include "clpp/affinity_domain_capabilities.tpp"
 #endif

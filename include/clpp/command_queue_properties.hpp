@@ -22,5 +22,4 @@ namespace cl {
 	};
 }
 
-#include "clpp/command_queue_properties.tpp"
 #endif

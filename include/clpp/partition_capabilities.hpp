@@ -26,5 +26,4 @@ namespace cl {
 	};
 }
 
-#include "clpp/partition_capabilities.tpp"
 #endif

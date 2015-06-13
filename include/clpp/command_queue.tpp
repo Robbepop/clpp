@@ -2,16 +2,21 @@
 	#error "Do not include this file directly."
 #endif
 
+#include "utility/make_array.hpp"
+
 namespace cl {
 	auto CommandQueue::operator=(const CommandQueue & rhs) -> CommandQueue & {
-
+        if (this != &rhs) {
+            detail::Object<cl_type>::operator=(rhs);
+        }
+        return *this;
 	}
 
 	//================================================================================
 	// Returns the CommandQueueExecutor for non-delayed execution
 	//================================================================================
 
-	auto CommandQueue::getExecutor() const -> CommandQueueExecutor {
+	auto CommandQueue::getExecutor() const -> detail::CommandQueueExecutor {
 		return {*this};
 	}
 
@@ -63,7 +68,7 @@ namespace cl {
 
 	template<typename InputIterator, typename T>
 	void CommandQueue::writeBufferBlocked(
-		Buffer<T> const& buffer, InputIterator first, OutputIterator last
+		Buffer<T> const& buffer, InputIterator first, InputIterator last
 	) const {
 		getExecutor().writeBufferBlocked(buffer, first, last);
 	}
@@ -78,7 +83,7 @@ namespace cl {
 
 	template<typename InputIterator, typename T>
 	auto CommandQueue::writeBuffer(
-		Buffer<T> const& buffer, InputIterator first, OutputIterator last
+		Buffer<T> const& buffer, InputIterator first, InputIterator last
 	) const -> Event {
 		return getExecutor().writeBuffer(buffer, first, last);
 	}
@@ -117,7 +122,7 @@ namespace cl {
 		return getExecutor().readBufferRect(
 			buffer, bufferOrigin, hostOrigin, region,
 			bufferRowPitch, bufferSlicePitch,
-			hostRowPitch, hostSlicePitch, first)
+			hostRowPitch, hostSlicePitch, first);
 	}
 
 	//================================================================================
@@ -137,7 +142,7 @@ namespace cl {
 		getExecutor().writeBufferRectBlocked(
 			buffer, bufferOrigin, hostOrigin, region,
 			bufferRowPitch, bufferSlicePitch,
-			hostRowPitch, hostSlicePitch, first)
+			hostRowPitch, hostSlicePitch, first);
 	}
 
 	template<typename OutIterator, typename T>
@@ -257,6 +262,21 @@ namespace cl {
 			kernel, globalWorkOffset, globalWorkSize, localWorkSize);
 	}
 
+	auto CommandQueue::execute1DRange(
+		Kernel const& kernel,
+		size_t globalWorkSize,
+		size_t localWorkSize
+	) const -> Event {
+		return getExecutor().execute1DRange(kernel, globalWorkSize, localWorkSize);
+	}
+
+	auto CommandQueue::execute1DRange(
+		Kernel const& kernel,
+		size_t globalWorkSize
+	) const -> Event {
+		return getExecutor().execute1DRange(kernel, globalWorkSize);
+	}
+
 	template<size_t N>
 	auto CommandQueue::executeNDRange(
 		Kernel const& kernel,
@@ -273,13 +293,13 @@ namespace cl {
 	//================================================================================
 
 	template<typename EventRange>
-	auto when(EventRange const& waitList) const -> CommandQueueExecutor {
+	auto CommandQueue::when(EventRange const& waitList) const -> detail::CommandQueueExecutor {
 		return {*this, waitList.begin(), waitList.end()};
 	}
 
 	template<typename...Events>
-	auto when(Events... events) const -> CommandQueueExecutor {
-		auto waitList = utility::make_array(events...);
+	auto CommandQueue::when(Events... events) const -> detail::CommandQueueExecutor {
+		auto waitList = utility::make_array<Event>(events...);
 		return {*this, waitList.begin(), waitList.end()};
 	}
 

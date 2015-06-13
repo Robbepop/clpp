@@ -31,5 +31,4 @@ namespace cl {
 	}
 }
 
-#include "clpp/detail/mask_wrapper.tpp"
 #endif

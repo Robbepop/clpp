@@ -435,6 +435,8 @@ void test_01() {
 
 	kernel.setArgs(bufferA, bufferB, bufferC, vectorSize);
 
+//	auto queue = context.createCommandQueue(defaultDevice);
+
 //	std::ignore = context;
 	//std::cout << "Context information ...\n";
 	//std::cout << "\tReference Count = " << context.referenceCount() << '\n';

@@ -2,6 +2,11 @@
 	#error "Do not include this file directly."
 #endif
 
+#include "utility/concepts.hpp"
+
+#include "clpp/event.hpp"
+#include "clpp/command_queue.hpp"
+
 #include <algorithm>
 
 namespace cl {
@@ -15,7 +20,8 @@ namespace cl {
 		}
 
 		auto CommandQueueExecutor::getWaitListData() const -> cl_event const* {
-			return m_first_event;
+			//return m_first_event->get();
+			return reinterpret_cast<cl_event const*>(m_first_event);
 		}
 
 		auto CommandQueueExecutor::getWaitListSize() const -> cl_uint {
@@ -35,21 +41,20 @@ namespace cl {
 		// Constructors and Assignment
 		//============================================================================
 
-		CommandQueueExecutor(CommandQueue const& queue):
+		CommandQueueExecutor::CommandQueueExecutor(CommandQueue const& queue):
 			m_queue{queue},
 			m_first_event{nullptr},
 			m_count_events{0}
 		{}
 
-		template<typename EventIterator>
-		CommandQueueExecutor(
+		template<typename EventRange, typename>
+		CommandQueueExecutor::CommandQueueExecutor(
 			CommandQueue const& queue,
-			EventIterator first,
-			EventIterator last
+			EventRange const& waitList
 		):
 			m_queue{queue},
-			m_first_event{std::addressof(first->get())},
-			m_count_events{std::distance(first, last)}
+			m_first_event{std::addressof(*waitList.begin())},
+			m_count_events{std::distance(waitList.begin(), waitList.end())}
 		{}
 
 		//============================================================================
@@ -186,10 +191,11 @@ namespace cl {
 			OutIterator first
 		) const {
 			static_assert(std::is_same<
-				OutIterator::value_type, Buffer<T>::value_type>::value,
+				typename OutIterator::value_type,
+				typename Buffer<T>::value_type>::value,
 				"value_type of OutIterator must be the same as value_type of buffer");
 			auto error = clEnqueueReadBufferRect(
-				getQueueId(), CL_BLOCKING,
+				getQueueId(), buffer.get(), CL_BLOCKING,
 				toByteArray(bufferOrigin).data(),
 				toByteArray(hostOrigin).data(),
 				toByteArray(region).data(),
@@ -212,11 +218,12 @@ namespace cl {
 			OutIterator first
 		) const -> Event {
 			static_assert(std::is_same<
-				OutIterator::value_type, Buffer<T>::value_type>::value,
+				typename OutIterator::value_type,
+				typename Buffer<T>::value_type>::value,
 				"value_type of OutIterator must be the same as value_type of buffer");
-			auto evendId = cl_event{nullptr};
+			auto eventId = cl_event{nullptr};
 			auto error   = clEnqueueReadBufferRect(
-				getQueueId(), CL_NON_BLOCKING,
+				getQueueId(), buffer.get(), CL_NON_BLOCKING,
 				toByteArray(bufferOrigin).data(),
 				toByteArray(hostOrigin).data(),
 				toByteArray(region).data(),
@@ -244,10 +251,11 @@ namespace cl {
 			InIterator first
 		) const {
 			static_assert(std::is_same<
-				InIterator::value_type, Buffer<T>::value_type>::value,
+				typename InIterator::value_type,
+				typename Buffer<T>::value_type>::value,
 				"value_type of InIterator must be the same as value_type of buffer");
 			auto error = clEnqueueWriteBufferRect(
-				getQueueId(), CL_BLOCKING,
+				getQueueId(), buffer.get(), CL_BLOCKING,
 				toByteArray(bufferOrigin).data(),
 				toByteArray(hostOrigin).data(),
 				toByteArray(region).data(),
@@ -270,11 +278,12 @@ namespace cl {
 			InIterator first
 		) const -> Event {
 			static_assert(std::is_same<
-				InIterator::value_type, Buffer<T>::value_type>::value,
+				typename InIterator::value_type,
+				typename Buffer<T>::value_type>::value,
 				"value_type of InIterator must be the same as value_type of buffer");
-			auto evendId = cl_event{nullptr};
+			auto eventId = cl_event{nullptr};
 			auto error   = clEnqueueWriteBufferRect(
-				getQueueId(), CL_NON_BLOCKING,
+				getQueueId(), buffer.get(), CL_NON_BLOCKING,
 				toByteArray(bufferOrigin).data(),
 				toByteArray(hostOrigin).data(),
 				toByteArray(region).data(),
@@ -326,7 +335,7 @@ namespace cl {
 
 		template<typename T, typename V>
 		auto CommandQueueExecutor::copyBufferRect(
-			Buffer<T> const& src, Buffer<V> const& dest,
+			Buffer<T> const& src, Buffer<V> const& dst,
 			std::array<size_t, 3> const& srcOrigin,
 			std::array<size_t, 3> const& dstOrigin,
 			std::array<size_t, 3> const& region,
@@ -393,7 +402,7 @@ namespace cl {
 		) const {
 			auto error  = cl_int{CL_INVALID_VALUE};
 			auto region = clEnqueueMapBuffer(
-				getQueueId(), CL_BLOCKING, access,
+				getQueueId(), buffer.get(), CL_BLOCKING, access,
 				offset * sizeof(T), size * sizeof(T),
 				getWaitListSize(), getWaitListData(),
 				nullptr, std::addressof(error));
@@ -412,7 +421,7 @@ namespace cl {
 				getWaitListSize(), getWaitListData(),
 				nullptr, std::addressof(error));
 			detail::error::handle(error);
-			result = {m_queue, buffer, reinterpret_cast<T*>(region), size};
+			result = {m_queue, buffer, reinterpret_cast<T*>(region), buffer.getSize()};
 		}
 
 		template<typename T>
@@ -425,13 +434,13 @@ namespace cl {
 			auto eventId = cl_event{nullptr};
 			auto error   = cl_int{CL_INVALID_VALUE};
 			auto region  = clEnqueueMapBuffer(
-				getQueueId(), CL_NON_BLOCKING, access,
+				getQueueId(), buffer.get(), CL_NON_BLOCKING, access,
 				offset * sizeof(T), size * sizeof(T),
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId),
 				std::addressof(error));
 			detail::error::handle(error);
-			result = {m_queue, buffer, reinterpret_cast<T*>(region), size};
+			result = {m_queue, buffer, reinterpret_cast<T*>(region), buffer.getSize()};
 			return {eventId};
 		}
 
@@ -442,13 +451,13 @@ namespace cl {
 			auto eventId = cl_event{nullptr};
 			auto error   = cl_int{CL_INVALID_VALUE};
 			auto region  = clEnqueueMapBuffer(
-				getQueueId(), CL_NON_BLOCKING, access,
+				getQueueId(), buffer.get(), CL_NON_BLOCKING, access,
 				0, buffer.getSizeInBytes(),
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId),
 				std::addressof(error));
 			detail::error::handle(error);
-			result = {m_queue, buffer, reinterpret_cast<T*>(region), size};
+			result = {m_queue, buffer, reinterpret_cast<T*>(region), buffer.getSize()};
 			return {eventId};
 		}
 
@@ -469,20 +478,54 @@ namespace cl {
 				std::addressof(globalWorkSize),
 				std::addressof(localWorkSize),
 				getWaitListSize(), getWaitListData(),
-				std::addressof(eventId);
+				std::addressof(eventId)
 			);
 			detail::error::handle(error);
 			return {eventId};
 		}
 
-		template<size_t N>
+		auto CommandQueueExecutor::execute1DRange(
+			Kernel const& kernel,
+			size_t globalWorkSize,
+			size_t localWorkSize
+		) const -> Event {
+			auto eventId = cl_event{nullptr};
+			auto error   = clEnqueueNDRangeKernel(
+				getQueueId(), kernel.get(), 1,
+				nullptr,
+				std::addressof(globalWorkSize),
+				std::addressof(localWorkSize),
+				getWaitListSize(), getWaitListData(),
+				std::addressof(eventId)
+			);
+			detail::error::handle(error);
+			return {eventId};
+		}
+
+		auto CommandQueueExecutor::execute1DRange(
+			Kernel const& kernel,
+			size_t globalWorkSize
+		) const -> Event {
+			auto eventId = cl_event{nullptr};
+			auto error   = clEnqueueNDRangeKernel(
+				getQueueId(), kernel.get(), 1,
+				nullptr,
+				std::addressof(globalWorkSize),
+				nullptr,
+				getWaitListSize(), getWaitListData(),
+				std::addressof(eventId)
+			);
+			detail::error::handle(error);
+			return {eventId};
+		}
+
+		template<size_t N, typename>
 		auto CommandQueueExecutor::executeNDRange(
 			Kernel const& kernel,
 			NDRange<N> const& globalWorkOffset,
 			NDRange<N> const& globalWorkSize,
 			NDRange<N> const& localWorkSize
 		) const -> Event {
-			static_assert(N >= 1, "N must be greater than or equal to 1.")
 			auto eventId = cl_event{nullptr};
 			auto error   = clEnqueueNDRangeKernel(
 				getQueueId(), kernel.get(), N,
@@ -490,7 +533,7 @@ namespace cl {
 				globalWorkSize.data(),
 				localWorkSize.data(),
 				getWaitListSize(), getWaitListData(),
-				std::addressof(eventId);
+				std::addressof(eventId)
 			);
 			detail::error::handle(error);
 			return {eventId};
@@ -500,7 +543,6 @@ namespace cl {
 		// Wait (for events), Marker & Barrier and When for async calls
 		//============================================================================
 
-		template<typename EventRange>
 		auto CommandQueueExecutor::marker() const -> Event {
 			auto eventId = cl_event{nullptr};
 			auto error   = clEnqueueMarkerWithWaitList(
@@ -509,7 +551,6 @@ namespace cl {
 			return {eventId};
 		}
 
-		template<typename EventRange>
 		auto CommandQueueExecutor::barrier() const -> Event {
 			auto eventId = cl_event{nullptr};
 			auto error   = clEnqueueBarrierWithWaitList(

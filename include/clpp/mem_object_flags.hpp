@@ -22,5 +22,4 @@ namespace cl {
 	};
 }
 
-#include "clpp/mem_object_flags.tpp"
 #endif

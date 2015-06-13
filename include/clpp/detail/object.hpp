@@ -1,6 +1,8 @@
 #ifndef CPPCL_DETAIL_OBJECT_H
 #define CPPCL_DETAIL_OBJECT_H
 
+#include "clpp/detail/get_info_helper.hpp"
+
 #include <vector>
 #include <string>
 
@@ -86,5 +88,4 @@ namespace cl {
 	}
 }
 
-#include "clpp/detail/object.tpp"
 #endif

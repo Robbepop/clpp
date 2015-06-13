@@ -16,5 +16,4 @@ namespace cl {
 	};
 }
 
-#include "clpp/execution_capabilities.tpp"
 #endif

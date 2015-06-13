@@ -69,5 +69,4 @@ namespace cl {
 	};
 }
 
-#include "clpp/mem_object.tpp"
 #endif

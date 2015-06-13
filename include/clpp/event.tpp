@@ -2,23 +2,27 @@
 	#error "Do not include this file directly."
 #endif
 
+#include "utility/to_underlying.hpp"
+
+#include <memory>
+
 namespace cl {
 	template<typename EventRange>
 	void Event::wait(EventRange const& waitList) {
 		auto error = clWaitForEvents(
 			waitList.size(),
 			reinterpret_cast<const cl_type*>(waitList.data()));
-		detail::error::handle<Event::exception_type>(error);
+		detail::error::handle(error);
 	}
 
 	template<typename... Events>
-	void Event::wait(Events...) {
-		wait(utility::make_array(Events...));
+	void Event::wait(Events... events) {
+		wait(utility::make_array(events...));
 	}
 
 	void Event::wait() const {
 		detail::error::handle(
-			clWaitForEvents(1, std::addressof(get())));
+			clWaitForEvents(1, reinterpret_cast<const cl_type*>(this)));
 	}
 
 	Event& Event::operator=(const Event & rhs) {
@@ -30,7 +34,7 @@ namespace cl {
 
 	void Event::setStatus(cl_int status) const {
 		auto error = clSetUserEventStatus(get(), status);
-		detail::error::handle<Event::exception_type>(error);
+		detail::error::handle(error);
 	}
 
 	void Event::setStatusComplete() const {
@@ -50,7 +54,7 @@ namespace cl {
 		auto cbw   = new CallbackWrapper{callback, std::forward(data)};
 		auto error = cl_int{CL_INVALID_VALUE};
 		error = clSetEventCallback(
-			get(), static_cast<command_exec_callback_type>(status),
+			get(), utility::to_underlying(status),
 			[](cl_event event, cl_int event_command_exec_status, void* user_data) {
 				auto cbw    = reinterpret_cast<CallbackWrapper*>(user_data);
 				auto status = static_cast<ExecutionStatus>(event_command_exec_status);

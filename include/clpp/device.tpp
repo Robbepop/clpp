@@ -3,12 +3,6 @@
 #endif
 
 #include "clpp/partition.hpp"
-#include "clpp/fp_config.hpp"
-#include "clpp/execution_capabilities.hpp"
-#include "clpp/affinity_domain_capabilities.hpp"
-#include "clpp/partition_capabilities.hpp"
-#include "clpp/command_queue_properties.hpp"
-#include "clpp/svm_capabilities.hpp"
 
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
@@ -326,8 +320,10 @@ namespace cl {
 		return getInfo<cl_uint>(CL_DEVICE_PIPE_MAX_PACKET_SIZE);
 	}
 
-	auto Device::getPlatform() const -> Platform {
-		return {getInfo<cl_platform_id>(CL_DEVICE_PLATFORM)};
+	auto Device::getPlatform() const -> std::unique_ptr<Platform> {
+		return std::make_unique<Platform>(
+			getInfo<cl_platform_id>(CL_DEVICE_PLATFORM));
+//		return {getInfo<cl_platform_id>(CL_DEVICE_PLATFORM)};
 	}
 
 	auto Device::getPreferredGlobalAtomicAlignment() const -> cl_uint {

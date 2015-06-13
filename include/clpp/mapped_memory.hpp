@@ -47,5 +47,4 @@ namespace cl {
 	};
 }
 
-#include "clpp/mapped_memory.tpp"
 #endif
