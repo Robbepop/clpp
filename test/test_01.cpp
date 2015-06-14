@@ -314,7 +314,7 @@ auto operator<<(std::ostream & os, const cl::Device & device) -> std::ostream & 
 
 	   << tab << "Pipe Max Active Reservations" << device.getPipeMaxActiveReservations()
 	   << tab << "Pipe Max Packet Size"         << device.getPipeMaxPacketSize()
-	   << tab << "Platform Name"                << device.getPlatform().getName()
+	   << tab << "Platform Name"                << device.getPlatform()->getName()
 
 	   << '\n'
 
@@ -379,6 +379,7 @@ void test_01() {
 	for (auto&& device : devices) {
 		std::cout << device;
 	}
+	auto defaultDevice = devices[0];
 
 //	auto usr_data = int{5};
 //	auto properties = cl::ContextProperties().setPlatform(platform);
@@ -401,26 +402,42 @@ void test_01() {
 	std::cout << "Context created successfully!\n";
 	std::cout << context << "\n\n";
 
-	constexpr auto vectorSize = 1000;
+	constexpr auto vectorSize = 1000000;
 
-	auto vectorA = std::vector<cl_int>(vectorSize);
-	auto vectorB = std::vector<cl_int>(vectorSize);
-	auto vectorC = std::vector<cl_int>(vectorSize);
+	auto vectorA = std::array<std::vector<cl_int>, 2>{{
+		std::vector<cl_int>(vectorSize),
+		std::vector<cl_int>(vectorSize)}};
+	auto vectorB = std::array<std::vector<cl_int>, 2>{{
+		std::vector<cl_int>(vectorSize),
+		std::vector<cl_int>(vectorSize)}};
+	auto vectorC = std::array<std::vector<cl_int>, 2>{{
+		std::vector<cl_int>(vectorSize),
+		std::vector<cl_int>(vectorSize)}};
 
 	std::random_device seeder;
-	auto dist   = std::uniform_int_distribution<cl_int>{0, 1000};
+	auto dist   = std::uniform_int_distribution<cl_int>{-9999, 9999};
 	auto engine = std::default_random_engine{seeder()};
-	for (auto&& elem : vectorA) { elem = dist(engine); }
-	for (auto&& elem : vectorB) { elem = dist(engine); }
-	//for (auto&& elem : vectorC) { elem = dist(engine); }
-	for (auto i = 0ul; i < std::min(vectorA.size(), vectorB.size()); ++i) {
-		vectorC[i] = vectorA[i] + vectorB[i];
+	for (auto&& elem : vectorA[0]) { elem = dist(engine); }
+	for (auto&& elem : vectorB[0]) { elem = dist(engine); }
+	for (auto i = 0ul; i < vectorSize; ++i) {
+		vectorC[0][i] = vectorA[0][i] + vectorB[0][i];
 	}
 
-	auto bufferA = context.createBuffer<cl_int>(vectorA.begin(), vectorA.end());
-	auto bufferB = context.createBuffer<cl_int>(vectorB);
+//	std::cout << "Host Buffers [0]:\n\n";
+//	std::cout << "vectorA[0] = " << vectorA[0] << '\n';
+//	std::cout << "vectorB[0] = " << vectorB[0] << '\n';
+//	std::cout << "vectorC[0] = " << vectorC[0] << '\n';
+
+	auto queue = context.createCommandQueue(defaultDevice);
+
+	auto bufferA = context.createBuffer<cl_int>(vectorSize);
+	auto bufferB = context.createBuffer<cl_int>(vectorSize);
 	auto bufferC = context.createBuffer<cl_int>(vectorSize);
 
+	queue.writeBufferBlocked(bufferA, vectorA[0].begin(), vectorA[0].end());
+	queue.writeBufferBlocked(bufferB, vectorB[0].begin(), vectorB[0].end());
+
+	std::cout << "OpenCL Buffers:\n\n";
 	std::cout << "bufferA" << bufferA << "\n\n";
 	std::cout << "bufferB" << bufferB << "\n\n";
 	std::cout << "bufferC" << bufferC << "\n\n";
@@ -428,14 +445,33 @@ void test_01() {
 	auto programSource = utility::readFile("../test/kernel_add.cl");
 	auto program = context.createProgramWithSource(programSource);
 
-	auto defaultDevice = devices[0];
 	program.build(defaultDevice);
 
 	auto kernel = program.createKernel("vectorAdd");
 
 	kernel.setArgs(bufferA, bufferB, bufferC, vectorSize);
 
-//	auto queue = context.createCommandQueue(defaultDevice);
+	queue.execute1DRange(kernel, vectorSize);
+
+	queue.finish();
+
+	queue.readBufferBlocked(bufferA, vectorA[1].begin(), vectorA[1].end());
+	queue.readBufferBlocked(bufferB, vectorB[1].begin(), vectorB[1].end());
+	queue.readBufferBlocked(bufferC, vectorC[1].begin(), vectorC[1].end());
+
+//	std::cout << "Host Buffers [1]:\n\n";
+//	std::cout << "vectorA[1] = " << vectorA[1] << '\n';
+//	std::cout << "vectorB[1] = " << vectorB[1] << '\n';
+//	std::cout << "vectorC[1] = " << vectorC[1] << '\n';
+
+	auto isEqual = true;
+	for (auto i = 0ul; i < vectorSize; ++i) {
+		isEqual = isEqual && (
+		       vectorA[0][i] == vectorA[1][i]
+		    && vectorB[0][i] == vectorB[1][i]
+		    && vectorC[0][i] == vectorC[1][i]);
+	}
+	std::cout << "are vectors equal? " << isEqual << '\n';
 
 //	std::ignore = context;
 	//std::cout << "Context information ...\n";

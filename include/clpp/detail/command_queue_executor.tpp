@@ -3,9 +3,11 @@
 #endif
 
 #include "utility/concepts.hpp"
+#include "utility/count_elements.hpp"
 
 #include "clpp/event.hpp"
 #include "clpp/command_queue.hpp"
+#include "clpp/mapped_memory.hpp"
 
 #include <algorithm>
 
@@ -20,7 +22,6 @@ namespace cl {
 		}
 
 		auto CommandQueueExecutor::getWaitListData() const -> cl_event const* {
-			//return m_first_event->get();
 			return reinterpret_cast<cl_event const*>(m_first_event);
 		}
 
@@ -65,10 +66,11 @@ namespace cl {
 		void CommandQueueExecutor::readBufferBlocked(
 			Buffer<T> const& buffer, size_t offset, OutputIterator first, OutputIterator last
 		) const {
+			const auto size = ::utility::count_elements(first, last);
 			auto error = clEnqueueReadBuffer(
 				getQueueId(), buffer.get(), CL_BLOCKING,
 				offset * sizeof(T),
-				std::min(buffer.getSize(), std::distance(first, last)) * sizeof(T),
+				std::min(buffer.getSize(), size) * sizeof(T),
 				std::addressof(first[0]),
 				getWaitListSize(), getWaitListData(), nullptr);
 			detail::error::handle(error);
@@ -78,9 +80,10 @@ namespace cl {
 		void CommandQueueExecutor::readBufferBlocked(
 			Buffer<T> const& buffer, OutputIterator first, OutputIterator last
 		) const {
+			const auto size = ::utility::count_elements(first, last);
 			auto error = clEnqueueReadBuffer(
 				getQueueId(), buffer.get(), CL_BLOCKING,
-				0, std::min(buffer.getSize(), std::distance(first, last)) * sizeof(T),
+				0, std::min(buffer.getSize(), size) * sizeof(T),
 				std::addressof(first[0]),
 				getWaitListSize(), getWaitListData(), nullptr);
 			detail::error::handle(error);
@@ -90,11 +93,12 @@ namespace cl {
 		auto CommandQueueExecutor::readBuffer(
 			Buffer<T> const& buffer, size_t offset, OutputIterator first, OutputIterator last
 		) const -> Event {
+			const auto size = ::utility::count_elements(first, last);
 			auto eventId = cl_event{nullptr};
 			auto error   = clEnqueueReadBuffer(
 				getQueueId(), buffer.get(), CL_NON_BLOCKING,
 				offset * sizeof(T),
-				std::min(buffer.getSize(), std::distance(first, last)) * sizeof(T),
+				std::min(buffer.getSize(), size) * sizeof(T),
 				std::addressof(first[0]),
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId));
@@ -106,10 +110,11 @@ namespace cl {
 		auto CommandQueueExecutor::readBuffer(
 			Buffer<T> const& buffer, OutputIterator first, OutputIterator last
 		) const -> Event {
+			const auto size = ::utility::count_elements(first, last);
 			auto eventId = cl_event{nullptr};
 			auto error   = clEnqueueReadBuffer(
 				getQueueId(), buffer.get(), CL_NON_BLOCKING,
-				0, std::min(buffer.getSize(), std::distance(first, last)) * sizeof(T),
+				0, std::min(buffer.getSize(), size) * sizeof(T),
 				std::addressof(first[0]),
 				getWaitListSize(), getWaitListData(), nullptr);
 			detail::error::handle(error);
@@ -124,10 +129,11 @@ namespace cl {
 		void CommandQueueExecutor::writeBufferBlocked(
 			Buffer<T> const& buffer, size_t offset, InputIterator first, InputIterator last
 		) const {
+			const auto size = ::utility::count_elements(first, last);
 			auto error = clEnqueueWriteBuffer(
 				getQueueId(), buffer.get(), CL_BLOCKING,
 				offset * sizeof(T),
-				std::min(buffer.getSize(), std::distance(first, last)) * sizeof(T),
+				std::min(buffer.getSize(), size) * sizeof(T),
 				std::addressof(first[0]),
 				getWaitListSize(), getWaitListData(), nullptr);
 			detail::error::handle(error);
@@ -136,10 +142,11 @@ namespace cl {
 		template<typename InputIterator, typename T>
 		void CommandQueueExecutor::writeBufferBlocked(
 			Buffer<T> const& buffer, InputIterator first, InputIterator last
-		) const {
+		) const {			
+			const auto size = ::utility::count_elements(first, last);
 			auto error = clEnqueueWriteBuffer(
 				getQueueId(), buffer.get(), CL_BLOCKING,
-				0, std::min(buffer.getSize(), std::distance(first, last)) * sizeof(T),
+				0, std::min(buffer.getSize(), size) * sizeof(T),
 				std::addressof(first[0]),
 				getWaitListSize(), getWaitListData(), nullptr);
 			detail::error::handle(error);
@@ -149,11 +156,12 @@ namespace cl {
 		auto CommandQueueExecutor::writeBuffer(
 			Buffer<T> const& buffer, size_t offset, InputIterator first, InputIterator last
 		) const -> Event {
+			const auto size = ::utility::count_elements(first, last);
 			auto eventId = cl_event{nullptr};
 			auto error   = clEnqueueWriteBuffer(
 				getQueueId(), buffer.get(), CL_NON_BLOCKING,
 				offset * sizeof(T),
-				std::min(buffer.getSize(), std::distance(first, last)) * sizeof(T),
+				std::min(buffer.getSize(), size) * sizeof(T),
 				std::addressof(first[0]),
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId));
@@ -165,10 +173,11 @@ namespace cl {
 		auto CommandQueueExecutor::writeBuffer(
 			Buffer<T> const& buffer, InputIterator first, InputIterator last
 		) const -> Event {
+			const auto size = ::utility::count_elements(first, last);
 			auto eventId = cl_event{nullptr};
 			auto error   = clEnqueueWriteBuffer(
 				getQueueId(), buffer.get(), CL_NON_BLOCKING,
-				0, std::min(buffer.getSize(), std::distance(first, last)) * sizeof(T),
+				0, std::min(buffer.getSize(), size) * sizeof(T),
 				std::addressof(first[0]),
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId));

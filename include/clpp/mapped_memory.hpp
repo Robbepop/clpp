@@ -6,7 +6,7 @@ namespace cl {
 	class MappedMemory final {
 	public:
 		MappedMemory();
-		MappedMemory(CommandQueue const& queue, MemoryObject const& mem, T* data, size_t size);
+		MappedMemory(CommandQueue const& queue, MemObject const& mem, T* data, size_t size);
 
 		~MappedMemory();
 
@@ -39,7 +39,7 @@ namespace cl {
 
 	private:
 		CommandQueue       m_queue;
-		MemoryObject       m_mem_obj;
+		MemObject          m_mem_obj;
 		T*                 m_data;
 		size_t             m_size;
 		bool               m_valid;

@@ -1,3 +1,6 @@
+#ifndef UTILITY_MAKE_ARRAY_H
+#define UTILITY_MAKE_ARRAY_H
+
 #include <array>
 #include <functional>
 
@@ -124,3 +127,5 @@ namespace utility {
 	}
 
 }
+
+#endif
