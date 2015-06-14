@@ -2,12 +2,6 @@
 	#error "Do not include this file directly."
 #endif
 
-//#ifndef CLPP_AFFINITY_DOMAIN_CAPABILITIES_TPP
-//	#define CLPP_AFFINITY_DOMAIN_CAPABILITIES_TPP
-//#else
-//	#error "included two times!"
-//#endif
-
 namespace cl {
 	auto AffinityDomainCapabilities::hasNuma() const -> bool {
 		return readMask<CL_DEVICE_AFFINITY_DOMAIN_NUMA>();
