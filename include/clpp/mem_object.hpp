@@ -42,7 +42,7 @@ namespace cl {
 
 		using detail::Object<cl_type>::Object;
 
-		MemObject& operator=(const MemObject & rhs);
+		auto operator=(const MemObject & rhs) -> MemObject &;
 
 		//================================================================================
 		// OpenCL API wrapper for setMemObjectDestructorCallback()

@@ -64,8 +64,8 @@ namespace cl {
 			// Copy and move assignment operator overloadings
 			//============================================================================
 
-			Object<CLType> & operator=(const Object<CLType> &  rhs);
-			Object<CLType> & operator=(      Object<CLType> && rhs) = default;
+			auto operator=(const Object<CLType> &  rhs) -> Object<CLType> &;
+			auto operator=(      Object<CLType> && rhs) -> Object<CLType> & = default;
 
 			//============================================================================
 			// Helper methods to access information about the wrapped

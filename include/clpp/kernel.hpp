@@ -39,7 +39,7 @@ namespace cl {
 
 		using detail::Object<cl_type>::Object;
 
-		auto operator=(Kernel const& rhs) -> Kernel&;
+		auto operator=(Kernel const& rhs) -> Kernel &;
 
 		//================================================================================
 		// Used to set kernel arguments for the next kernel execution.

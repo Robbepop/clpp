@@ -6,6 +6,14 @@
 #include <boost/algorithm/string/classification.hpp>
 
 namespace cl {
+
+	auto Program::operator=(Program const& rhs) -> Program & {
+		if (this != &rhs) {
+		    detail::Object<cl_type>::operator=(rhs);
+		}
+		return *this;
+	}
+
 	//================================================================================
 	// Wrapper API for creating Kernel objects
 	//================================================================================

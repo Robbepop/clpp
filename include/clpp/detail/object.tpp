@@ -41,7 +41,9 @@ namespace cl {
 		}
 
 		template<typename CLType>
-		Object<CLType> & Object<CLType>::operator=(const Object<CLType> & rhs) {
+		auto Object<CLType>::operator=(
+			const Object<CLType> & rhs
+		) -> Object<CLType> & {
 			m_object = rhs.m_object;
 			retain();
 			return *this;

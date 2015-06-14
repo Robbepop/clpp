@@ -7,9 +7,6 @@ Improvements & Bug fixes:
 - Context's constructor with callback still requires 'new' keyword with current implementation.
 
 Experimental:
-- Use templates instead of ScalarType and FPType enums to coordinate calls for different OpenCL primitives.
-  Problem with this approach may be that the methods parameter (template) must be known at compiler time
-  instead of at runtime.
 - Maybe add a CompileOptions class for an improved experience setting the compile and link options.
 - Convert some templated RangeX algorithms to IteratorX algorithms:
 	-> PartitionCapabilities constructor
@@ -17,14 +14,31 @@ Experimental:
 
 TODO:
 - Implement global error info table with the new exceptions.
-- Complete implementation of CommandQueue.
+- Implementation of Context:
+    - replace current constructors with named constructors.
+    - add constructors without a properties parameter:
+        - Context::createForDevices(device1, device2, ...); // may also take only one argument
+        - Context::createForDevices(deviceRange);
+        - Context::createForType(deviceType);
+    - add Context::createBest() named constructor which constructs the Context with
+      the device with the most compute units.
+- Implementation of CommandQueue:
+    - read/write (rect) image functions
 - Complete API and implementation of several Image objects. E.g. Image2D, Image3D, Image1D etc...
-- Complete API and implementation of Program.
-- Complete API and implementation of Kernel.
+- Implementation of Program:
+    - clCreateProgramWithBinary
+    - clCreateProgramWithBuiltInKernels
+    - clCompileProgram
+    - clLinkProgram
+- Implementation of Kernel:
+    - clGetKernelArgInfo
+    - clGetKernelWorkGroupInfo
+    - clSetKernelArgSVMPointer
+    - clSetKernelExecInfo
 - Complete API and implementation of KernelFunctor.
 - Complete API and implementation of Sampler.
 - Complete API and implementation of Pipe.
 - Complete API and implementation of Shared Virtual Memory (SVM).
-- Create a complete wrapper API for clCompileProgram with included headers.
-- Create a complete wrapper API for clLinkProgram with linked source libraries.
 - Create some more overloading for clCreateProgramWithSource for multiple source files handling.
+- Create overloadings for functions taking a callback without additional user_data parameter.
+

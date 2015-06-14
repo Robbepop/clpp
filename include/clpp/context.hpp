@@ -51,7 +51,7 @@ namespace cl {
 
 		using detail::Object<cl_type>::Object;
 
-		Context& operator=(const Context & rhs);
+		auto operator=(const Context & rhs) -> Context &;
 
 		//================================================================================
 		// Special Constructors

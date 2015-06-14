@@ -5,7 +5,7 @@
 #include <memory>
 
 namespace cl {
-	MemObject& MemObject::operator=(const MemObject & rhs) {
+	auto MemObject::operator=(const MemObject & rhs) -> MemObject & {
 		if (this != &rhs) {
 		    detail::Object<cl_type>::operator=(rhs);
 		}

@@ -13,7 +13,7 @@ namespace cl {
 	// Copy-Assignment
 	//====================================================================================
 
-	Context& Context::operator=(const Context & rhs) {
+	auto Context::operator=(const Context & rhs) -> Context & {
         if (this != &rhs) {
             detail::Object<cl_type>::operator=(rhs);
         }

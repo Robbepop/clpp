@@ -6,7 +6,7 @@
 #include <boost/algorithm/string/classification.hpp>
 
 namespace cl {
-	auto Kernel::operator=(Kernel const& rhs) -> Kernel& {
+	auto Kernel::operator=(Kernel const& rhs) -> Kernel & {
 		if (this != &rhs) {
 		    detail::Object<cl_type>::operator=(rhs);
 		}

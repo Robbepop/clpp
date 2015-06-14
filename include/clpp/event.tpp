@@ -25,7 +25,7 @@ namespace cl {
 			clWaitForEvents(1, reinterpret_cast<const cl_type*>(this)));
 	}
 
-	Event& Event::operator=(const Event & rhs) {
+	auto Event::operator=(const Event & rhs) -> Event & {
         if (this != &rhs) {
             detail::Object<cl_type>::operator=(rhs);
         }

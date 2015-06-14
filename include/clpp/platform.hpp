@@ -50,7 +50,7 @@ namespace cl {
 
 		using detail::Object<cl_type>::Object;
 
-		Platform& operator=(const Platform & rhs);
+		auto operator=(const Platform & rhs) -> Platform &;
 
 		//================================================================================
 		// Wrapper API for clUnloadPlatformCompiler

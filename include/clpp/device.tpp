@@ -13,14 +13,12 @@ namespace cl {
 	// Assignment
 	//====================================================================================
 
-    Device& Device::operator=(const Device & rhs)
-    {
+    auto Device::operator=(const Device & rhs) -> Device & {
         if (this != &rhs) {
             detail::Object<cl_type>::operator=(rhs);
         }
         return *this;
     }
-
 
 	//====================================================================================
 	// Partitioning
@@ -323,7 +321,6 @@ namespace cl {
 	auto Device::getPlatform() const -> std::unique_ptr<Platform> {
 		return std::make_unique<Platform>(
 			getInfo<cl_platform_id>(CL_DEVICE_PLATFORM));
-//		return {getInfo<cl_platform_id>(CL_DEVICE_PLATFORM)};
 	}
 
 	auto Device::getPreferredGlobalAtomicAlignment() const -> cl_uint {

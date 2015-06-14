@@ -40,8 +40,7 @@ namespace cl {
 	// Note that move constructors and move assign operator are default generated.
 	//================================================================================
 
-	Platform& Platform::operator=(const Platform & rhs)
-	{
+	auto Platform::operator=(const Platform & rhs) -> Platform & {
 		if (this != &rhs) {
 		    detail::Object<cl_type>::operator=(rhs);
 		}

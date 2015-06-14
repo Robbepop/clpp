@@ -57,7 +57,7 @@ namespace cl {
 
 		using detail::Object<cl_type>::Object;
 
-		Device& operator=(const Device & rhs);
+		auto operator=(const Device & rhs) -> Device &;
 		
 		//================================================================================
 		// Methods to partition the device.

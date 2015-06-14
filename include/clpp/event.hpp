@@ -48,7 +48,7 @@ namespace cl {
 
 		using detail::Object<cl_type>::Object;
 
-		Event& operator=(const Event & rhs);
+		auto operator=(const Event & rhs) -> Event &;
 
 		//================================================================================
 		// Wrapper API for clSetUserEventStatus
