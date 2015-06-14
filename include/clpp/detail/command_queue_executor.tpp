@@ -307,14 +307,7 @@ namespace cl {
 		auto CommandQueueExecutor::copyBuffer(
 			Buffer<T> const& src, Buffer<V> const& dst
 		) const -> Event {
-			auto eventId = cl_event{nullptr};
-			auto error   = clEnqueueCopyBuffer(
-				getQueueId(), src.get(), dst.get(),
-				0, 0, std::min(src.getSizeInBytes(), dst.getSizeInBytes()),
-				getWaitListSize(), getWaitListData(),
-				std::addressof(eventId));
-			detail::error::handle(error);
-			return {eventId};
+			return copyBuffer(src, dst, 0, 0, std::min(src.getSize(), dst.getSize()));
 		}
 
 		//============================================================================
