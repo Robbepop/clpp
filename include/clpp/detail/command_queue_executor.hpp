@@ -122,7 +122,7 @@ namespace cl {
 			//============================================================================
 		public:
 
-			template<typename OutIterator, typename T>
+			template<typename OutputIterator, typename T>
 			void readBufferRectBlocked(
 				Buffer<T> const& buffer,
 				std::array<size_t, 3> const& bufferOrigin,
@@ -130,10 +130,10 @@ namespace cl {
 				std::array<size_t, 3> const& region,
 				size_t bufferRowPitch, size_t bufferSlicePitch,
 				size_t hostRowPitch, size_t hostSlicePitch,
-				OutIterator first
+				OutputIterator first
 			) const;
 
-			template<typename OutIterator, typename T>
+			template<typename OutputIterator, typename T>
 			auto readBufferRect(
 				Buffer<T> const& buffer,
 				std::array<size_t, 3> const& bufferOrigin,
@@ -141,7 +141,7 @@ namespace cl {
 				std::array<size_t, 3> const& region,
 				size_t bufferRowPitch, size_t bufferSlicePitch,
 				size_t hostRowPitch, size_t hostSlicePitch,
-				OutIterator first
+				OutputIterator first
 			) const -> Event;
 
 			//============================================================================
@@ -220,6 +220,15 @@ namespace cl {
 			//============================================================================
 			// Overloads to access clEnqueueMapBuffer
 			//============================================================================
+		private:
+
+			template<cl_bool Blocking, typename T>
+			auto mapBufferImpl(
+				Buffer<T> const& buffer, MapAccess access,
+				size_t offset, size_t size,
+				MappedMemory<T> & result
+			) const -> Event;
+
 		public:
 
 			template<typename T>

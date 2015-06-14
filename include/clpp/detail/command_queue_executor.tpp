@@ -168,7 +168,7 @@ namespace cl {
 		// Overloads to access clEnqueueReadBufferRect
 		//============================================================================
 
-		template<typename OutIterator, typename T>
+		template<typename OutputIterator, typename T>
 		void CommandQueueExecutor::readBufferRectBlocked(
 			Buffer<T> const& buffer,
 			std::array<size_t, 3> const& bufferOrigin,
@@ -176,10 +176,10 @@ namespace cl {
 			std::array<size_t, 3> const& region,
 			size_t bufferRowPitch, size_t bufferSlicePitch,
 			size_t hostRowPitch, size_t hostSlicePitch,
-			OutIterator first
+			OutputIterator first
 		) const {
 			static_assert(std::is_same<
-				typename OutIterator::value_type,
+				typename OutputIterator::value_type,
 				typename Buffer<T>::value_type>::value,
 				"value_type of OutIterator must be the same as value_type of buffer");
 			auto error = clEnqueueReadBufferRect(
@@ -195,7 +195,7 @@ namespace cl {
 			detail::error::handle(error);
 		}
 
-		template<typename OutIterator, typename T>
+		template<typename OutputIterator, typename T>
 		auto CommandQueueExecutor::readBufferRect(
 			Buffer<T> const& buffer,
 			std::array<size_t, 3> const& bufferOrigin,
@@ -203,10 +203,10 @@ namespace cl {
 			std::array<size_t, 3> const& region,
 			size_t bufferRowPitch, size_t bufferSlicePitch,
 			size_t hostRowPitch, size_t hostSlicePitch,
-			OutIterator first
+			OutputIterator first
 		) const -> Event {
 			static_assert(std::is_same<
-				typename OutIterator::value_type,
+				typename OutputIterator::value_type,
 				typename Buffer<T>::value_type>::value,
 				"value_type of OutIterator must be the same as value_type of buffer");
 			auto eventId = cl_event{nullptr};
@@ -228,7 +228,7 @@ namespace cl {
 		// Overloads to access clEnqueueWriteBufferRect
 		//============================================================================
 
-		template<typename InIterator, typename T>
+		template<typename InputIterator, typename T>
 		void CommandQueueExecutor::writeBufferRectBlocked(
 			Buffer<T> const& buffer,
 			std::array<size_t, 3> const& bufferOrigin,
@@ -236,10 +236,10 @@ namespace cl {
 			std::array<size_t, 3> const& region,
 			size_t bufferRowPitch, size_t bufferSlicePitch,
 			size_t hostRowPitch, size_t hostSlicePitch,
-			InIterator first
+			InputIterator first
 		) const {
 			static_assert(std::is_same<
-				typename InIterator::value_type,
+				typename InputIterator::value_type,
 				typename Buffer<T>::value_type>::value,
 				"value_type of InIterator must be the same as value_type of buffer");
 			auto error = clEnqueueWriteBufferRect(
@@ -255,7 +255,7 @@ namespace cl {
 			detail::error::handle(error);
 		}
 
-		template<typename InIterator, typename T>
+		template<typename InputIterator, typename T>
 		auto CommandQueueExecutor::writeBufferRect(
 			Buffer<T> const& buffer,
 			std::array<size_t, 3> const& bufferOrigin,
@@ -263,10 +263,10 @@ namespace cl {
 			std::array<size_t, 3> const& region,
 			size_t bufferRowPitch, size_t bufferSlicePitch,
 			size_t hostRowPitch, size_t hostSlicePitch,
-			InIterator first
+			InputIterator first
 		) const -> Event {
 			static_assert(std::is_same<
-				typename InIterator::value_type,
+				typename InputIterator::value_type,
 				typename Buffer<T>::value_type>::value,
 				"value_type of InIterator must be the same as value_type of buffer");
 			auto eventId = cl_event{nullptr};
@@ -367,19 +367,32 @@ namespace cl {
 		auto CommandQueueExecutor::fillBuffer(
 			Buffer<T> const& buffer, T const& value
 		) const -> Event {
-			auto eventId = cl_event{nullptr};
-			auto error   = clEnqueueFillBuffer(
-				getQueueId(), buffer.get(),
-				std::addressof(value), sizeof(T),
-				0, buffer.getSizeInBytes(),
-				getWaitListSize(), getWaitListData(),
-				std::addressof(eventId));
-			detail::error::handle(error);
-			return {eventId};
+			return fillBuffer(buffer, value, 0, buffer.size());
 		}
 
 		//============================================================================
 		// Overloads to access clEnqueueMapBuffer
+		//============================================================================
+
+		template<cl_bool Blocking, typename T>
+		auto CommandQueueExecutor::mapBufferImpl(
+			Buffer<T> const& buffer, MapAccess access,
+			size_t offset, size_t size,
+			MappedMemory<T> & result
+		) const -> Event {
+			auto eventId = cl_event{nullptr};
+			auto error   = cl_int{CL_INVALID_VALUE};
+			auto region  = clEnqueueMapBuffer(
+				getQueueId(), buffer.get(), Blocking, access,
+				offset * sizeof(T), size * sizeof(T),
+				getWaitListSize(), getWaitListData(),
+				std::addressof(eventId),
+				std::addressof(error));
+			detail::error::handle(error);
+			result = {m_queue, buffer, reinterpret_cast<T*>(region), size};
+			return {eventId};
+		}
+
 		//============================================================================
 
 		template<typename T>
@@ -388,28 +401,14 @@ namespace cl {
 			size_t offset, size_t size,
 			MappedMemory<T> & result
 		) const {
-			auto error  = cl_int{CL_INVALID_VALUE};
-			auto region = clEnqueueMapBuffer(
-				getQueueId(), buffer.get(), CL_BLOCKING, access,
-				offset * sizeof(T), size * sizeof(T),
-				getWaitListSize(), getWaitListData(),
-				nullptr, std::addressof(error));
-			detail::error::handle(error);
-			result = {m_queue, buffer, reinterpret_cast<T*>(region), size};
+			mapBufferImpl<CL_BLOCKING>(buffer, access, offset, size, result);
 		}
 
 		template<typename T>
 		void CommandQueueExecutor::mapBufferBlocked(
 			Buffer<T> const& buffer, MapAccess access, MappedMemory<T> & result
 		) const {
-			auto error  = cl_int{CL_INVALID_VALUE};
-			auto region = clEnqueueMapBuffer(
-				getQueueId(), CL_BLOCKING, access,
-				0, buffer.getSizeInBytes(),
-				getWaitListSize(), getWaitListData(),
-				nullptr, std::addressof(error));
-			detail::error::handle(error);
-			result = {m_queue, buffer, reinterpret_cast<T*>(region), buffer.getSize()};
+			mapBufferImpl<CL_BLOCKING>(buffer, access, 0, buffer.getSize(), result);
 		}
 
 		template<typename T>
@@ -419,34 +418,14 @@ namespace cl {
 			size_t offset, size_t size,
 			MappedMemory<T> & result
 		) const -> Event {
-			auto eventId = cl_event{nullptr};
-			auto error   = cl_int{CL_INVALID_VALUE};
-			auto region  = clEnqueueMapBuffer(
-				getQueueId(), buffer.get(), CL_NON_BLOCKING, access,
-				offset * sizeof(T), size * sizeof(T),
-				getWaitListSize(), getWaitListData(),
-				std::addressof(eventId),
-				std::addressof(error));
-			detail::error::handle(error);
-			result = {m_queue, buffer, reinterpret_cast<T*>(region), buffer.getSize()};
-			return {eventId};
+			return mapBufferImpl<CL_NON_BLOCKING>(buffer, access, offset, size, result);
 		}
 
 		template<typename T>
 		auto CommandQueueExecutor::mapBuffer(
 			Buffer<T> const& buffer, MapAccess access, MappedMemory<T> & result
 		) const -> Event {
-			auto eventId = cl_event{nullptr};
-			auto error   = cl_int{CL_INVALID_VALUE};
-			auto region  = clEnqueueMapBuffer(
-				getQueueId(), buffer.get(), CL_NON_BLOCKING, access,
-				0, buffer.getSizeInBytes(),
-				getWaitListSize(), getWaitListData(),
-				std::addressof(eventId),
-				std::addressof(error));
-			detail::error::handle(error);
-			result = {m_queue, buffer, reinterpret_cast<T*>(region), buffer.getSize()};
-			return {eventId};
+			return mapBufferImpl<CL_NON_BLOCKING>(buffer, access, 0, buffer.getSize(), result);
 		}
 
 		//============================================================================
