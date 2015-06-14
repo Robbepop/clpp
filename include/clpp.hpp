@@ -1,3 +1,7 @@
+// This is the only file a project should actually include as this is a header-only
+// library that requires correct inclusion order of its header and header implementation
+// files in order to work.
+
 #ifndef CLPP_H
 #define CLPP_H
 

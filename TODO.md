@@ -13,6 +13,9 @@ Experimental:
 	-> (maybe) Partition constructor
 
 TODO:
+- Rename *.tpp file extension to *.ipp which is more convenient as implementation file.
+- Restructure implementation files with special include guards which throw warnings when
+  including the same file multiple time or when the associated header file got not included before.
 - Implement global error info table with the new exceptions.
 - Implementation of Context:
     - replace current constructors with named constructors.
@@ -26,19 +29,34 @@ TODO:
     - read/write (rect) image functions
 - Complete API and implementation of several Image objects. E.g. Image2D, Image3D, Image1D etc...
 - Implementation of Program:
+    - clCreateProgramWithSource
+        - Context::createProgramWithSource(file1, file2, ...); // variadic
     - clCreateProgramWithBinary
     - clCreateProgramWithBuiltInKernels
     - clCompileProgram
     - clLinkProgram
 - Implementation of Kernel:
-    - clGetKernelArgInfo
-    - clGetKernelWorkGroupInfo
+    - clGetKernelArgInfo: Kernel::getArg(index) -> KernelArg;
+        - KernelArg::getAddressQualifier() -> AddressQualifier;
+        - KernelArg::getAccessQualifier() -> AccessQualifier;
+        - KernelArg::getTypeName() -> std::string;
+        - KernelArg::getTypeQualifier() -> TypeQualifier;
+        - KernelArg::getName() -> std::string;
+    - clGetKernelWorkGroupInfo: Kernel::getWorkGroup(device?*) -> WorkGroup; // *optional parameter
+        - WorkGroup::getGlobalWorkSize() -> NDRange<3>;
+		- WorkGroup::getWorkGroupSize() -> size_t;
+        - WorkGroup::getCompileWorkGroupSize() -> NDRange<3>;
+        - WorkGroup::getLocalMemorySize() -> cl_ulong;
+        - WorkGroup::getPreferredWorkGroupSizeMultiple() -> size_t;
+        - WorkGroup::getPrivateMemorySize() -> cl_ulong;
     - clSetKernelArgSVMPointer
+        - add template specialization for Kernel::setArg(index, value);
     - clSetKernelExecInfo
+        - Kernel::setSvmPointer(svm1, svm2, ...);
+        - Kernel::useFineGrainSystem(flag);
 - Complete API and implementation of KernelFunctor.
 - Complete API and implementation of Sampler.
 - Complete API and implementation of Pipe.
 - Complete API and implementation of Shared Virtual Memory (SVM).
-- Create some more overloading for clCreateProgramWithSource for multiple source files handling.
 - Create overloadings for functions taking a callback without additional user_data parameter.
 
