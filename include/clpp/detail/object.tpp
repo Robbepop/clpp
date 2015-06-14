@@ -85,18 +85,16 @@ namespace cl {
 		template<typename CLType>
 		void Object<CLType>::release() {
 			if (m_object != nullptr) {
-				ObjectHandler<CLType>::release(m_object);
-//				detail::error::handle(
-//					ObjectHandler<CLType>::release(m_object));
+				detail::error::handle(
+					ObjectHandler<CLType>::release(m_object));
 			}
 		}
 
 		template<typename CLType>
 		void Object<CLType>::retain() {
 			if (m_object != nullptr) {
-				ObjectHandler<CLType>::retain(m_object);
-//				detail::error::handle(
-//					ObjectHandler<CLType>::retain(m_object));
+				detail::error::handle(
+					ObjectHandler<CLType>::retain(m_object));
 			}
 		}
 	}

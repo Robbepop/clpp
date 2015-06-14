@@ -10,9 +10,9 @@ namespace cl {
 			using cl_type        = cl_kernel;
 			using info_type      = cl_kernel_info;
 
-			static auto release(cl_type id) { clReleaseKernel(id); }
+			static auto release(cl_type id) { return clReleaseKernel(id); }
 
-			static auto retain(cl_type id) { clRetainKernel(id); }
+			static auto retain(cl_type id) { return clRetainKernel(id); }
 
 			static auto getInfo(
 				cl_type   kernel,

@@ -15,9 +15,9 @@ namespace cl {
 			using cl_type        = cl_mem;
 			using info_type      = cl_mem_info;
 
-			static auto release(cl_mem id) { clReleaseMemObject(id); }
+			static auto release(cl_mem id) { return clReleaseMemObject(id); }
 
-			static auto retain(cl_mem id) { clRetainMemObject(id); }
+			static auto retain(cl_mem id) { return clRetainMemObject(id); }
 
 			static auto getInfo(
 				cl_mem      memory_object,

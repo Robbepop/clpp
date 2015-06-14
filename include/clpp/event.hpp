@@ -11,9 +11,9 @@ namespace cl {
 			using cl_type        = cl_event;
 			using info_type      = cl_event_info;
 
-			static auto release(cl_type id) { clReleaseEvent(id); }
+			static auto release(cl_type id) { return clReleaseEvent(id); }
 
-			static auto retain(cl_type id) { clRetainEvent(id); }
+			static auto retain(cl_type id) { return clRetainEvent(id); }
 
 			static auto getInfo(
 				cl_type   event,

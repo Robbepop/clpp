@@ -31,9 +31,9 @@ namespace cl {
 			using cl_type        = cl_device_id;
 			using info_type      = cl_device_info;
 
-			static auto release(cl_type id) { clReleaseDevice(id); }
+			static auto release(cl_type id) { return clReleaseDevice(id); }
 
-			static auto retain(cl_type id) { clRetainDevice(id); }
+			static auto retain(cl_type id) { return clRetainDevice(id); }
 
 			static auto getInfo(
 				cl_type   device,

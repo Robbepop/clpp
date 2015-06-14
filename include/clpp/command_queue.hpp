@@ -10,9 +10,9 @@ namespace cl {
 			using cl_type        = cl_command_queue;
 			using info_type      = cl_command_queue_info;
 
-			static auto release(cl_type id) { clReleaseCommandQueue(id); }
+			static auto release(cl_type id) { return clReleaseCommandQueue(id); }
 
-			static auto retain(cl_type id) { clRetainCommandQueue(id); }
+			static auto retain(cl_type id) { return clRetainCommandQueue(id); }
 
 			static auto getInfo
 			(
