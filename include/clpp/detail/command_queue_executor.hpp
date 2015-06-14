@@ -50,6 +50,14 @@ namespace cl {
 			//============================================================================
 			// Overloads to access clEnqueueReadBuffer
 			//============================================================================
+		private:
+
+			template<cl_bool Blocking, typename OutputIterator, typename T>
+			auto readBufferImpl(
+				Buffer<T> const& buffer, size_t offset,
+				OutputIterator first, OutputIterator last
+			) const -> Event;
+
 		public:
 
 			template<typename OutputIterator, typename T>
@@ -77,6 +85,14 @@ namespace cl {
 			//============================================================================
 			// Overloads to access clEnqueueWriteBuffer
 			//============================================================================
+		private:
+
+			template<cl_bool Blocking, typename InputIterator, typename T>
+			auto writeBufferImpl(
+				Buffer<T> const& buffer, size_t offset,
+				InputIterator first, InputIterator last
+			) const -> Event;
+
 		public:
 
 			template<typename InputIterator, typename T>

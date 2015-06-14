@@ -437,6 +437,9 @@ void test_01() {
 	queue.writeBufferBlocked(bufferA, vectorA[0].begin(), vectorA[0].end());
 	queue.writeBufferBlocked(bufferB, vectorB[0].begin(), vectorB[0].end());
 
+//	queue.writeBufferBlocked(bufferA, vectorA); // API does not exist by now
+//	queue.writeBufferBlocked(bufferB, vectorB); // API does not exist by now
+
 	std::cout << "OpenCL Buffers:\n\n";
 	std::cout << "bufferA" << bufferA << "\n\n";
 	std::cout << "bufferB" << bufferB << "\n\n";

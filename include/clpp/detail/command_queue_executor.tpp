@@ -62,127 +62,106 @@ namespace cl {
 		// Overloads to access clEnqueueReadBuffer
 		//============================================================================
 
-		template<typename OutputIterator, typename T>
-		void CommandQueueExecutor::readBufferBlocked(
-			Buffer<T> const& buffer, size_t offset, OutputIterator first, OutputIterator last
-		) const {
-			const auto size = ::utility::count_elements(first, last);
-			auto error = clEnqueueReadBuffer(
-				getQueueId(), buffer.get(), CL_BLOCKING,
-				offset * sizeof(T),
-				std::min(buffer.getSize(), size) * sizeof(T),
-				std::addressof(first[0]),
-				getWaitListSize(), getWaitListData(), nullptr);
-			detail::error::handle(error);
-		}
-
-		template<typename OutputIterator, typename T>
-		void CommandQueueExecutor::readBufferBlocked(
-			Buffer<T> const& buffer, OutputIterator first, OutputIterator last
-		) const {
-			const auto size = ::utility::count_elements(first, last);
-			auto error = clEnqueueReadBuffer(
-				getQueueId(), buffer.get(), CL_BLOCKING,
-				0, std::min(buffer.getSize(), size) * sizeof(T),
-				std::addressof(first[0]),
-				getWaitListSize(), getWaitListData(), nullptr);
-			detail::error::handle(error);
-		}
-
-		template<typename OutputIterator, typename T>
-		auto CommandQueueExecutor::readBuffer(
-			Buffer<T> const& buffer, size_t offset, OutputIterator first, OutputIterator last
+		template<cl_bool Blocking, typename OutputIterator, typename T>
+		auto CommandQueueExecutor::readBufferImpl(
+			Buffer<T> const& buffer, size_t offset,
+			OutputIterator first, OutputIterator last
 		) const -> Event {
 			const auto size = ::utility::count_elements(first, last);
 			auto eventId = cl_event{nullptr};
-			auto error   = clEnqueueReadBuffer(
-				getQueueId(), buffer.get(), CL_NON_BLOCKING,
+			auto error = clEnqueueReadBuffer(
+				getQueueId(), buffer.get(), Blocking,
 				offset * sizeof(T),
 				std::min(buffer.getSize(), size) * sizeof(T),
-				std::addressof(first[0]),
+				std::addressof(*first),
 				getWaitListSize(), getWaitListData(),
-				std::addressof(eventId));
+				std::addressof(eventId)
+			);
 			detail::error::handle(error);
 			return {eventId};
+		}
+
+		//============================================================================
+
+		template<typename OutputIterator, typename T>
+		void CommandQueueExecutor::readBufferBlocked(
+			Buffer<T> const& buffer, size_t offset, OutputIterator first, OutputIterator last
+		) const {
+			readBufferImpl<CL_BLOCKING>(buffer, offset, first, last);
+		}
+
+		template<typename OutputIterator, typename T>
+		void CommandQueueExecutor::readBufferBlocked(
+			Buffer<T> const& buffer, OutputIterator first, OutputIterator last
+		) const {
+			readBufferImpl<CL_BLOCKING>(buffer, 0, first, last);
+		}
+
+		template<typename OutputIterator, typename T>
+		auto CommandQueueExecutor::readBuffer(
+			Buffer<T> const& buffer, size_t offset, OutputIterator first, OutputIterator last
+		) const -> Event {
+			return readBufferImpl<CL_NON_BLOCKING>(buffer, offset, first, last);
 		}
 
 		template<typename OutputIterator, typename T>
 		auto CommandQueueExecutor::readBuffer(
 			Buffer<T> const& buffer, OutputIterator first, OutputIterator last
 		) const -> Event {
-			const auto size = ::utility::count_elements(first, last);
-			auto eventId = cl_event{nullptr};
-			auto error   = clEnqueueReadBuffer(
-				getQueueId(), buffer.get(), CL_NON_BLOCKING,
-				0, std::min(buffer.getSize(), size) * sizeof(T),
-				std::addressof(first[0]),
-				getWaitListSize(), getWaitListData(), nullptr);
-			detail::error::handle(error);
-			return {eventId};
+			return readBufferImpl<CL_NON_BLOCKING>(buffer, 0, first, last);
 		}
 
 		//============================================================================
 		// Overloads to access clEnqueueWriteBuffer
 		//============================================================================
 
+		template<cl_bool Blocking, typename InputIterator, typename T>
+		auto CommandQueueExecutor::writeBufferImpl(
+			Buffer<T> const& buffer, size_t offset,
+			InputIterator first, InputIterator last
+		) const -> Event {
+			const auto size = ::utility::count_elements(first, last);
+			auto eventId = cl_event{nullptr};
+			auto error = clEnqueueWriteBuffer(
+				getQueueId(), buffer.get(), Blocking,
+				offset * sizeof(T),
+				std::min(buffer.getSize(), size) * sizeof(T),
+				std::addressof(*first),
+				getWaitListSize(), getWaitListData(),
+				std::addressof(eventId)
+			);
+			detail::error::handle(error);
+			return {eventId};
+		}
+
+		//============================================================================
+
 		template<typename InputIterator, typename T>
 		void CommandQueueExecutor::writeBufferBlocked(
 			Buffer<T> const& buffer, size_t offset, InputIterator first, InputIterator last
 		) const {
-			const auto size = ::utility::count_elements(first, last);
-			auto error = clEnqueueWriteBuffer(
-				getQueueId(), buffer.get(), CL_BLOCKING,
-				offset * sizeof(T),
-				std::min(buffer.getSize(), size) * sizeof(T),
-				std::addressof(first[0]),
-				getWaitListSize(), getWaitListData(), nullptr);
-			detail::error::handle(error);
+			writeBufferImpl<CL_BLOCKING>(buffer, offset, first, last);
 		}
 
 		template<typename InputIterator, typename T>
 		void CommandQueueExecutor::writeBufferBlocked(
 			Buffer<T> const& buffer, InputIterator first, InputIterator last
-		) const {			
-			const auto size = ::utility::count_elements(first, last);
-			auto error = clEnqueueWriteBuffer(
-				getQueueId(), buffer.get(), CL_BLOCKING,
-				0, std::min(buffer.getSize(), size) * sizeof(T),
-				std::addressof(first[0]),
-				getWaitListSize(), getWaitListData(), nullptr);
-			detail::error::handle(error);
+		) const {
+			writeBufferImpl<CL_BLOCKING>(buffer, 0, first, last);
 		}
 
 		template<typename InputIterator, typename T>
 		auto CommandQueueExecutor::writeBuffer(
 			Buffer<T> const& buffer, size_t offset, InputIterator first, InputIterator last
 		) const -> Event {
-			const auto size = ::utility::count_elements(first, last);
-			auto eventId = cl_event{nullptr};
-			auto error   = clEnqueueWriteBuffer(
-				getQueueId(), buffer.get(), CL_NON_BLOCKING,
-				offset * sizeof(T),
-				std::min(buffer.getSize(), size) * sizeof(T),
-				std::addressof(first[0]),
-				getWaitListSize(), getWaitListData(),
-				std::addressof(eventId));
-			detail::error::handle(error);
-			return {eventId};
+			return writeBufferImpl<CL_NON_BLOCKING>(buffer, offset, first, last);
 		}
 
 		template<typename InputIterator, typename T>
 		auto CommandQueueExecutor::writeBuffer(
 			Buffer<T> const& buffer, InputIterator first, InputIterator last
 		) const -> Event {
-			const auto size = ::utility::count_elements(first, last);
-			auto eventId = cl_event{nullptr};
-			auto error   = clEnqueueWriteBuffer(
-				getQueueId(), buffer.get(), CL_NON_BLOCKING,
-				0, std::min(buffer.getSize(), size) * sizeof(T),
-				std::addressof(first[0]),
-				getWaitListSize(), getWaitListData(),
-				std::addressof(eventId));
-			detail::error::handle(error);
-			return {eventId};
+			return writeBufferImpl<CL_NON_BLOCKING>(buffer, 0, first, last);
 		}
 
 		//============================================================================
