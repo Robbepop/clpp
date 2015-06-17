@@ -1,5 +1,5 @@
-#ifndef CLPP_HOST_ACCESS_H
-#define CLPP_HOST_ACCESS_H
+#ifndef CLPP_HOST_ACCESS_HPP
+#define CLPP_HOST_ACCESS_HPP
 
 #include "clpp/detail/common.hpp"
 

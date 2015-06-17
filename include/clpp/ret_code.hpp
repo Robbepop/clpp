@@ -1,5 +1,5 @@
-#ifndef CLPP_RET_CODE_H
-#define CLPP_RET_CODE_H
+#ifndef CLPP_RET_CODE_HPP
+#define CLPP_RET_CODE_HPP
 
 #include "clpp/detail/common.hpp"
 

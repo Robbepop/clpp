@@ -1,5 +1,5 @@
-#ifndef CLPP_EXECUTION_STATUS_H
-#define CLPP_EXECUTION_STATUS_H
+#ifndef CLPP_EXECUTION_STATUS_HPP
+#define CLPP_EXECUTION_STATUS_HPP
 
 #include "clpp/detail/common.hpp"
 

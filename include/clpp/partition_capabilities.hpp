@@ -1,5 +1,5 @@
-#ifndef CLPP_PARTITION_CAPABILITIES_H
-#define CLPP_PARTITION_CAPABILITIES_H
+#ifndef CLPP_PARTITION_CAPABILITIES_HPP
+#define CLPP_PARTITION_CAPABILITIES_HPP
 
 #include "clpp/detail/common.hpp"
 #include "clpp/detail/mask_wrapper.hpp"

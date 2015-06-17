@@ -1,5 +1,5 @@
-#ifndef CLPP_MAPPED_MEMORY_H
-#define CLPP_MAPPED_MEMORY_H
+#ifndef CLPP_MAPPED_MEMORY_HPP
+#define CLPP_MAPPED_MEMORY_HPP
 
 namespace cl {
 	template<typename T>

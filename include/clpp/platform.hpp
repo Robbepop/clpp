@@ -1,5 +1,5 @@
-#ifndef CLPP_PLATFORM_H
-#define CLPP_PLATFORM_H
+#ifndef CLPP_PLATFORM_HPP
+#define CLPP_PLATFORM_HPP
 
 #include "clpp/detail/object.hpp"
 #include "clpp/device_type.hpp"

@@ -1,5 +1,5 @@
-#ifndef CLPP_CONTEXT_PROPERTIES_H
-#define CLPP_CONTEXT_PROPERTIES_H
+#ifndef CLPP_CONTEXT_PROPERTIES_HPP
+#define CLPP_CONTEXT_PROPERTIES_HPP
 
 #include "detail/common.hpp"
 

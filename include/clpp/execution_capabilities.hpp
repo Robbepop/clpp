@@ -1,5 +1,5 @@
-#ifndef CLPP_EXECUTION_CAPABILITIES_H
-#define CLPP_EXECUTION_CAPABILITIES_H
+#ifndef CLPP_EXECUTION_CAPABILITIES_HPP
+#define CLPP_EXECUTION_CAPABILITIES_HPP
 
 #include "clpp/detail/common.hpp"
 #include "clpp/detail/mask_wrapper.hpp"

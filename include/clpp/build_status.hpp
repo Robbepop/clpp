@@ -1,5 +1,5 @@
-#ifndef CLPP_BUILD_STATUS_H
-#define CLPP_BUILD_STATUS_H
+#ifndef CLPP_BUILD_STATUS_HPP
+#define CLPP_BUILD_STATUS_HPP
 
 #include "clpp/detail/common.hpp"
 

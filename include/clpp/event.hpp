@@ -1,5 +1,5 @@
-#ifndef CLPP_EVENT_H
-#define CLPP_EVENT_H
+#ifndef CLPP_EVENT_HPP
+#define CLPP_EVENT_HPP
 
 #include "clpp/execution_status.hpp"
 #include "clpp/command.hpp"

@@ -1,5 +1,5 @@
-#ifndef CLPP_BUFFER_H
-#define CLPP_BUFFER_H
+#ifndef CLPP_BUFFER_HPP
+#define CLPP_BUFFER_HPP
 
 #include "clpp/mem_object.hpp"
 #include "clpp/device_access.hpp"

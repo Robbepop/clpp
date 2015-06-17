@@ -1,12 +1,12 @@
-#ifndef CLPP_COMMAND_QUEUE_EXECUTOR_H
-#define CLPP_COMMAND_QUEUE_EXECUTOR_H
+#ifndef CLPP_DETAIL_COMMAND_QUEUE_EXECUTOR_HPP
+#define CLPP_DETAIL_COMMAND_QUEUE_EXECUTOR_HPP
 
 #include "clpp/nd_range.hpp"
 #include "clpp/buffer.hpp"
 #include "clpp/map_access.hpp"
 #include "clpp/kernel.hpp"
 
-#include "utility/concepts.hpp"
+#include "clpp/utility/concepts.hpp"
 
 #include <vector>
 

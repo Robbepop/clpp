@@ -1,5 +1,5 @@
-#ifndef CLPP_SCALAR_TYPE_H
-#define CLPP_SCALAR_TYPE_H
+#ifndef CLPP_SCALAR_TYPE_HPP
+#define CLPP_SCALAR_TYPE_HPP
 
 namespace cl {
 	enum class ScalarType {

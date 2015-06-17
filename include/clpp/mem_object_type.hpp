@@ -1,5 +1,5 @@
-#ifndef CLPP_MEM_OBJECT_TYPE_H
-#define CLPP_MEM_OBJECT_TYPE_H
+#ifndef CLPP_MEM_OBJECT_TYPE_HPP
+#define CLPP_MEM_OBJECT_TYPE_HPP
 
 #include "clpp/detail/common.hpp"
 

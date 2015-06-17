@@ -1,5 +1,5 @@
-#ifndef CLPP_MEM_OBJECT_H
-#define CLPP_MEM_OBJECT_H
+#ifndef CLPP_MEM_OBJECT_HPP
+#define CLPP_MEM_OBJECT_HPP
 
 #include "clpp/detail/object.hpp"
 #include "clpp/detail/error_handler.hpp"

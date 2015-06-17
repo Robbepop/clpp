@@ -1,5 +1,5 @@
-#ifndef CLPP_ND_RANGE_H
-#define CLPP_ND_RANGE_H
+#ifndef CLPP_ND_RANGE_HPP
+#define CLPP_ND_RANGE_HPP
 
 #include "utility/concepts.hpp"
 

@@ -1,5 +1,5 @@
-#ifndef CLPP_MEMORY_CACHE_TYPE_H
-#define CLPP_MEMORY_CACHE_TYPE_H
+#ifndef CLPP_MEMORY_CACHE_TYPE_HPP
+#define CLPP_MEMORY_CACHE_TYPE_HPP
 
 #include "clpp/detail/common.hpp"
 

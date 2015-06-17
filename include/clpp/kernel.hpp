@@ -1,5 +1,5 @@
-#ifndef CLPP_KERNEL_H
-#define CLPP_KERNEL_H
+#ifndef CLPP_KERNEL_HPP
+#define CLPP_KERNEL_HPP
 
 #include "clpp/detail/object.hpp"
 

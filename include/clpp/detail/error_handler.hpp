@@ -1,5 +1,5 @@
-#ifndef CLPP_DETAIL_ERROR_HANDLER_H
-#define CLPP_DETAIL_ERROR_HANDLER_H
+#ifndef CLPP_DETAIL_ERROR_HANDLER_HPP
+#define CLPP_DETAIL_ERROR_HANDLER_HPP
 
 #include "clpp/ret_code.hpp"
 #include "clpp/exception.hpp"

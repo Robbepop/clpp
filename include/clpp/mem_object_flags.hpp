@@ -1,5 +1,5 @@
-#ifndef CLPP_MEM_OBJECT_FLAGS_H
-#define CLPP_MEM_OBJECT_FLAGS_H
+#ifndef CLPP_MEM_OBJECT_FLAGS_HPP
+#define CLPP_MEM_OBJECT_FLAGS_HPP
 
 #include "clpp/detail/mask_wrapper.hpp"
 

@@ -1,5 +1,5 @@
-#ifndef CLPP_EXCEPTION_H
-#define CLPP_EXCEPTION_H
+#ifndef CLPP_EXCEPTION_HPP
+#define CLPP_EXCEPTION_HPP
 
 #include "clpp/detail/common.hpp"
 #include "clpp/ret_code.hpp"

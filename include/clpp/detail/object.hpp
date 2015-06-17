@@ -1,7 +1,7 @@
-#ifndef CPPCL_DETAIL_OBJECT_H
-#define CPPCL_DETAIL_OBJECT_H
+#ifndef CLPP_DETAIL_OBJECT_HPP
+#define CLPP_DETAIL_OBJECT_HPP
 
-#include "clpp/detail/get_info_helper.hpp"
+#include "clpp/detail/information_accessor.hpp"
 
 #include <vector>
 #include <string>

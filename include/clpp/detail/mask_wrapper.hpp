@@ -1,5 +1,5 @@
-#ifndef CLPP_DETAIL_MASK_WRAPPER_H
-#define CLPP_DETAIL_MASK_WRAPPER_H
+#ifndef CLPP_DETAIL_MASK_WRAPPER_HPP
+#define CLPP_DETAIL_MASK_WRAPPER_HPP
 
 #include "clpp/detail/common.hpp"
 

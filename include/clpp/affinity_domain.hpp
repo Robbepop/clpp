@@ -1,5 +1,5 @@
-#ifndef CLPP_AFFINITY_DOMAIN_H
-#define CLPP_AFFINITY_DOMAIN_H
+#ifndef CLPP_AFFINITY_DOMAIN_HPP
+#define CLPP_AFFINITY_DOMAIN_HPP
 
 #include "clpp/detail/common.hpp"
 

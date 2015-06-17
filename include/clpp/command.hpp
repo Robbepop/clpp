@@ -1,5 +1,5 @@
-#ifndef CLPP_COMMAND_H
-#define CLPP_COMMAND_H
+#ifndef CLPP_COMMAND_HPP
+#define CLPP_COMMAND_HPP
 
 #include "clpp/detail/common.hpp"
 

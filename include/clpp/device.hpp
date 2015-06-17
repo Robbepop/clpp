@@ -1,5 +1,5 @@
-#ifndef CLPP_DEVICE_H
-#define CLPP_DEVICE_H
+#ifndef CLPP_DEVICE_HPP
+#define CLPP_DEVICE_HPP
 
 #include "clpp/detail/object.hpp"
 #include "clpp/detail/error_handler.hpp"

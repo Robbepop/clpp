@@ -1,5 +1,5 @@
-#ifndef CLPP_DEVICE_ACCESS_H
-#define CLPP_DEVICE_ACCESS_H
+#ifndef CLPP_DEVICE_ACCESS_HPP
+#define CLPP_DEVICE_ACCESS_HPP
 
 #include "clpp/detail/common.hpp"
 

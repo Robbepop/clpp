@@ -1,5 +1,5 @@
-#ifndef CLPP_FP_TYPE_H
-#define CLPP_FP_TYPE_H
+#ifndef CLPP_FP_TYPE_HPP
+#define CLPP_FP_TYPE_HPP
 
 namespace cl {
 	enum class FPType {

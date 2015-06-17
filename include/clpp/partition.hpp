@@ -1,5 +1,5 @@
-#ifndef CLPP_PARTITION_H
-#define CLPP_PARTITION_H
+#ifndef CLPP_PARTITION_HPP
+#define CLPP_PARTITION_HPP
 
 #include "clpp/detail/common.hpp"
 

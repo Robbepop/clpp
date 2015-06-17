@@ -1,5 +1,5 @@
-#ifndef CLPP_FP_CONFIG_H
-#define CLPP_FP_CONFIG_H
+#ifndef CLPP_FP_CONFIG_HPP
+#define CLPP_FP_CONFIG_HPP
 
 #include "clpp/detail/common.hpp"
 #include "clpp/detail/mask_wrapper.hpp"

@@ -1,5 +1,5 @@
-#ifndef CLPP_CONTEXT_H
-#define CLPP_CONTEXT_H
+#ifndef CLPP_CONTEXT_HPP
+#define CLPP_CONTEXT_HPP
 
 #include "clpp/detail/error_handler.hpp"
 #include "clpp/detail/object.hpp"

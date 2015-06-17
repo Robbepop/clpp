@@ -1,5 +1,5 @@
-#ifndef CLPP_PROGRAM_H
-#define CLPP_PROGRAM_H
+#ifndef CLPP_PROGRAM_HPP
+#define CLPP_PROGRAM_HPP
 
 #include "clpp/kernel.hpp"
 #include "clpp/build_status.hpp"

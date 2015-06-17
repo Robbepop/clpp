@@ -1,5 +1,5 @@
-#ifndef CLPP_COMMAND_QUEUE_H
-#define CLPP_COMMAND_QUEUE_H
+#ifndef CLPP_COMMAND_QUEUE_HPP
+#define CLPP_COMMAND_QUEUE_HPP
 
 #include "clpp/detail/command_queue_executor.hpp"
 

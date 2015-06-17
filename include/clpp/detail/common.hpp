@@ -1,5 +1,5 @@
-#ifndef CLPP_DETAIL_COMMON_H
-#define CLPP_DETAIL_COMMON_H
+#ifndef CLPP_DETAIL_COMMON_HPP
+#define CLPP_DETAIL_COMMON_HPP
 
 #if defined(__APPLE__)
 	#include <OpenCL/opencl.h>

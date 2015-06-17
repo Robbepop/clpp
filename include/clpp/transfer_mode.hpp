@@ -1,5 +1,5 @@
-#ifndef CLPP_TRANSFER_MODE_H
-#define CLPP_TRANSFER_MODE_H
+#ifndef CLPP_TRANSFER_MODE_HPP
+#define CLPP_TRANSFER_MODE_HPP
 
 #include "clpp/detail/common.hpp"
 

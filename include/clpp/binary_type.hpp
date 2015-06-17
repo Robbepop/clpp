@@ -1,5 +1,5 @@
-#ifndef CLPP_BINARY_TYPE_H
-#define CLPP_BINARY_TYPE_H
+#ifndef CLPP_BINARY_TYPE_HPP
+#define CLPP_BINARY_TYPE_HPP
 
 #include "clpp/detail/common.hpp"
 

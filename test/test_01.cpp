@@ -1,14 +1,24 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <fstream>
 
-#include "utility/read_file.hpp"
 #include "clpp.hpp"
 
 #include <type_traits>
 #include <unordered_map>
 #include <map>
 #include <random>
+
+namespace utility {
+	auto readFile(std::string const& filePath) -> std::string {
+		std::ifstream ifs{filePath};
+		std::string content{
+			std::istreambuf_iterator<char>(ifs),
+			std::istreambuf_iterator<char>()};
+		return content;
+	}
+}
 
 template <typename T>
 auto operator<<(std::ostream& out, const std::vector<T>& v) -> std::ostream & {
