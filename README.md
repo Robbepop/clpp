@@ -15,6 +15,7 @@ Dependencies
 The only depencendies so far are some header-only libraries from boost, namely:
 - boost/algorithm/string/split.hpp
 - boost/algorithm/string/classification.hpp
+- boost/optional.hpp
 
 Errors & Exceptions
 -------------------
