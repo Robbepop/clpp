@@ -1,6 +1,7 @@
 # CMake files
 debug/
 release/
+local/
 
 # Compiled Object files
 *.slo
