@@ -13,9 +13,6 @@ Experimental:
 	-> (maybe) Partition constructor
 
 TODO:
-- Rename *.tpp file extension to *.ipp which is more convenient as implementation file.
-- Restructure implementation files with special include guards which throw warnings when
-  including the same file multiple time or when the associated header file got not included before.
 - Implement global error info table with the new exceptions.
 - Implementation of Context:
     - replace current constructors with named constructors.

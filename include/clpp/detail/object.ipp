@@ -21,7 +21,7 @@ namespace cl {
 		}
 
 		//================================================================================
-		// Constructor, Destructor, Assignment Operator
+		// Constructor, Destructor
 		//================================================================================
 
 		template<typename CLType>
@@ -46,13 +46,45 @@ namespace cl {
 			release();
 		}
 
+		//================================================================================
+		// Assigment Operator Overloads
+		//================================================================================
+
 		template<typename CLType>
 		auto Object<CLType>::operator=(
 			const Object<CLType> & rhs
-		) -> Object<CLType> & {
+		)
+			-> Object<CLType> &
+		{
+			release();
 			m_object = rhs.m_object;
 			retain();
 			return *this;
+		}
+
+		template<typename CLType>
+		auto Object<CLType>::operator=(
+			const cl_type & rhs
+		)
+			-> Object<CLType> &
+		{
+		    release();
+		    m_object = rhs;
+		    return *this;
+		}
+
+		//============================================================================
+		// Operators for checking if two objects are equal or unequal.
+		//============================================================================
+
+		template<typename CLType>
+		auto Object<CLType>::operator==(const Object<CLType> & rhs) const -> bool {
+			return m_object == rhs.m_object;
+		}
+
+		template<typename CLType>
+		auto Object<CLType>::operator!=(const Object<CLType> & rhs) const -> bool {
+			return m_object != rhs.m_object;
 		}
 
 		//================================================================================
@@ -106,6 +138,26 @@ namespace cl {
 			}
 		}
 	}
+}
+
+template<typename CLType>
+auto operator==(const cl::detail::Object<CLType> & lhs, const CLType & rhs) -> bool {
+	return lhs.get() == rhs;
+}
+
+template<typename CLType>
+auto operator!=(const cl::detail::Object<CLType> & lhs, const CLType & rhs) -> bool {
+	return lhs.get() != rhs;
+}
+
+template<typename CLType>
+auto operator==(const CLType & lhs, const cl::detail::Object<CLType> & rhs) -> bool {
+	return rhs == lhs;
+}
+
+template<typename CLType>
+auto operator!=(const CLType & lhs, const cl::detail::Object<CLType> & rhs) -> bool {
+	return rhs != lhs;
 }
 
 #endif

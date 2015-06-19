@@ -6,7 +6,7 @@ __kernel void vectorAdd(
 	__global int* result,
 	const unsigned int size
 ){
-	int id = get_global_id(0);
+	size_t id = get_global_id(0);
 	if (id < size) {
 		result[id] = bufferA[id] + bufferB[id];
 	}

@@ -67,6 +67,15 @@ namespace cl {
 			auto operator=(const Object<CLType> &  rhs) -> Object<CLType> &;
 			auto operator=(      Object<CLType> && rhs) -> Object<CLType> & = default;
 
+			auto operator=(const cl_type &  rhs) -> Object<CLType> &;
+
+			//============================================================================
+			// Operators for checking if two objects are equal or unequal.
+			//============================================================================
+
+			auto operator==(const Object<CLType> & rhs) const -> bool;
+			auto operator!=(const Object<CLType> & rhs) const -> bool;
+
 			//============================================================================
 			// Helper methods to access information about the wrapped
 			// object. Three forms to allow for best performance in
@@ -87,5 +96,17 @@ namespace cl {
 		};
 	}
 }
+
+template<typename CLType>
+auto operator==(const cl::detail::Object<CLType> & lhs, const CLType & rhs) -> bool;
+
+template<typename CLType>
+auto operator!=(const cl::detail::Object<CLType> & lhs, const CLType & rhs) -> bool;
+
+template<typename CLType>
+auto operator==(const CLType & rhs, const cl::detail::Object<CLType> & lhs) -> bool;
+
+template<typename CLType>
+auto operator!=(const CLType & rhs, const cl::detail::Object<CLType> & lhs) -> bool;
 
 #endif
