@@ -39,7 +39,7 @@ namespace cl {
 
 		using detail::Object<cl_type>::Object;
 
-		auto operator=(Kernel const& rhs) -> Kernel &;
+		auto inline operator=(Kernel const& rhs) -> Kernel &;
 
 		//================================================================================
 		// Used to set kernel arguments for the next kernel execution.
@@ -73,12 +73,12 @@ namespace cl {
 		//================================================================================
 	public:
 
-		auto getFunctionName() const   -> std::string;
-		auto getNumArgs() const        -> cl_uint;
-		auto getReferenceCount() const -> cl_uint;
-		auto getContext() const        -> std::unique_ptr<Context>;
-		auto getProgram() const        -> std::unique_ptr<Program>;
-		auto getAttributes() const     -> std::vector<std::string>;
+		auto inline getFunctionName() const   -> std::string;
+		auto inline getNumArgs() const        -> cl_uint;
+		auto inline getReferenceCount() const -> cl_uint;
+		auto inline getContext() const        -> std::unique_ptr<Context>;
+		auto inline getProgram() const        -> std::unique_ptr<Program>;
+		auto inline getAttributes() const     -> std::vector<std::string>;
 	};
 }
 

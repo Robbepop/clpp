@@ -11,14 +11,14 @@ namespace cl {
 	public:
 		using detail::MaskWrapper<CommandQueueProperties::cl_mask_type>::MaskWrapper;
 
-		auto isOutOfOrderExecModeEnabled() const -> bool;
-		auto isProfilingEnabled() const          -> bool;
+		auto inline isOutOfOrderExecModeEnabled() const -> bool;
+		auto inline isProfilingEnabled() const          -> bool;
 
-		auto enableOutOfOrderExecMode() -> CommandQueueProperties &;
-		auto enableProfiling()          -> CommandQueueProperties &;
+		auto inline enableOutOfOrderExecMode() -> CommandQueueProperties &;
+		auto inline enableProfiling()          -> CommandQueueProperties &;
 
-		auto disableOutOfOrderExecMode() -> CommandQueueProperties &;
-		auto disableProfiling()          -> CommandQueueProperties &;
+		auto inline disableOutOfOrderExecMode() -> CommandQueueProperties &;
+		auto inline disableProfiling()          -> CommandQueueProperties &;
 	};
 }
 

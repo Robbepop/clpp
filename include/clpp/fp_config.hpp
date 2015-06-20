@@ -9,14 +9,14 @@ namespace cl {
 	public:
 		using detail::MaskWrapper<FPConfig::cl_mask_type>::MaskWrapper;
 
-		auto supportsDenorm() const                     -> bool;
-		auto supportsInfAndNan() const                  -> bool;
-		auto supportsRoundToNearest() const             -> bool;
-		auto supportsRoundToZero() const                -> bool;
-		auto supportsRoundToInf() const                 -> bool;
-		auto supportsFusedMultiplyAdd() const           -> bool;
-		auto supportsCorrectlyRoundedDivideSqrt() const -> bool;
-		auto supportsSoftFloat() const                  -> bool;
+		auto inline supportsDenorm() const                     -> bool;
+		auto inline supportsInfAndNan() const                  -> bool;
+		auto inline supportsRoundToNearest() const             -> bool;
+		auto inline supportsRoundToZero() const                -> bool;
+		auto inline supportsRoundToInf() const                 -> bool;
+		auto inline supportsFusedMultiplyAdd() const           -> bool;
+		auto inline supportsCorrectlyRoundedDivideSqrt() const -> bool;
+		auto inline supportsSoftFloat() const                  -> bool;
 	};
 }
 

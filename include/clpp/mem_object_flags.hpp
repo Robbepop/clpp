@@ -8,17 +8,17 @@ namespace cl {
 	public:
 		using detail::MaskWrapper<MemoryFlags::cl_mask_type>::MaskWrapper;
 
-		auto allowsReadWrite() -> bool;
-		auto allowsReadOnly()  -> bool;
-		auto allowsWriteOnly() -> bool;
+		auto inline allowsReadWrite() -> bool;
+		auto inline allowsReadOnly()  -> bool;
+		auto inline allowsWriteOnly() -> bool;
 
-		auto useHostPtr()   -> bool;
-		auto allocHostPtr() -> bool;
-		auto copyHostPtr()  -> bool;
+		auto inline useHostPtr()   -> bool;
+		auto inline allocHostPtr() -> bool;
+		auto inline copyHostPtr()  -> bool;
 
-		auto allowsHostReadOnly()  -> bool;
-		auto allowsHostWriteOnly() -> bool;
-		auto allowsHostNoAccess()  -> bool;
+		auto inline allowsHostReadOnly()  -> bool;
+		auto inline allowsHostWriteOnly() -> bool;
+		auto inline allowsHostNoAccess()  -> bool;
 	};
 }
 

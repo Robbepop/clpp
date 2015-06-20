@@ -25,13 +25,15 @@ namespace cl {
 		static auto byAffinityDomain(AffinityDomain domain) -> Partition;
 
 	public:
+		inline
 		Partition(std::vector<cl_device_partition_property> properties);
 
 		//================================================================================
 		// Constructor for API compatibility.
 		//================================================================================
 
-		explicit Partition(const cl_device_partition_property* properties);
+		inline explicit
+		Partition(const cl_device_partition_property* properties);
 
 		//================================================================================
 		// Access to the underlying type of this partition.
@@ -39,13 +41,13 @@ namespace cl {
 		// underlying internal buffer.
 		//================================================================================
 
-		auto getKind() const -> Kind;
-		auto isEqually() const -> bool;
-		auto isByCounts() const -> bool;
-		auto isByAffinityDomain() const -> bool;
+		auto inline getKind() const -> Kind;
+		auto inline isEqually() const -> bool;
+		auto inline isByCounts() const -> bool;
+		auto inline isByAffinityDomain() const -> bool;
 
-		auto data()          ->       cl_device_partition_property *;
-		auto data() const    -> const cl_device_partition_property *;
+		auto inline data()          ->       cl_device_partition_property *;
+		auto inline data() const    -> const cl_device_partition_property *;
 
 		//================================================================================
 		// Methods restricted to the underlying type of partition.
@@ -53,9 +55,9 @@ namespace cl {
 		// incorrect kind.
 		//================================================================================
 
-		auto getComputeUnits() const -> cl_uint;
-		auto getCounts() const -> std::vector<cl_uint>;
-		auto getAffinityDomain() const -> AffinityDomain;
+		auto inline getComputeUnits() const -> cl_uint;
+		auto inline getCounts() const -> std::vector<cl_uint>;
+		auto inline getAffinityDomain() const -> AffinityDomain;
 
 	private:
 		std::vector<cl_device_partition_property> m_properties;

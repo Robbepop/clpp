@@ -57,22 +57,25 @@ namespace cl {
 
 		using detail::Object<cl_type>::Object;
 
-		auto operator=(const Device & rhs) -> Device &;
+		auto inline operator=(const Device & rhs) -> Device &;
 		
 		//================================================================================
 		// Methods to partition the device.
 		//================================================================================
 
 	private:
+		inline
 		auto partition(Partition partition) -> std::vector<Device>;
 
 	public:
+		inline
 		auto partitionEqually(cl_uint num) -> std::vector<Device>;
 
 		template<typename InputRange>
 		auto partitionByCounts(InputRange const& counts)
 			-> std::vector<Device>;
 
+		inline
 		auto partitionByAffinityDomain(AffinityDomain domain)
 			-> std::vector<Device>;
 
@@ -81,100 +84,100 @@ namespace cl {
 		//================================================================================
 
 	public:
-		auto getAddressBits() const                    -> cl_uint;
-		auto isAvailable() const                       -> cl_bool;
-		auto getBuiltinKernels() const                 -> std::vector<std::string>;
-		auto isCompilerAvailable() const               -> cl_bool;
-		auto getFpConfig(FPType type) const            -> FPConfig;
-		auto isLittleEndian() const                    -> cl_bool;
-		auto hasErrorCorrectionSupport() const         -> cl_bool;
-		auto getExecutionCapabilities() const          -> ExecutionCapabilities;
-		auto getExtensions() const                     -> std::vector<std::string>;
-		auto hasExtension(std::string extension) const -> bool;
+		auto inline getAddressBits() const                    -> cl_uint;
+		auto inline isAvailable() const                       -> cl_bool;
+		auto inline getBuiltinKernels() const                 -> std::vector<std::string>;
+		auto inline isCompilerAvailable() const               -> cl_bool;
+		auto inline getFpConfig(FPType type) const            -> FPConfig;
+		auto inline isLittleEndian() const                    -> cl_bool;
+		auto inline hasErrorCorrectionSupport() const         -> cl_bool;
+		auto inline getExecutionCapabilities() const          -> ExecutionCapabilities;
+		auto inline getExtensions() const                     -> std::vector<std::string>;
+		auto inline hasExtension(std::string extension) const -> bool;
 
-		auto getGlobalMemoryCacheSize() const     -> cl_ulong;
-		auto getGlobalMemoryCacheType() const     -> MemoryCacheType;
-		auto getGlobalMemoryCachelineSize() const -> cl_uint;
-		auto getGlobalMemorySize() const          -> cl_ulong;
-		auto getGlobalVariablePreferredTotalSize() const -> size_t;
+		auto inline getGlobalMemoryCacheSize() const     -> cl_ulong;
+		auto inline getGlobalMemoryCacheType() const     -> MemoryCacheType;
+		auto inline getGlobalMemoryCachelineSize() const -> cl_uint;
+		auto inline getGlobalMemorySize() const          -> cl_ulong;
+		auto inline getGlobalVariablePreferredTotalSize() const -> size_t;
 
-		auto getImage2DMaxHeight() const -> size_t;
-		auto getImage2DMaxWidth() const  -> size_t;
-		auto getImage3DMaxHeight() const -> size_t;
-		auto getImage3DMaxWidth() const  -> size_t;
-		auto getImage3DMaxDepth() const  -> size_t;
+		auto inline getImage2DMaxHeight() const -> size_t;
+		auto inline getImage2DMaxWidth() const  -> size_t;
+		auto inline getImage3DMaxHeight() const -> size_t;
+		auto inline getImage3DMaxWidth() const  -> size_t;
+		auto inline getImage3DMaxDepth() const  -> size_t;
 
-		auto getImageBaseAddressAlignment() const -> cl_uint;
-		auto getImageMaxArraySize() const         -> size_t;
-		auto getImageMaxBufferSize() const        -> size_t;
-		auto getImagePitchAlignment() const       -> cl_uint;
-		auto hasImageSupport() const              -> cl_bool;
+		auto inline getImageBaseAddressAlignment() const -> cl_uint;
+		auto inline getImageMaxArraySize() const         -> size_t;
+		auto inline getImageMaxBufferSize() const        -> size_t;
+		auto inline getImagePitchAlignment() const       -> cl_uint;
+		auto inline hasImageSupport() const              -> cl_bool;
 
-		auto isLinkerAvailable() const   -> cl_bool;
+		auto inline isLinkerAvailable() const   -> cl_bool;
 
-		auto getLocalMemorySize() const  -> cl_ulong;
-		auto getLocalMemoryType() const  -> LocalMemoryType;
+		auto inline getLocalMemorySize() const  -> cl_ulong;
+		auto inline getLocalMemoryType() const  -> LocalMemoryType;
 
-		auto getMaxClockFrequency() const       -> cl_uint;
-		auto getMaxComputeUnits() const         -> cl_uint;
-		auto getMaxConstantArgs() const         -> cl_uint;
-		auto getMaxConstantBufferSize() const   -> cl_ulong;
-		auto getMaxGlobalVariableSize() const   -> size_t;
-		auto getMaxMemoryAllocationSize() const -> cl_ulong;
-		auto getMaxOnDeviceEvents() const       -> cl_uint;
-		auto getMaxOnDeviceQueues() const       -> cl_uint;
-		auto getMaxParameterSize() const        -> size_t;
-		auto getMaxPipeArgs() const             -> cl_uint;
-		auto getMaxReadImageArgs() const        -> cl_uint;
-		auto getMaxReadWriteImageArgs() const   -> cl_uint;
-		auto getMaxSamplers() const             -> cl_uint;
-		auto getMaxWorkGroupSize() const        -> size_t;
-		auto getMaxWorkItemDimensions() const   -> cl_uint;
-		auto getMaxWorkItemSizes() const        -> std::vector<size_t>;
-		auto getMaxWriteImageArgs() const       -> cl_uint;
+		auto inline getMaxClockFrequency() const       -> cl_uint;
+		auto inline getMaxComputeUnits() const         -> cl_uint;
+		auto inline getMaxConstantArgs() const         -> cl_uint;
+		auto inline getMaxConstantBufferSize() const   -> cl_ulong;
+		auto inline getMaxGlobalVariableSize() const   -> size_t;
+		auto inline getMaxMemoryAllocationSize() const -> cl_ulong;
+		auto inline getMaxOnDeviceEvents() const       -> cl_uint;
+		auto inline getMaxOnDeviceQueues() const       -> cl_uint;
+		auto inline getMaxParameterSize() const        -> size_t;
+		auto inline getMaxPipeArgs() const             -> cl_uint;
+		auto inline getMaxReadImageArgs() const        -> cl_uint;
+		auto inline getMaxReadWriteImageArgs() const   -> cl_uint;
+		auto inline getMaxSamplers() const             -> cl_uint;
+		auto inline getMaxWorkGroupSize() const        -> size_t;
+		auto inline getMaxWorkItemDimensions() const   -> cl_uint;
+		auto inline getMaxWorkItemSizes() const        -> std::vector<size_t>;
+		auto inline getMaxWriteImageArgs() const       -> cl_uint;
 
-		auto getMemoryBaseAddressAlign() const  -> cl_uint;
+		auto inline getMemoryBaseAddressAlign() const  -> cl_uint;
 
-		auto getName() const                             -> std::string;
-		auto getNativeVectorWidth(ScalarType type) const -> cl_uint;
-		auto getOpenCLCVersion() const                   -> std::string;
+		auto inline getName() const                             -> std::string;
+		auto inline getNativeVectorWidth(ScalarType type) const -> cl_uint;
+		auto inline getOpenCLCVersion() const                   -> std::string;
 
-		auto getParentDevice() const                   -> boost::optional<Device>;
-		auto getPartitionAffinityDomain() const        -> AffinityDomainCapabilities;
-		auto getPartitionMaxSubDevices() const         -> cl_uint;
-		auto getPartitionProperties() const            -> PartitionCapabilities;
-		auto getPartition() const                      -> Partition;
+		auto inline getParentDevice() const                   -> boost::optional<Device>;
+		auto inline getPartitionAffinityDomain() const        -> AffinityDomainCapabilities;
+		auto inline getPartitionMaxSubDevices() const         -> cl_uint;
+		auto inline getPartitionProperties() const            -> PartitionCapabilities;
+		auto inline getPartition() const                      -> Partition;
 
-		auto getPipeMaxActiveReservations() const -> cl_uint;
-		auto getPipeMaxPacketSize() const         -> cl_uint;
+		auto inline getPipeMaxActiveReservations() const -> cl_uint;
+		auto inline getPipeMaxPacketSize() const         -> cl_uint;
 
-		auto getPlatform() const                         -> std::unique_ptr<Platform>;
-		auto getPreferredGlobalAtomicAlignment() const   -> cl_uint;
-		auto hasPreferredInteropUserSync() const         -> cl_bool;
-		auto getPreferredLocalAtomicAlignment() const    -> cl_uint;
-		auto getPreferredPlatformAtomicAlignment() const -> cl_uint;
-		auto getPreferredVectorWidth(ScalarType type) const -> cl_uint;
+		auto inline getPlatform() const                         -> std::unique_ptr<Platform>;
+		auto inline getPreferredGlobalAtomicAlignment() const   -> cl_uint;
+		auto inline hasPreferredInteropUserSync() const         -> cl_bool;
+		auto inline getPreferredLocalAtomicAlignment() const    -> cl_uint;
+		auto inline getPreferredPlatformAtomicAlignment() const -> cl_uint;
+		auto inline getPreferredVectorWidth(ScalarType type) const -> cl_uint;
 
-		auto getPrintfBufferSize() const               -> size_t;
-		auto getProfile() const                        -> std::string;
-		auto getProfilingTimerResolution() const       -> size_t;
+		auto inline getPrintfBufferSize() const               -> size_t;
+		auto inline getProfile() const                        -> std::string;
+		auto inline getProfilingTimerResolution() const       -> size_t;
 
-		auto getQueueOnDeviceMaxSize() const           -> cl_uint;
-		auto getQueueOnDevicePreferredSize() const     -> cl_uint;
-		auto getQueueOnDeviceProperties() const        -> CommandQueueProperties;
-		auto getQueueOnHostProperties() const          -> CommandQueueProperties;
+		auto inline getQueueOnDeviceMaxSize() const           -> cl_uint;
+		auto inline getQueueOnDevicePreferredSize() const     -> cl_uint;
+		auto inline getQueueOnDeviceProperties() const        -> CommandQueueProperties;
+		auto inline getQueueOnHostProperties() const          -> CommandQueueProperties;
 
-		auto getReferenceCount() const                 -> cl_uint;
+		auto inline getReferenceCount() const                 -> cl_uint;
 
-		// 'use of undeclared CL_DEVICE_SPIR_VERSIONS' in OpenCL 2.0 conformant code ...
-		//auto getSpirVersions() const                   -> std::vector<std::string>;
-		auto getSvmCapabilities() const                -> SvmCapabilities;
+//		'use of undeclared CL_DEVICE_SPIR_VERSIONS' in OpenCL 2.0 conformant code ...
+//		auto inline getSpirVersions() const                   -> std::vector<std::string>;
+		auto inline getSvmCapabilities() const                -> SvmCapabilities;
 
-		auto getType() const                           -> DeviceType;
-		auto getVendor() const                         -> std::string;
-		auto getVendorID() const                       -> cl_uint;
-		auto getVersion() const                        -> std::string;
-		auto getDriverVersion() const                  -> std::string;
+		auto inline getType() const                           -> DeviceType;
+		auto inline getVendor() const                         -> std::string;
+		auto inline getVendorID() const                       -> cl_uint;
+		auto inline getVersion() const                        -> std::string;
+		auto inline getDriverVersion() const                  -> std::string;
 	};
 }
 

@@ -41,7 +41,7 @@ namespace cl {
 		// Returns all platforms available on this system.
 		//================================================================================
 
-		static auto getPlatforms() -> std::vector<Platform>;
+		auto inline static getPlatforms() -> std::vector<Platform>;
 
 		//================================================================================
 		// Constructos and copy assign operator.
@@ -50,24 +50,24 @@ namespace cl {
 
 		using detail::Object<cl_type>::Object;
 
-		auto operator=(const Platform & rhs) -> Platform &;
+		auto inline operator=(const Platform & rhs) -> Platform &;
 
 		//================================================================================
 		// Wrapper API for clUnloadPlatformCompiler
 		//================================================================================
 
-		void unloadCompiler() const;
+		void inline unloadCompiler() const;
 
 		//================================================================================
 		// Information access methods
 		//================================================================================
 
-		auto getProfile() const    -> std::string;
-		auto getVersion() const    -> std::string;
-		auto getName() const       -> std::string;
-		auto getVendor() const     -> std::string;
-		auto getExtensions() const -> std::vector<std::string>;
-		auto getDevices(DeviceType deviceType) const -> std::vector<Device>;
+		auto inline getProfile() const    -> std::string;
+		auto inline getVersion() const    -> std::string;
+		auto inline getName() const       -> std::string;
+		auto inline getVendor() const     -> std::string;
+		auto inline getExtensions() const -> std::vector<std::string>;
+		auto inline getDevices(DeviceType deviceType) const -> std::vector<Device>;
 	};
 }
 

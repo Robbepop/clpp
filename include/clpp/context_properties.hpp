@@ -16,24 +16,24 @@ namespace cl {
 		using key_type = cl_context_properties;
 		using val_type = cl_context_properties;
 
-		ContextProperties() = default;
+		inline ContextProperties() = default;
 
 		template<typename InputRange>
 		ContextProperties(InputRange properties);
 
-		auto setPlatform(Platform platform)   -> ContextProperties &;
-		auto setInteropUserSync(cl_bool flag) -> ContextProperties &;
+		auto inline setPlatform(Platform platform)   -> ContextProperties &;
+		auto inline setInteropUserSync(cl_bool flag) -> ContextProperties &;
 
 		template<typename Value>
 		auto set(key_type property, Value value) -> ContextProperties &;
 
-		auto getPlatform() const        -> Platform;
-		auto getInteropUserSync() const -> bool;
+		auto inline getPlatform() const        -> Platform;
+		auto inline getInteropUserSync() const -> bool;
 
 		template<typename RetType>
 		auto get(key_type property) const -> boost::optional<RetType>;
 
-		auto data() const -> std::vector<cl_context_properties>;
+		auto inline data() const -> std::vector<cl_context_properties>;
 
 	private:
 		std::unordered_map<key_type, val_type> m_properties;

@@ -51,7 +51,7 @@ namespace cl {
 
 		using detail::Object<cl_type>::Object;
 
-		auto operator=(const Context & rhs) -> Context &;
+		auto inline operator=(const Context & rhs) -> Context &;
 
 		//================================================================================
 		// Special Constructors
@@ -81,7 +81,7 @@ namespace cl {
 			T* user_data
 		);
 
-		Context(
+		inline Context(
 			ContextProperties const& properties,
 			DeviceType type
 		);
@@ -90,7 +90,7 @@ namespace cl {
 		// Create Command Queue Objects
 		//================================================================================
 
-		auto createCommandQueue(Device const& device) const -> CommandQueue;
+		auto inline createCommandQueue(Device const& device) const -> CommandQueue;
 
 		//================================================================================
 		// Create Memory Objects
@@ -125,16 +125,16 @@ namespace cl {
 		// Create Program Objects
 		//================================================================================
 
-		auto createProgramWithSource(std::string const& source) const -> Program;
+		auto inline createProgramWithSource(std::string const& source) const -> Program;
 
 		//================================================================================
 		// Information access helper methods.
 		//================================================================================
 
-		auto getReferenceCount() const -> cl_uint;
-		auto getNumDevices() const     -> cl_uint;
-		auto getDevices() const        -> std::vector<Device>;
-		auto getProperties() const     -> ContextProperties;
+		auto inline getReferenceCount() const -> cl_uint;
+		auto inline getNumDevices() const     -> cl_uint;
+		auto inline getDevices() const        -> std::vector<Device>;
+		auto inline getProperties() const     -> ContextProperties;
 	};
 }
 

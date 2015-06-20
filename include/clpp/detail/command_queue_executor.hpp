@@ -11,7 +11,7 @@
 #include <vector>
 
 namespace cl {
-	template<typename T> class MappedMemory;
+	template<typename> class MappedMemory;
 	class CommandQueue;
 	class Event;
 
@@ -23,9 +23,9 @@ namespace cl {
 			//============================================================================
 		private:
 
-			auto getQueueId() const      -> cl_command_queue;
-			auto getWaitListData() const -> cl_event const*;
-			auto getWaitListSize() const -> cl_uint;
+			auto inline getQueueId() const      -> cl_command_queue;
+			auto inline getWaitListData() const -> cl_event const*;
+			auto inline getWaitListSize() const -> cl_uint;
 
 			// converts element count based arrays into byte based arrays
 			template<template<class, size_t> class A, class T, size_t N>
@@ -35,7 +35,7 @@ namespace cl {
 			// Constructors and Assignment
 			//============================================================================
 		public:
-			CommandQueueExecutor(CommandQueue const& queue);
+			inline CommandQueueExecutor(CommandQueue const& queue);
 
 			template<typename EventRange,
 				CLPP_REQUIRES(concept::is_range<EventRange>::value)>
@@ -258,20 +258,20 @@ namespace cl {
 			//============================================================================
 		public:
 
-			auto execute1DRange(
+			auto inline execute1DRange(
 				Kernel const& kernel,
 				size_t globalWorkOffset,
 				size_t globalWorkSize,
 				size_t localWorkSize
 			) const -> Event;
 
-			auto execute1DRange(
+			auto inline execute1DRange(
 				Kernel const& kernel,
 				size_t globalWorkSize,
 				size_t localWorkSize
 			) const -> Event;
 
-			auto execute1DRange(
+			auto inline execute1DRange(
 				Kernel const& kernel,
 				size_t globalWorkSize
 			) const -> Event;
@@ -290,9 +290,9 @@ namespace cl {
 			//============================================================================
 		public:
 
-			auto marker() const -> Event;
+			auto inline marker() const -> Event;
 
-			auto barrier() const -> Event;
+			auto inline barrier() const -> Event;
 
 			//============================================================================
 			// Members

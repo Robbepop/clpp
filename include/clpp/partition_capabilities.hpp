@@ -11,13 +11,14 @@ namespace cl {
 	public:
 		using detail::MaskWrapper<PartitionCapabilities::cl_mask_type>::MaskWrapper;
 
+		inline
 		PartitionCapabilities(std::vector<cl_device_partition_property> properties);
 
-		auto data() -> std::vector<cl_device_partition_property>;
+		auto inline data() -> std::vector<cl_device_partition_property>;
 
-		auto supportsPartitionEqually() const          -> bool;
-		auto supportsPartitionByCounts() const         -> bool;
-		auto supportsPartitionByAffinityDomain() const -> bool;
+		auto inline supportsPartitionEqually() const          -> bool;
+		auto inline supportsPartitionByCounts() const         -> bool;
+		auto inline supportsPartitionByAffinityDomain() const -> bool;
 
 	private:
 		static constexpr auto c_equally          = 1u;

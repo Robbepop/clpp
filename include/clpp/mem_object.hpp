@@ -42,7 +42,7 @@ namespace cl {
 
 		using detail::Object<cl_type>::Object;
 
-		auto operator=(const MemObject & rhs) -> MemObject &;
+		auto inline operator=(const MemObject & rhs) -> MemObject &;
 
 		//================================================================================
 		// OpenCL API wrapper for setMemObjectDestructorCallback()
@@ -56,16 +56,16 @@ namespace cl {
 		//================================================================================
 	public:
 
-		auto getType() const                -> MemObjectType;
-		auto getFlags() const               -> MemoryFlags;
-		auto getSize()  const               -> size_t;
-		auto getHostPtr() const             -> void*;
-		auto getMapCount() const            -> cl_uint;
-		auto getReferenceCount() const      -> cl_uint;
-		auto getContext() const             -> std::unique_ptr<Context>;
-		auto getAssociatedMemObject() const -> boost::optional<std::unique_ptr<MemObject>>;
-		auto getOffset() const              -> size_t;
-		auto usesSvmPointer() const         -> cl_bool;
+		auto inline getType() const                -> MemObjectType;
+		auto inline getFlags() const               -> MemoryFlags;
+		auto inline getSize()  const               -> size_t;
+		auto inline getHostPtr() const             -> void*;
+		auto inline getMapCount() const            -> cl_uint;
+		auto inline getReferenceCount() const      -> cl_uint;
+		auto inline getContext() const             -> std::unique_ptr<Context>;
+		auto inline getAssociatedMemObject() const -> boost::optional<std::unique_ptr<MemObject>>;
+		auto inline getOffset() const              -> size_t;
+		auto inline usesSvmPointer() const         -> cl_bool;
 	};
 }
 

@@ -37,22 +37,22 @@ namespace cl {
 
 		using detail::Object<cl_type>::Object;
 
-		auto operator=(Program const& rhs) -> Program&;
+		auto inline operator=(Program const& rhs) -> Program&;
 
 		//================================================================================
 		// Wrapper API for creating Kernel objects
 		//================================================================================
 	public:
 
-		auto createKernel(std::string const& name) const -> Kernel;
-		auto createAllKernels() const                    -> std::vector<Kernel>;
+		auto inline createKernel(std::string const& name) const -> Kernel;
+		auto inline createAllKernels() const                    -> std::vector<Kernel>;
 
 		//================================================================================
 		// Wrapper API for clBuildProgram
 		//================================================================================
 	public:
 
-		void build(Device const& device) const;
+		void inline build(Device const& device) const;
 
 		template<typename DeviceRange>
 		void build(
@@ -98,32 +98,32 @@ namespace cl {
 			Device const& device, cl_program_build_info info
 		) const -> std::vector<T>;
 
-		auto getBuildInfoString(
+		auto inline getBuildInfoString(
 			Device const& device, cl_program_build_info info
 		) const -> std::string;
 
 	public:
 
-		auto getReferenceCount() const -> cl_uint;
-		auto getContext() const        -> std::unique_ptr<Context>;
-		auto getNumDevices() const     -> cl_uint;
-		auto getDevices() const        -> std::vector<Device>;
-		auto getProgramSource() const  -> std::string;
-		auto getBinarySizes() const    -> std::vector<size_t>;
-//		auto getBinaries() const       -> std::vector<std::vector<unsigned char>>;
-		auto getNumKernels() const     -> cl_uint;
-		auto getKernelNames() const    -> std::vector<std::string>;
+		auto inline getReferenceCount() const -> cl_uint;
+		auto inline getContext() const        -> std::unique_ptr<Context>;
+		auto inline getNumDevices() const     -> cl_uint;
+		auto inline getDevices() const        -> std::vector<Device>;
+		auto inline getProgramSource() const  -> std::string;
+		auto inline getBinarySizes() const    -> std::vector<size_t>;
+//		auto inline getBinaries() const       -> std::vector<std::vector<unsigned char>>;
+		auto inline getNumKernels() const     -> cl_uint;
+		auto inline getKernelNames() const    -> std::vector<std::string>;
 
 		//================================================================================
 		// Information access helper methods for build.
 		//================================================================================
 	public:
 
-		auto getBuildStatus(Device const& device) const                  -> BuildStatus;
-		auto getBuildOptions(Device const& device) const                 -> std::string;
-		auto getBuildLog(Device const& device) const                     -> std::string;
-		auto getBinaryType(Device const& device) const                   -> BinaryType;
-		auto getBuildGlobalVariableTotalSize(Device const& device) const -> size_t;
+		auto inline getBuildStatus(Device const& device) const                  -> BuildStatus;
+		auto inline getBuildOptions(Device const& device) const                 -> std::string;
+		auto inline getBuildLog(Device const& device) const                     -> std::string;
+		auto inline getBinaryType(Device const& device) const                   -> BinaryType;
+		auto inline getBuildGlobalVariableTotalSize(Device const& device) const -> size_t;
 	};
 }
 

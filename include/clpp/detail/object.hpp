@@ -43,7 +43,7 @@ namespace cl {
 			//============================================================================
 			// Returns the underlying OpenCL data of the wrapped object.
 			//============================================================================
-			inline auto get() const -> cl_type;
+			auto get() const -> cl_type;
 		protected:
 			cl_type m_object;
 
@@ -52,29 +52,29 @@ namespace cl {
 			//============================================================================
 
 		public:
-			inline Object<CLType>();
-			inline Object<CLType>(cl_type rhs);
-			inline Object<CLType>(const Object<CLType> & rhs);
-			inline Object<CLType>(Object<CLType> && rhs) = default;
+			Object<CLType>();
+			Object<CLType>(cl_type rhs);
+			Object<CLType>(const Object<CLType> & rhs);
+			Object<CLType>(Object<CLType> && rhs) = default;
 
 		protected:
-			inline ~Object<CLType>();
+			~Object<CLType>();
 
 			//============================================================================
 			// Copy and move assignment operator overloadings
 			//============================================================================
 
-			inline auto operator=(const Object<CLType> &  rhs) -> Object<CLType> &;
-			inline auto operator=(      Object<CLType> && rhs) -> Object<CLType> & = default;
+			auto operator=(const Object<CLType> &  rhs) -> Object<CLType> &;
+			auto operator=(      Object<CLType> && rhs) -> Object<CLType> & = default;
 
-			inline auto operator=(const cl_type &  rhs) -> Object<CLType> &;
+			auto operator=(const cl_type &  rhs) -> Object<CLType> &;
 
 			//============================================================================
 			// Operators for checking if two objects are equal or unequal.
 			//============================================================================
 
-			inline auto operator==(const Object<CLType> & rhs) const -> bool;
-			inline auto operator!=(const Object<CLType> & rhs) const -> bool;
+			auto operator==(const Object<CLType> & rhs) const -> bool;
+			auto operator!=(const Object<CLType> & rhs) const -> bool;
 
 			//============================================================================
 			// Helper methods to access information about the wrapped
@@ -83,34 +83,34 @@ namespace cl {
 			//============================================================================
 
 			template<typename InfoType>
-			inline auto getInfo(info_type p_info) const -> InfoType;
+			auto getInfo(info_type p_info) const -> InfoType;
 
 			template<typename InfoType>
-			inline auto getInfoVector(info_type p_info) const -> std::vector<InfoType>;
+			auto getInfoVector(info_type p_info) const -> std::vector<InfoType>;
 
-			inline auto getInfoString(info_type p_info) const -> std::string;
+			auto getInfoString(info_type p_info) const -> std::string;
 
 		private:
-			inline void release();
-			inline void retain();
+			void release();
+			void retain();
 		};
 	}
 }
 
 template<typename CLType>
-inline auto operator==(
+auto operator==(
 	const cl::detail::Object<CLType> & lhs, const CLType & rhs) -> bool;
 
 template<typename CLType>
-inline auto operator!=(
+auto operator!=(
 	const cl::detail::Object<CLType> & lhs, const CLType & rhs) -> bool;
 
 template<typename CLType>
-inline auto operator==(
+auto operator==(
 	const CLType & rhs, const cl::detail::Object<CLType> & lhs) -> bool;
 
 template<typename CLType>
-inline auto operator!=(
+auto operator!=(
 	const CLType & rhs, const cl::detail::Object<CLType> & lhs) -> bool;
 
 #endif

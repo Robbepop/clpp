@@ -36,13 +36,13 @@ namespace cl {
 
 		using detail::Object<cl_type>::Object;
 
-		auto operator=(const CommandQueue & rhs) -> CommandQueue &;
+		auto inline operator=(const CommandQueue & rhs) -> CommandQueue &;
 
 		//================================================================================
 		// Returns the CommandQueueExecutor for non-delayed execution
 		//================================================================================
 	private:
-		auto getExecutor() const -> detail::CommandQueueExecutor;
+		auto inline getExecutor() const -> detail::CommandQueueExecutor;
 
 		//================================================================================
 		// Overloads to access clEnqueueReadBuffer
@@ -231,20 +231,20 @@ namespace cl {
 		//================================================================================
 	public:
 
-		auto execute1DRange(
+		auto inline execute1DRange(
 			Kernel const& kernel,
 			size_t globalWorkOffset,
 			size_t globalWorkSize,
 			size_t localWorkSize
 		) const -> Event;
 
-		auto execute1DRange(
+		auto inline execute1DRange(
 			Kernel const& kernel,
 			size_t globalWorkSize,
 			size_t localWorkSize
 		) const -> Event;
 
-		auto execute1DRange(
+		auto inline execute1DRange(
 			Kernel const& kernel,
 			size_t globalWorkSize
 		) const -> Event;
@@ -268,29 +268,29 @@ namespace cl {
 		template<typename...Events>
 		auto when(Events... events) const -> detail::CommandQueueExecutor;
 
-		auto marker() const -> Event;
+		auto inline marker() const -> Event;
 
-		auto barrier() const -> Event;
+		auto inline barrier() const -> Event;
 
 		//================================================================================
 		// Flush & Finish
 		//================================================================================
 	public:
 
-		void flush() const;
-		void finish() const;
+		void inline flush() const;
+		void inline finish() const;
 
 		//================================================================================
 		// Information Getters
 		//================================================================================
 	public:
 
-		auto getContext() const        -> Context;
-		auto getDevice() const         -> Device;
-		auto getReferenceCount() const -> cl_uint;
-		auto getProperties() const     -> CommandQueueProperties;
-		auto getSize() const           -> cl_uint; // the same as 'size()'
-		auto size() const              -> cl_uint; // the same as 'getSize()'
+		auto inline getContext() const        -> Context;
+		auto inline getDevice() const         -> Device;
+		auto inline getReferenceCount() const -> cl_uint;
+		auto inline getProperties() const     -> CommandQueueProperties;
+		auto inline getSize() const           -> cl_uint; // the same as 'size()'
+		auto inline size() const              -> cl_uint; // the same as 'getSize()'
 	};
 }
 

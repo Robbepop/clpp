@@ -39,7 +39,7 @@ namespace cl {
 		template<typename... Events>
 		static void wait(Events...);
 
-		void wait() const;
+		void inline wait() const;
 
 		//================================================================================
 		// Constructor and Assignment
@@ -48,15 +48,15 @@ namespace cl {
 
 		using detail::Object<cl_type>::Object;
 
-		auto operator=(const Event & rhs) -> Event &;
+		auto inline operator=(const Event & rhs) -> Event &;
 
 		//================================================================================
 		// Wrapper API for clSetUserEventStatus
 		//================================================================================
 
-		void setStatus(cl_int status) const;
-		void setStatusComplete() const;
-		void setStatusError() const;
+		void inline setStatus(cl_int status) const;
+		void inline setStatusComplete() const;
+		void inline setStatusError() const;
 
 		//================================================================================
 		// Wrapper API for clEventSetCallback
@@ -71,22 +71,22 @@ namespace cl {
 		//================================================================================
 	public:
 
-		auto getCommandQueue() const   -> boost::optional<CommandQueue>;
-		auto getContext() const        -> Context;
-		auto getCommand() const        -> Command;
-		auto getStatus() const         -> ExecutionStatus;
-		auto getReferenceCount() const -> cl_uint;
+		auto inline getCommandQueue() const   -> boost::optional<CommandQueue>;
+		auto inline getContext() const        -> Context;
+		auto inline getCommand() const        -> Command;
+		auto inline getStatus() const         -> ExecutionStatus;
+		auto inline getReferenceCount() const -> cl_uint;
 
 		//================================================================================
 		// Information access profiling helper methods.
 		//================================================================================
 	public:
 
-		auto getProfilingQueued() const   -> cl_ulong;
-		auto getProfilingSubmit() const   -> cl_ulong;
-		auto getProfilingStart() const    -> cl_ulong;
-		auto getProfilingEnd() const      -> cl_ulong;
-		auto getProfilingComplete() const -> cl_ulong;
+		auto inline getProfilingQueued() const   -> cl_ulong;
+		auto inline getProfilingSubmit() const   -> cl_ulong;
+		auto inline getProfilingStart() const    -> cl_ulong;
+		auto inline getProfilingEnd() const      -> cl_ulong;
+		auto inline getProfilingComplete() const -> cl_ulong;
 	};
 }
 
