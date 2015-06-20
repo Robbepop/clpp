@@ -74,6 +74,10 @@ namespace cl {
 		);
 		if (detail::error::handle(error)) {
 			m_object = contex;
+			delete cbWrapper; // can be safely deleted as the callback requiring this
+			                  // instance will never be called since clCreateContext
+			                  // ran successfully at this point of computation.
+			                  // TODO: need to check if this is really true at all!
 		}
 	}
 
