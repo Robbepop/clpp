@@ -9,6 +9,7 @@
 #endif
 
 #include <utility>
+#include <cstdint>
 
 namespace cl {
 	namespace detail {
@@ -17,207 +18,210 @@ namespace cl {
 		{}
 
 		template<typename CLFunctionPtr>
-		auto CLFunction::getByPtr(CLFunctionPtr funcPtr) -> CLFunction const& {
-			using ptr_t = void*;
-			const auto ptr = (ptr_t) funcPtr;
+		auto CLFunction::getByPtr(CLFunctionPtr fp) -> CLFunction const& {
+			using clf   = CLFunction;
+			const auto equals = [fp](auto other) {
+				return fp == reinterpret_cast<decltype(fp)>(other);
+			};
 			return
-				ptr == (ptr_t)::clGetPlatformIDs ?
-				    CLFunction::clGetPlatformIDs():
-				ptr == (ptr_t)::clGetPlatformInfo ?
-				    CLFunction::clGetPlatformInfo():
+				equals(::clGetPlatformIDs) ?
+				    clf::clGetPlatformIDs():
+				equals(::clGetPlatformInfo) ?
+				    clf::clGetPlatformInfo():
 
-				ptr == (ptr_t)::clGetDeviceIDs ?
-				    CLFunction::clGetDeviceIDs():
-				ptr == (ptr_t)::clGetDeviceInfo ?
-				    CLFunction::clGetDeviceInfo():
+				equals(::clGetDeviceIDs) ?
+				    clf::clGetDeviceIDs():
+				equals(::clGetDeviceInfo) ?
+				    clf::clGetDeviceInfo():
 
-				ptr == (ptr_t)::clCreateSubDevices ?
-				    CLFunction::clCreateSubDevices():
-				ptr == (ptr_t)::clRetainDevice ?
-				    CLFunction::clRetainDevice():
-				ptr == (ptr_t)::clReleaseDevice ?
-				    CLFunction::clReleaseDevice():
+				equals(::clCreateSubDevices) ?
+				    clf::clCreateSubDevices():
+				equals(::clRetainDevice) ?
+				    clf::clRetainDevice():
+				equals(::clReleaseDevice) ?
+				    clf::clReleaseDevice():
 
-				ptr == (ptr_t)::clCreateContext ?
-				    CLFunction::clCreateContext():
-				ptr == (ptr_t)::clCreateContextFromType ?
-				    CLFunction::clCreateContextFromType():
-				ptr == (ptr_t)::clRetainContext ?
-				    CLFunction::clRetainContext():
-				ptr == (ptr_t)::clReleaseContext ?
-				    CLFunction::clReleaseContext():
-				ptr == (ptr_t)::clGetContextInfo ?
-				    CLFunction::clGetContextInfo():
+				equals(::clCreateContext) ?
+				    clf::clCreateContext():
+				equals(::clCreateContextFromType) ?
+				    clf::clCreateContextFromType():
+				equals(::clRetainContext) ?
+				    clf::clRetainContext():
+				equals(::clReleaseContext) ?
+				    clf::clReleaseContext():
+				equals(::clGetContextInfo) ?
+				    clf::clGetContextInfo():
 
-				ptr == (ptr_t)::clCreateCommandQueueWithProperties ?
-				    CLFunction::clCreateCommandQueueWithProperties():
-				ptr == (ptr_t)::clRetainCommandQueue ?
-				    CLFunction::clRetainCommandQueue():
-				ptr == (ptr_t)::clReleaseCommandQueue ?
-				    CLFunction::clReleaseCommandQueue():
-				ptr == (ptr_t)::clGetCommandQueueInfo ?
-				    CLFunction::clGetCommandQueueInfo():
+				equals(::clCreateCommandQueueWithProperties) ?
+				    clf::clCreateCommandQueueWithProperties():
+				equals(::clRetainCommandQueue) ?
+				    clf::clRetainCommandQueue():
+				equals(::clReleaseCommandQueue) ?
+				    clf::clReleaseCommandQueue():
+				equals(::clGetCommandQueueInfo) ?
+				    clf::clGetCommandQueueInfo():
 
-				ptr == (ptr_t)::clCreateBuffer ?
-				    CLFunction::clCreateBuffer():
-				ptr == (ptr_t)::clCreateSubBuffer ?
-				    CLFunction::clCreateSubBuffer():
-				ptr == (ptr_t)::clEnqueueReadBuffer ?
-				    CLFunction::clEnqueueReadBuffer():
-				ptr == (ptr_t)::clEnqueueWriteBuffer ?
-				    CLFunction::clEnqueueWriteBuffer():
-				ptr == (ptr_t)::clEnqueueReadBufferRect ?
-				    CLFunction::clEnqueueReadBufferRect():
-				ptr == (ptr_t)::clEnqueueWriteBufferRect ?
-				    CLFunction::clEnqueueWriteBufferRect():
-				ptr == (ptr_t)::clEnqueueCopyBuffer ?
-				    CLFunction::clEnqueueCopyBuffer():
-				ptr == (ptr_t)::clEnqueueCopyBufferRect ?
-				    CLFunction::clEnqueueCopyBufferRect():
-				ptr == (ptr_t)::clEnqueueFillBuffer ?
-				    CLFunction::clEnqueueFillBuffer():
-				ptr == (ptr_t)::clEnqueueMapBuffer ?
-				    CLFunction::clEnqueueMapBuffer():
+				equals(::clCreateBuffer) ?
+				    clf::clCreateBuffer():
+				equals(::clCreateSubBuffer) ?
+				    clf::clCreateSubBuffer():
+				equals(::clEnqueueReadBuffer) ?
+				    clf::clEnqueueReadBuffer():
+				equals(::clEnqueueWriteBuffer) ?
+				    clf::clEnqueueWriteBuffer():
+				equals(::clEnqueueReadBufferRect) ?
+				    clf::clEnqueueReadBufferRect():
+				equals(::clEnqueueWriteBufferRect) ?
+				    clf::clEnqueueWriteBufferRect():
+				equals(::clEnqueueCopyBuffer) ?
+				    clf::clEnqueueCopyBuffer():
+				equals(::clEnqueueCopyBufferRect) ?
+				    clf::clEnqueueCopyBufferRect():
+				equals(::clEnqueueFillBuffer) ?
+				    clf::clEnqueueFillBuffer():
+				equals(::clEnqueueMapBuffer) ?
+				    clf::clEnqueueMapBuffer():
 
-				ptr == (ptr_t)::clCreateImage ?
-				    CLFunction::clCreateImage():
-				ptr == (ptr_t)::clGetSupportedImageFormats ?
-				    CLFunction::clGetSupportedImageFormats():
-				ptr == (ptr_t)::clEnqueueReadImage ?
-				    CLFunction::clEnqueueReadImage():
-				ptr == (ptr_t)::clEnqueueWriteImage ?
-				    CLFunction::clEnqueueWriteImage():
-				ptr == (ptr_t)::clEnqueueCopyImage ?
-				    CLFunction::clEnqueueCopyImage():
-				ptr == (ptr_t)::clEnqueueCopyImageToBuffer ?
-				    CLFunction::clEnqueueCopyImageToBuffer():
-				ptr == (ptr_t)::clEnqueueCopyBufferToImage ?
-				    CLFunction::clEnqueueCopyBufferToImage():
-				ptr == (ptr_t)::clEnqueueFillImage ?
-				    CLFunction::clEnqueueFillImage():
-				ptr == (ptr_t)::clEnqueueMapImage ?
-				    CLFunction::clEnqueueMapImage():
+				equals(::clCreateImage) ?
+				    clf::clCreateImage():
+				equals(::clGetSupportedImageFormats) ?
+				    clf::clGetSupportedImageFormats():
+				equals(::clEnqueueReadImage) ?
+				    clf::clEnqueueReadImage():
+				equals(::clEnqueueWriteImage) ?
+				    clf::clEnqueueWriteImage():
+				equals(::clEnqueueCopyImage) ?
+				    clf::clEnqueueCopyImage():
+				equals(::clEnqueueCopyImageToBuffer) ?
+				    clf::clEnqueueCopyImageToBuffer():
+				equals(::clEnqueueCopyBufferToImage) ?
+				    clf::clEnqueueCopyBufferToImage():
+				equals(::clEnqueueFillImage) ?
+				    clf::clEnqueueFillImage():
+				equals(::clEnqueueMapImage) ?
+				    clf::clEnqueueMapImage():
 
-				ptr == (ptr_t)::clEnqueueUnmapMemObject ?
-				    CLFunction::clEnqueueUnmapMemObject():
-				ptr == (ptr_t)::clEnqueueMigrateMemObjects ?
-				    CLFunction::clEnqueueMigrateMemObjects():
-				ptr == (ptr_t)::clGetImageInfo ?
-				    CLFunction::clGetImageInfo():
-				ptr == (ptr_t)::clGetMemObjectInfo ?
-				    CLFunction::clGetMemObjectInfo():
-				ptr == (ptr_t)::clRetainMemObject ?
-				    CLFunction::clRetainMemObject():
-				ptr == (ptr_t)::clReleaseMemObject ?
-				    CLFunction::clReleaseMemObject():
-				ptr == (ptr_t)::clSetMemObjectDestructorCallback ?
-				    CLFunction::clSetMemObjectDestructorCallback():
+				equals(::clEnqueueUnmapMemObject) ?
+				    clf::clEnqueueUnmapMemObject():
+				equals(::clEnqueueMigrateMemObjects) ?
+				    clf::clEnqueueMigrateMemObjects():
+				equals(::clGetImageInfo) ?
+				    clf::clGetImageInfo():
+				equals(::clGetMemObjectInfo) ?
+				    clf::clGetMemObjectInfo():
+				equals(::clRetainMemObject) ?
+				    clf::clRetainMemObject():
+				equals(::clReleaseMemObject) ?
+				    clf::clReleaseMemObject():
+				equals(::clSetMemObjectDestructorCallback) ?
+				    clf::clSetMemObjectDestructorCallback():
 
-				ptr == (ptr_t)::clCreateSamplerWithProperties ?
-				    CLFunction::clCreateSamplerWithProperties():
-				ptr == (ptr_t)::clRetainSampler ?
-				    CLFunction::clRetainSampler():
-				ptr == (ptr_t)::clReleaseSampler ?
-				    CLFunction::clReleaseSampler():
-				ptr == (ptr_t)::clGetSamplerInfo ?
-				    CLFunction::clGetSamplerInfo():
+				equals(::clCreateSamplerWithProperties) ?
+				    clf::clCreateSamplerWithProperties():
+				equals(::clRetainSampler) ?
+				    clf::clRetainSampler():
+				equals(::clReleaseSampler) ?
+				    clf::clReleaseSampler():
+				equals(::clGetSamplerInfo) ?
+				    clf::clGetSamplerInfo():
 
-				ptr == (ptr_t)::clCreateProgramWithSource ?
-				    CLFunction::clCreateProgramWithSource():
-				ptr == (ptr_t)::clCreateProgramWithBinary ?
-				    CLFunction::clCreateProgramWithBinary():
-				ptr == (ptr_t)::clCreateProgramWithBuiltInKernels ?
-				    CLFunction::clCreateProgramWithBuiltInKernels():
-				ptr == (ptr_t)::clRetainProgram ?
-				    CLFunction::clRetainProgram():
-				ptr == (ptr_t)::clReleaseProgram ?
-				    CLFunction::clReleaseProgram():
-				ptr == (ptr_t)::clBuildProgram ?
-				    CLFunction::clBuildProgram():
-				ptr == (ptr_t)::clCompileProgram ?
-				    CLFunction::clCompileProgram():
-				ptr == (ptr_t)::clLinkProgram ?
-				    CLFunction::clLinkProgram():
-				ptr == (ptr_t)::clUnloadPlatformCompiler ?
-				    CLFunction::clUnloadPlatformCompiler():
-				ptr == (ptr_t)::clGetProgramInfo ?
-				    CLFunction::clGetProgramInfo():
-				ptr == (ptr_t)::clGetProgramBuildInfo ?
-				    CLFunction::clGetProgramBuildInfo():
+				equals(::clCreateProgramWithSource) ?
+				    clf::clCreateProgramWithSource():
+				equals(::clCreateProgramWithBinary) ?
+				    clf::clCreateProgramWithBinary():
+				equals(::clCreateProgramWithBuiltInKernels) ?
+				    clf::clCreateProgramWithBuiltInKernels():
+				equals(::clRetainProgram) ?
+				    clf::clRetainProgram():
+				equals(::clReleaseProgram) ?
+				    clf::clReleaseProgram():
+				equals(::clBuildProgram) ?
+				    clf::clBuildProgram():
+				equals(::clCompileProgram) ?
+				    clf::clCompileProgram():
+				equals(::clLinkProgram) ?
+				    clf::clLinkProgram():
+				equals(::clUnloadPlatformCompiler) ?
+				    clf::clUnloadPlatformCompiler():
+				equals(::clGetProgramInfo) ?
+				    clf::clGetProgramInfo():
+				equals(::clGetProgramBuildInfo) ?
+				    clf::clGetProgramBuildInfo():
 
-				ptr == (ptr_t)::clCreateKernel ?
-				    CLFunction::clCreateKernel():
-				ptr == (ptr_t)::clCreateKernelsInProgram ?
-				    CLFunction::clCreateKernelsInProgram():
-				ptr == (ptr_t)::clGetKernelInfo ?
-				    CLFunction::clGetKernelInfo():
-				ptr == (ptr_t)::clGetKernelArgInfo ?
-				    CLFunction::clGetKernelArgInfo():
-				ptr == (ptr_t)::clGetKernelWorkGroupInfo ?
-				    CLFunction::clGetKernelWorkGroupInfo():
-				ptr == (ptr_t)::clRetainKernel ?
-				    CLFunction::clRetainKernel():
-				ptr == (ptr_t)::clReleaseKernel ?
-				    CLFunction::clReleaseKernel():
-				ptr == (ptr_t)::clSetKernelArg ?
-				    CLFunction::clSetKernelArg():
-				ptr == (ptr_t)::clSetKernelArgSVMPointer ?
-				    CLFunction::clSetKernelArgSVMPointer():
-				ptr == (ptr_t)::clSetKernelExecInfo ?
-				    CLFunction::clSetKernelExecInfo():
+				equals(::clCreateKernel) ?
+				    clf::clCreateKernel():
+				equals(::clCreateKernelsInProgram) ?
+				    clf::clCreateKernelsInProgram():
+				equals(::clGetKernelInfo) ?
+				    clf::clGetKernelInfo():
+				equals(::clGetKernelArgInfo) ?
+				    clf::clGetKernelArgInfo():
+				equals(::clGetKernelWorkGroupInfo) ?
+				    clf::clGetKernelWorkGroupInfo():
+				equals(::clRetainKernel) ?
+				    clf::clRetainKernel():
+				equals(::clReleaseKernel) ?
+				    clf::clReleaseKernel():
+				equals(::clSetKernelArg) ?
+				    clf::clSetKernelArg():
+				equals(::clSetKernelArgSVMPointer) ?
+				    clf::clSetKernelArgSVMPointer():
+				equals(::clSetKernelExecInfo) ?
+				    clf::clSetKernelExecInfo():
 
-				ptr == (ptr_t)::clEnqueueNDRangeKernel ?
-				    CLFunction::clEnqueueNDRangeKernel():
-				ptr == (ptr_t)::clEnqueueNativeKernel ?
-				    CLFunction::clEnqueueNativeKernel():
+				equals(::clEnqueueNDRangeKernel) ?
+				    clf::clEnqueueNDRangeKernel():
+				equals(::clEnqueueNativeKernel) ?
+				    clf::clEnqueueNativeKernel():
 
-				ptr == (ptr_t)::clCreateUserEvent ?
-				    CLFunction::clCreateUserEvent():
-				ptr == (ptr_t)::clSetUserEventStatus ?
-				    CLFunction::clSetUserEventStatus():
-				ptr == (ptr_t)::clWaitForEvents ?
-				    CLFunction::clWaitForEvents():
-				ptr == (ptr_t)::clGetEventInfo ?
-				    CLFunction::clGetEventInfo():
-				ptr == (ptr_t)::clSetEventCallback ?
-				    CLFunction::clSetEventCallback():
-				ptr == (ptr_t)::clRetainEvent ?
-				    CLFunction::clRetainEvent():
-				ptr == (ptr_t)::clReleaseEvent ?
-				    CLFunction::clReleaseEvent():
+				equals(::clCreateUserEvent) ?
+				    clf::clCreateUserEvent():
+				equals(::clSetUserEventStatus) ?
+				    clf::clSetUserEventStatus():
+				equals(::clWaitForEvents) ?
+				    clf::clWaitForEvents():
+				equals(::clGetEventInfo) ?
+				    clf::clGetEventInfo():
+				equals(::clSetEventCallback) ?
+				    clf::clSetEventCallback():
+				equals(::clRetainEvent) ?
+				    clf::clRetainEvent():
+				equals(::clReleaseEvent) ?
+				    clf::clReleaseEvent():
 
-				ptr == (ptr_t)::clEnqueueMarkerWithWaitList ?
-				    CLFunction::clEnqueueMarkerWithWaitList():
-				ptr == (ptr_t)::clEnqueueBarrierWithWaitList ?
-				    CLFunction::clEnqueueBarrierWithWaitList():
+				equals(::clEnqueueMarkerWithWaitList) ?
+				    clf::clEnqueueMarkerWithWaitList():
+				equals(::clEnqueueBarrierWithWaitList) ?
+				    clf::clEnqueueBarrierWithWaitList():
 
-				ptr == (ptr_t)::clGetEventProfilingInfo ?
-				    CLFunction::clGetEventProfilingInfo():
-				ptr == (ptr_t)::clFlush ?
-				    CLFunction::clFlush():
-				ptr == (ptr_t)::clFinish ?
-				    CLFunction::clFinish():
+				equals(::clGetEventProfilingInfo) ?
+				    clf::clGetEventProfilingInfo():
+				equals(::clFlush) ?
+				    clf::clFlush():
+				equals(::clFinish) ?
+				    clf::clFinish():
 
-				ptr == (ptr_t)::clCreatePipe ?
-				    CLFunction::clCreatePipe():
-				ptr == (ptr_t)::clGetPipeInfo ?
-				    CLFunction::clGetPipeInfo():
+				equals(::clCreatePipe) ?
+				    clf::clCreatePipe():
+				equals(::clGetPipeInfo) ?
+				    clf::clGetPipeInfo():
 
-				ptr == (ptr_t)::clSVMAlloc ?
-				    CLFunction::clSVMAlloc():
-				ptr == (ptr_t)::clSVMFree ?
-				    CLFunction::clSVMFree():
-				ptr == (ptr_t)::clEnqueueSVMFree ?
-				    CLFunction::clEnqueueSVMFree():
-				ptr == (ptr_t)::clEnqueueSVMMemcpy ?
-				    CLFunction::clEnqueueSVMMemcpy():
-				ptr == (ptr_t)::clEnqueueSVMMemFill ?
-				    CLFunction::clEnqueueSVMMemFill():
-				ptr == (ptr_t)::clEnqueueSVMMap ?
-				    CLFunction::clEnqueueSVMMap():
-				ptr == (ptr_t)::clEnqueueSVMUnmap ?
-				    CLFunction::clEnqueueSVMUnmap():
-				    CLFunction::unknown();
+				equals(::clSVMAlloc) ?
+				    clf::clSVMAlloc():
+				equals(::clSVMFree) ?
+				    clf::clSVMFree():
+				equals(::clEnqueueSVMFree) ?
+				    clf::clEnqueueSVMFree():
+				equals(::clEnqueueSVMMemcpy) ?
+				    clf::clEnqueueSVMMemcpy():
+				equals(::clEnqueueSVMMemFill) ?
+				    clf::clEnqueueSVMMemFill():
+				equals(::clEnqueueSVMMap) ?
+				    clf::clEnqueueSVMMap():
+				equals(::clEnqueueSVMUnmap) ?
+				    clf::clEnqueueSVMUnmap():
+
+				    clf::unknown(); // default case
 		}
 
 		auto CLFunction::getCLName() const -> std::experimental::string_view const& {

@@ -28,122 +28,122 @@ namespace cl {
 					default: assert(false);
 
 					case CL_DEVICE_NOT_FOUND:
-						throw DeviceNotFound{msg};
+						throw DeviceNotFound{func, msg};
 					case CL_DEVICE_NOT_AVAILABLE:
-						throw DeviceNotAvailable{msg};
+						throw DeviceNotAvailable{func, msg};
 					case CL_COMPILER_NOT_AVAILABLE:
-						throw CompilerNotAvailable{msg};
+						throw CompilerNotAvailable{func, msg};
 					case CL_MEM_OBJECT_ALLOCATION_FAILURE:
-						throw MemoryObjectAllocFailure{msg};
+						throw MemoryObjectAllocFailure{func, msg};
 					case CL_OUT_OF_RESOURCES:
-						throw OutOfResources{msg};
+						throw OutOfResources{func, msg};
 					case CL_OUT_OF_HOST_MEMORY:
-						throw OutOfHostMemory{msg};
+						throw OutOfHostMemory{func, msg};
 					case CL_PROFILING_INFO_NOT_AVAILABLE:
-						throw ProfilingInfoNotAvailable{msg};
+						throw ProfilingInfoNotAvailable{func, msg};
 					case CL_MEM_COPY_OVERLAP:
-						throw MemoryCopyOverlap{msg};
+						throw MemoryCopyOverlap{func, msg};
 					case CL_IMAGE_FORMAT_MISMATCH:
-						throw ImageFormatMismatch{msg};
+						throw ImageFormatMismatch{func, msg};
 					case CL_IMAGE_FORMAT_NOT_SUPPORTED:
-						throw ImageFormatNotSupported{msg};
+						throw ImageFormatNotSupported{func, msg};
 					case CL_BUILD_PROGRAM_FAILURE:
-						throw BuildProgramFailure{msg};
+						throw BuildProgramFailure{func, msg};
 					case CL_MAP_FAILURE:
-						throw MapFailure{msg};
+						throw MapFailure{func, msg};
 					case CL_MISALIGNED_SUB_BUFFER_OFFSET:
-						throw MisalignedSubBufferOffset{msg};
+						throw MisalignedSubBufferOffset{func, msg};
 					case CL_EXEC_STATUS_ERROR_FOR_EVENTS_IN_WAIT_LIST:
-						throw ExecStatusErrorForEventsInWaitList{msg};
+						throw ExecStatusErrorForEventsInWaitList{func, msg};
 					case CL_COMPILE_PROGRAM_FAILURE:
-						throw CompileProgramFailure{msg};
+						throw CompileProgramFailure{func, msg};
 					case CL_LINKER_NOT_AVAILABLE:
-						throw LinkerNotAvailable{msg};
+						throw LinkerNotAvailable{func, msg};
 					case CL_LINK_PROGRAM_FAILURE:
-						throw LinkProgramFailure{msg};
+						throw LinkProgramFailure{func, msg};
 					case CL_DEVICE_PARTITION_FAILED:
-						throw DevicePartitionFailure{msg};
+						throw DevicePartitionFailure{func, msg};
 					case CL_KERNEL_ARG_INFO_NOT_AVAILABLE:
-						throw KernelArgInfoNotAvailable{msg};
+						throw KernelArgInfoNotAvailable{func, msg};
 
 					case CL_INVALID_VALUE:
-						throw InvalidValue{msg};
+						throw InvalidValue{func, msg};
 					case CL_INVALID_DEVICE_TYPE:
-						throw InvalidDeviceType{msg};
+						throw InvalidDeviceType{func, msg};
 					case CL_INVALID_PLATFORM:
-						throw InvalidPlatform{msg};
+						throw InvalidPlatform{func, msg};
 					case CL_INVALID_DEVICE:
-						throw InvalidDevice{msg};
+						throw InvalidDevice{func, msg};
 					case CL_INVALID_CONTEXT:
-						throw InvalidContext{msg};
+						throw InvalidContext{func, msg};
 					case CL_INVALID_QUEUE_PROPERTIES:
-						throw InvalidQueueProperties{msg};
+						throw InvalidQueueProperties{func, msg};
 					case CL_INVALID_COMMAND_QUEUE:
-						throw InvalidCommandQueue{msg};
+						throw InvalidCommandQueue{func, msg};
 					case CL_INVALID_HOST_PTR:
-						throw InvalidHostPtr{msg};
+						throw InvalidHostPtr{func, msg};
 					case CL_INVALID_MEM_OBJECT:
-						throw InvalidMemoryObject{msg};
+						throw InvalidMemoryObject{func, msg};
 					case CL_INVALID_IMAGE_FORMAT_DESCRIPTOR:
-						throw InvalidImageFormatDescriptor{msg};
+						throw InvalidImageFormatDescriptor{func, msg};
 					case CL_INVALID_IMAGE_SIZE:
-						throw InvalidImageSize{msg};
+						throw InvalidImageSize{func, msg};
 					case CL_INVALID_SAMPLER:
-						throw InvalidSampler{msg};
+						throw InvalidSampler{func, msg};
 					case CL_INVALID_BINARY:
-						throw InvalidBinary{msg};
+						throw InvalidBinary{func, msg};
 					case CL_INVALID_BUILD_OPTIONS:
-						throw InvalidBuildOptions{msg};
+						throw InvalidBuildOptions{func, msg};
 					case CL_INVALID_PROGRAM:
-						throw InvalidProgram{msg};
+						throw InvalidProgram{func, msg};
 					case CL_INVALID_PROGRAM_EXECUTABLE:
-						throw InvalidProgramExecutable{msg};
+						throw InvalidProgramExecutable{func, msg};
 					case CL_INVALID_KERNEL_NAME:
-						throw InvalidKernelName{msg};
+						throw InvalidKernelName{func, msg};
 					case CL_INVALID_KERNEL_DEFINITION:
-						throw InvalidKernelDefinition{msg};
+						throw InvalidKernelDefinition{func, msg};
 					case CL_INVALID_KERNEL:
-						throw InvalidKernel{msg};
+						throw InvalidKernel{func, msg};
 					case CL_INVALID_ARG_INDEX:
-						throw InvalidArgIndex{msg};
+						throw InvalidArgIndex{func, msg};
 					case CL_INVALID_ARG_VALUE:
-						throw InvalidArgValue{msg};
+						throw InvalidArgValue{func, msg};
 					case CL_INVALID_ARG_SIZE:
-						throw InvalidArgSize{msg};
+						throw InvalidArgSize{func, msg};
 					case CL_INVALID_KERNEL_ARGS:
-						throw InvalidKernelArgs{msg};
+						throw InvalidKernelArgs{func, msg};
 					case CL_INVALID_WORK_DIMENSION:
-						throw InvalidWorkDimension{msg};
+						throw InvalidWorkDimension{func, msg};
 					case CL_INVALID_WORK_GROUP_SIZE:
-						throw InvalidWorkGroupSize{msg};
+						throw InvalidWorkGroupSize{func, msg};
 					case CL_INVALID_WORK_ITEM_SIZE:
-						throw InvalidWorkItemSize{msg};
+						throw InvalidWorkItemSize{func, msg};
 					case CL_INVALID_GLOBAL_OFFSET:
-						throw InvalidGlobalOffset{msg};
+						throw InvalidGlobalOffset{func, msg};
 					case CL_INVALID_EVENT_WAIT_LIST:
-						throw InvalidEventWaitList{msg};
+						throw InvalidEventWaitList{func, msg};
 					case CL_INVALID_EVENT:
-						throw InvalidEvent{msg};
+						throw InvalidEvent{func, msg};
 					case CL_INVALID_OPERATION:
-						throw InvalidOperation{msg};
+						throw InvalidOperation{func, msg};
 					case CL_INVALID_GL_OBJECT:
-						throw InvalidGLObject{msg};
+						throw InvalidGLObject{func, msg};
 					case CL_INVALID_BUFFER_SIZE:
-						throw InvalidBufferSize{msg};
+						throw InvalidBufferSize{func, msg};
 					case CL_INVALID_MIP_LEVEL:
-						throw InvalidMipLevel{msg};
+						throw InvalidMipLevel{func, msg};
 					case CL_INVALID_GLOBAL_WORK_SIZE:
-						throw InvalidGlobalWorkSize{msg};
+						throw InvalidGlobalWorkSize{func, msg};
 					case CL_INVALID_PROPERTY:
-						throw InvalidProperty{msg};
+						throw InvalidProperty{func, msg};
 					case CL_INVALID_IMAGE_DESCRIPTOR:
-						throw InvalidImageDescriptor{msg};
+						throw InvalidImageDescriptor{func, msg};
 					case CL_INVALID_COMPILER_OPTIONS:
-						throw InvalidCompilerOptions{msg};
+						throw InvalidCompilerOptions{func, msg};
 					case CL_INVALID_LINKER_OPTIONS:
-						throw InvalidLinkerOptions{msg};
+						throw InvalidLinkerOptions{func, msg};
 					case CL_INVALID_DEVICE_PARTITION_COUNT:
-						throw InvalidDevicePartitionCount{msg};
+						throw InvalidDevicePartitionCount{func, msg};
 				}
 			}
 		}

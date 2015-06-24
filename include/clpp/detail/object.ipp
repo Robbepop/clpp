@@ -126,6 +126,7 @@ namespace cl {
 		void Object<CLType>::release() {
 			if (m_object != nullptr) {
 				detail::handleError(
+					ObjectHandler<CLType>::release,
 					ObjectHandler<CLType>::release(m_object));
 			}
 		}
@@ -134,6 +135,7 @@ namespace cl {
 		void Object<CLType>::retain() {
 			if (m_object != nullptr) {
 				detail::handleError(
+					ObjectHandler<CLType>::retain,
 					ObjectHandler<CLType>::retain(m_object));
 			}
 		}

@@ -12,13 +12,24 @@ namespace cl {
 		public:
 			using std::runtime_error::runtime_error;
 
+			virtual detail::CLFunction func() const noexcept = 0;
 			virtual RetCode code() const noexcept = 0;
 		};
 
 		template<RetCode::id_type retCode>
 		class BasicError : public AnyError {
+		public:
 			using AnyError::AnyError;
+			BasicError(detail::CLFunction const& func, std::string const& msg):
+				AnyError{msg},
+				m_func{func}
+			{}
+
+			detail::CLFunction func() const noexcept override { return m_func; }
 			RetCode code() const noexcept override { return retCode; }
+
+		private:
+			detail::CLFunction m_func = detail::CLFunction::unknown();
 		};
 
 		using DeviceNotFound            = BasicError<CL_DEVICE_NOT_FOUND>;
