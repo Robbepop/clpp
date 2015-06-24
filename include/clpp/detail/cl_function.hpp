@@ -17,10 +17,10 @@ namespace cl {
 			inline auto getCLName() const -> std::experimental::string_view const&;
 
 			#define CLPP_FUNC_GETTER(funcName) \
-			static inline auto funcName() -> CLFunction const& { \
-				static const auto instance = CLFunction{#funcName}; \
-				return instance; \
-			}
+				static inline auto funcName() -> CLFunction const& { \
+					static const auto instance = CLFunction{#funcName}; \
+					return instance; \
+				}
 
 			CLPP_FUNC_GETTER(none);
 			CLPP_FUNC_GETTER(unknown);
@@ -128,7 +128,8 @@ namespace cl {
 			CLPP_FUNC_GETTER(clEnqueueSVMMemFill);
 			CLPP_FUNC_GETTER(clEnqueueSVMMap);
 			CLPP_FUNC_GETTER(clEnqueueSVMUnmap);
-		#undef CLPP_FUNC_GETTER
+
+			#undef CLPP_FUNC_GETTER
 
 		private:
 			std::experimental::string_view m_name;
