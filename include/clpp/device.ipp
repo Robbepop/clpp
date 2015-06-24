@@ -31,13 +31,13 @@ namespace cl {
 	//====================================================================================
 
 	auto Device::partition(Partition partition) -> std::vector<Device> {
-		auto error      = cl_int{CL_INVALID_VALUE};
+		auto error      = RetCode::getPreset();
 		auto countElems = cl_uint{0};
 		error = clCreateSubDevices(m_object, partition.data(), 0, nullptr, std::addressof(countElems));
-		detail::error::handle(error);
+		detail::handleError(detail::CLFunction::clCreateSubDevices(), error);
 		auto ids = std::vector<Device::cl_type>(countElems);
 		error = clCreateSubDevices(m_object, partition.data(), countElems, ids.data(), nullptr);
-		detail::error::handle(error);
+		detail::handleError(detail::CLFunction::clCreateSubDevices(), error);
 		return {ids.begin(), ids.end()};
 	}
 

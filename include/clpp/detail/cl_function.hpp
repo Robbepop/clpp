@@ -22,8 +22,8 @@ namespace cl {
 					return instance; \
 				}
 
-			CLPP_FUNC_GETTER(none);
 			CLPP_FUNC_GETTER(unknown);
+
 			CLPP_FUNC_GETTER(clGetPlatformIDs);
 			CLPP_FUNC_GETTER(clGetPlatformInfo);
 			CLPP_FUNC_GETTER(clGetDeviceIDs);

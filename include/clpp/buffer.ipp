@@ -9,6 +9,7 @@
 #endif
 
 #include "utility/to_underlying.hpp"
+#include "clpp/detail/cl_function.hpp"
 
 namespace cl {
 	template<typename T>
@@ -26,13 +27,14 @@ namespace cl {
 		HostAccess hostAccess
 	) const -> Buffer<T> {
 		using namespace utility;
+		using namespace detail;
 		auto error = cl_int{CL_INVALID_VALUE};
 		auto flags = to_underlying(deviceAccess)
 		           | to_underlying(hostAccess);
 		auto region   = cl_buffer_region{origin, size};
 		auto bufferId = clCreateSubBuffer(get(), flags,
 			CL_BUFFER_CREATE_TYPE_REGION, std::addressof(region), std::addressof(error));
-		detail::error::handle(error);
+		detail::handleError(CLFunction::clCreateSubBuffer(), error);
 		return {bufferId};
 	}
 

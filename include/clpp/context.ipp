@@ -39,15 +39,15 @@ namespace cl {
 
 	template<typename DeviceIterator>
 	auto Context::createForDevices(DeviceIterator first, DeviceIterator last) -> Context {
-		auto error     = cl_int{CL_INVALID_VALUE};
+		auto error     = RetCode::getPreset();
 		auto contextId = clCreateContext(
 			nullptr,
 			utility::count_elements(first, last),
 			reinterpret_cast<cl_device_id*>(std::addressof(*first)),
 			nullptr, nullptr,
-			std::addressof(error)
+			error.data()
 		);
-		detail::error::handle(error);
+		detail::handleError(detail::CLFunction::clCreateContext(), error);
 		return {contextId};
 	}
 
@@ -64,15 +64,15 @@ namespace cl {
 
 	auto Context::createForType(DeviceType type) -> Context {
 		std::cout << "Context::createForType() - start\n";
-		auto error     = cl_int{CL_INVALID_VALUE};
+		auto error     = RetCode::getPreset();
 		auto contextId = clCreateContextFromType(
 			nullptr,
 			utility::to_underlying(type),
 			nullptr, nullptr,
-			std::addressof(error)
+			error.data()
 		);
 //		std::cout << "Context::createForType() - error = " << error << '\n';
-		detail::error::handle(error);
+		detail::handleError(detail::CLFunction::clCreateContextFromType(), error);
 //		std::cout << "Context::createForType() - end\n";
 		return {contextId};
 	}
@@ -83,7 +83,7 @@ namespace cl {
 	)
 		-> Context
 	{
-		auto error     = RetCode2::getPreset();
+		auto error     = RetCode::getPreset();
 		auto contextId = clCreateContextFromType(
 			properties.data().data(),
 			utility::to_underlying(type),
@@ -92,15 +92,6 @@ namespace cl {
 		);
 		detail::handleError(detail::CLFunction::clCreateContextFromType(), error);
 		return {contextId};
-//		auto error     = CL_INVALID_VALUE;
-//		auto contextId = clCreateContextFromType(
-//			properties.data().data(),
-//			utility::to_underlying(type),
-//			nullptr, nullptr,
-//			std::addressof(error)
-//		);
-//		detail::error::handle(error);
-//		return {contextId};
 	}
 
 	//====================================================================================
@@ -126,7 +117,7 @@ namespace cl {
 			[](auto device) {
 				return device.get();
 			});
-		auto error  = cl_int{CL_INVALID_VALUE};
+		auto error  = RetCode::getPreset();
 		auto contex = clCreateContext(
 			properties.data().data(),
 			ids.size(), ids.data(),
@@ -146,9 +137,9 @@ namespace cl {
 				delete temp;
 			},
 			std::addressof(cbWrapper),
-			std::addressof(error)
+			error.data()
 		);
-		if (detail::error::handle(error)) {
+		if (detail::handleError(detail::CLFunction::clCreateContext(), error)) {
 			m_object = contex;
 			delete cbWrapper; // can be safely deleted as the callback requiring this
 			                  // instance will never be called since clCreateContext
@@ -169,14 +160,14 @@ namespace cl {
 			[](auto device) {
 				return device.get();
 			});
-		auto error  = cl_int{CL_INVALID_VALUE};
+		auto error  = RetCode::getPreset();
 		auto contex = clCreateContext(
 			properties.data().data(),
 			ids.size(), ids.data(),
 			nullptr, nullptr,
-			std::addressof(error)
+			error.data()
 		);
-		if (detail::error::handle(error)) {
+		if (detail::handleError(detail::CLFunction::clCreateContext(), error)) {
 			m_object = contex;
 		}
 	}
@@ -193,7 +184,7 @@ namespace cl {
 			T* user_data;
 		};
 		auto cbWrapper = new callback_data{callback, user_data};
-		auto error  = cl_int{CL_INVALID_VALUE};
+		auto error  = RetCode::getPreset();
 		auto contex = clCreateContextFromType(
 			properties.data().data(),
 			static_cast<std::underlying_type<DeviceType>::type>(type),
@@ -213,9 +204,9 @@ namespace cl {
 				delete temp;
 			},
 			std::addressof(cbWrapper),
-			std::addressof(error)
+			error.data()
 		);
-		if (detail::error::handle(error)) {
+		if (detail::handleError(detail::CLFunction::clCreateContextFromType(), error)) {
 			m_object = contex;
 		}
 	}
@@ -225,10 +216,10 @@ namespace cl {
 	//================================================================================
 
 	auto Context::createCommandQueue(Device const& device) const -> CommandQueue {
-		auto error   = cl_int{CL_INVALID_VALUE};
+		auto error   = RetCode::getPreset();
 		auto queueId = clCreateCommandQueueWithProperties(
-			get(), device.get(), nullptr, std::addressof(error));
-		detail::error::handle(error);
+			get(), device.get(), nullptr, error.data());
+		detail::handleError(detail::CLFunction::clCreateCommandQueueWithProperties(), error);
 		return {queueId};
 	}
 
@@ -245,11 +236,11 @@ namespace cl {
 		-> Buffer<T>
 	{
 		using namespace utility;
-		auto error = cl_int{CL_INVALID_VALUE};
+		auto error = RetCode::getPreset();
 		auto flags = to_underlying(deviceAccess) | to_underlying(hostAccess);
 		auto sizeInBytes = size * sizeof(T);
-		auto id    = clCreateBuffer(get(), flags, sizeInBytes, nullptr, std::addressof(error));
-		detail::error::handle(error);
+		auto id    = clCreateBuffer(get(), flags, sizeInBytes, nullptr, error.data());
+		detail::handleError(detail::CLFunction::clCreateBuffer(), error);
 		return {id};
 	}
 
@@ -264,13 +255,13 @@ namespace cl {
 		-> Buffer<T>
 	{
 		using namespace utility;
-		auto error = cl_int{CL_INVALID_VALUE};
+		auto error = RetCode::getPreset();
 		auto flags = to_underlying(transferMode)
 		           | to_underlying(deviceAccess)
 		           | to_underlying(hostAccess);
 		auto sizeInBytes = std::distance(first, last) * sizeof(T);
-		auto id    = clCreateBuffer(get(), flags, sizeInBytes, (void *) &*first, std::addressof(error));
-		detail::error::handle(error);
+		auto id    = clCreateBuffer(get(), flags, sizeInBytes, (void *) &*first, error.data());
+		detail::handleError(detail::CLFunction::clCreateBuffer(), error);
 		return {id};
 	}
 
@@ -291,11 +282,11 @@ namespace cl {
 	//================================================================================
 
 	auto Context::createProgramWithSource(std::string const& source) const -> Program {
-		auto error     = cl_int{CL_INVALID_VALUE};
+		auto error     = RetCode::getPreset();
 		auto cStr      = source.c_str();
 		auto programId = clCreateProgramWithSource(
-			get(), 1, std::addressof(cStr), nullptr, std::addressof(error));
-		detail::error::handle(error);
+			get(), 1, std::addressof(cStr), nullptr, error.data());
+		detail::handleError(detail::CLFunction::clCreateProgramWithSource(), error);
 		return {programId};
 	}
 

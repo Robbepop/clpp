@@ -9,8 +9,6 @@
 
 #include "clpp/detail/cl_function.hpp"
 
-#include "clpp/ret_code2.hpp"
-
 #include "clpp/platform.hpp"
 #include "clpp/device.hpp"
 #include "clpp/context.hpp"
@@ -48,7 +46,7 @@
 #include "clpp/partition_capabilities.ipp"
 #include "clpp/platform.ipp"
 #include "clpp/program.ipp"
-#include "clpp/ret_code2.ipp"
+#include "clpp/ret_code.ipp"
 #include "clpp/svm_capabilities.ipp"
 
 //===========================================================

@@ -24,10 +24,10 @@ namespace cl {
 			)
 				-> T
 			{
-				auto error = cl_int{CL_INVALID_VALUE};
+				auto error = RetCode::getPreset();
 				auto info  = T{};
 				error      = getInfo(objId, infoId, sizeof(T), std::addressof(info), nullptr);
-				error::handle(error);
+				handleError(CLFunction::getByPtr(getInfo), error);
 				return info;
 			}
 
@@ -39,15 +39,15 @@ namespace cl {
 			)
 				-> std::vector<T>
 			{
-				auto error      = cl_int{CL_INVALID_VALUE};
+				auto error      = RetCode::getPreset();
 				auto bufferSize = size_t{0};
 				error           = getInfo(objId, infoId, 0, nullptr, std::addressof(bufferSize));
-				error::handle(error);
+				handleError(CLFunction::getByPtr(getInfo), error);
 				if (bufferSize == 0) { return {}; }
 				auto countElems = bufferSize / sizeof(T);
 				auto info = std::vector<T>(countElems);
 				error = getInfo(objId, infoId, bufferSize, info.data(), nullptr);
-				error::handle(error);
+				handleError(CLFunction::getByPtr(getInfo), error);
 				return info;
 			}
 

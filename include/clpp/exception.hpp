@@ -15,75 +15,75 @@ namespace cl {
 			virtual RetCode code() const noexcept = 0;
 		};
 
-		template<cl::RetCode retCode>
+		template<RetCode::id_type retCode>
 		class BasicError : public AnyError {
 			using AnyError::AnyError;
 			RetCode code() const noexcept override { return retCode; }
 		};
 
-		using DeviceNotFound            = BasicError<RetCode::deviceNotFound>;
-		using DeviceNotAvailable        = BasicError<RetCode::deviceNotAvailable>;
-		using CompilerNotAvailable      = BasicError<RetCode::compilerNotAvailable>;
-		using MemoryObjectAllocFailure  = BasicError<RetCode::memoryObjectAllocationFailure>;
-		using OutOfResources            = BasicError<RetCode::outOfResources>;
-		using OutOfHostMemory           = BasicError<RetCode::outOfHostMemory>;
-		using ProfilingInfoNotAvailable = BasicError<RetCode::profilingInfoNotAvailable>;
-		using MemoryCopyOverlap         = BasicError<RetCode::memoryCopyOverlap>;
-		using ImageFormatMismatch       = BasicError<RetCode::imageFormatMismatch>;
-		using ImageFormatNotSupported   = BasicError<RetCode::imageFormatNotSupported>;
-		using BuildProgramFailure       = BasicError<RetCode::buildProgramFailure>;
-		using MapFailure                = BasicError<RetCode::mapFailure>;
-		using MisalignedSubBufferOffset = BasicError<RetCode::misalignedSubBufferOffset>;
+		using DeviceNotFound            = BasicError<CL_DEVICE_NOT_FOUND>;
+		using DeviceNotAvailable        = BasicError<CL_DEVICE_NOT_AVAILABLE>;
+		using CompilerNotAvailable      = BasicError<CL_COMPILER_NOT_AVAILABLE>;
+		using MemoryObjectAllocFailure  = BasicError<CL_MEM_OBJECT_ALLOCATION_FAILURE>;
+		using OutOfResources            = BasicError<CL_OUT_OF_RESOURCES>;
+		using OutOfHostMemory           = BasicError<CL_OUT_OF_HOST_MEMORY>;
+		using ProfilingInfoNotAvailable = BasicError<CL_PROFILING_INFO_NOT_AVAILABLE>;
+		using MemoryCopyOverlap         = BasicError<CL_MEM_COPY_OVERLAP>;
+		using ImageFormatMismatch       = BasicError<CL_IMAGE_FORMAT_MISMATCH>;
+		using ImageFormatNotSupported   = BasicError<CL_IMAGE_FORMAT_NOT_SUPPORTED>;
+		using BuildProgramFailure       = BasicError<CL_BUILD_PROGRAM_FAILURE>;
+		using MapFailure                = BasicError<CL_MAP_FAILURE>;
+		using MisalignedSubBufferOffset = BasicError<CL_MISALIGNED_SUB_BUFFER_OFFSET>;
 		using ExecStatusErrorForEventsInWaitList
-		                                = BasicError<RetCode::executeStatusErrorForEventsInWaitList>;
-		using CompileProgramFailure     = BasicError<RetCode::compileProgramFailure>;
-		using LinkerNotAvailable        = BasicError<RetCode::linkerNotAvailable>;
-		using LinkProgramFailure        = BasicError<RetCode::linkProgramFailure>;
-		using DevicePartitionFailure    = BasicError<RetCode::devicePartitionFailed>;
-		using KernelArgInfoNotAvailable = BasicError<RetCode::kernelArgumentInfoNotAvailable>;
+		                                = BasicError<CL_EXEC_STATUS_ERROR_FOR_EVENTS_IN_WAIT_LIST>;
+		using CompileProgramFailure     = BasicError<CL_COMPILE_PROGRAM_FAILURE>;
+		using LinkerNotAvailable        = BasicError<CL_LINKER_NOT_AVAILABLE>;
+		using LinkProgramFailure        = BasicError<CL_LINK_PROGRAM_FAILURE>;
+		using DevicePartitionFailure    = BasicError<CL_DEVICE_PARTITION_FAILED>;
+		using KernelArgInfoNotAvailable = BasicError<CL_KERNEL_ARG_INFO_NOT_AVAILABLE>;
 
 
-		using InvalidValue              = BasicError<RetCode::invalidValue>;
-		using InvalidDeviceType         = BasicError<RetCode::invalidDeviceType>;
-		using InvalidPlatform           = BasicError<RetCode::invalidPlatform>;
-		using InvalidDevice             = BasicError<RetCode::invalidDevice>;
-		using InvalidContext            = BasicError<RetCode::invalidContext>;
-		using InvalidQueueProperties    = BasicError<RetCode::invalidQueueProperties>;
-		using InvalidCommandQueue       = BasicError<RetCode::invalidCommandQueue>;
-		using InvalidHostPtr            = BasicError<RetCode::invalidHostPtr>;
-		using InvalidMemoryObject       = BasicError<RetCode::invalidMemoryObject>;
+		using InvalidValue              = BasicError<CL_INVALID_VALUE>;
+		using InvalidDeviceType         = BasicError<CL_INVALID_DEVICE_TYPE>;
+		using InvalidPlatform           = BasicError<CL_INVALID_PLATFORM>;
+		using InvalidDevice             = BasicError<CL_INVALID_DEVICE>;
+		using InvalidContext            = BasicError<CL_INVALID_CONTEXT>;
+		using InvalidQueueProperties    = BasicError<CL_INVALID_QUEUE_PROPERTIES>;
+		using InvalidCommandQueue       = BasicError<CL_INVALID_COMMAND_QUEUE>;
+		using InvalidHostPtr            = BasicError<CL_INVALID_HOST_PTR>;
+		using InvalidMemoryObject       = BasicError<CL_INVALID_MEM_OBJECT>;
 		using InvalidImageFormatDescriptor
-		                                = BasicError<RetCode::invalidImageFormatDescriptor>;
-		using InvalidImageSize          = BasicError<RetCode::invalidImageSize>;
-		using InvalidSampler            = BasicError<RetCode::invalidSampler>;
-		using InvalidBinary             = BasicError<RetCode::invalidBinary>;
-		using InvalidBuildOptions       = BasicError<RetCode::invalidBuildOptions>;
-		using InvalidProgram            = BasicError<RetCode::invalidProgram>;
-		using InvalidProgramExecutable  = BasicError<RetCode::invalidProgramExecutable>;
-		using InvalidKernelName         = BasicError<RetCode::invalidKernelName>;
-		using InvalidKernelDefinition   = BasicError<RetCode::invalidKernelDefinition>;
-		using InvalidKernel             = BasicError<RetCode::invalidKernel>;
-		using InvalidArgIndex           = BasicError<RetCode::invalidArgumentIndex>;
-		using InvalidArgValue           = BasicError<RetCode::invalidArgumentValue>;
-		using InvalidArgSize            = BasicError<RetCode::invalidArgumentSize>;
-		using InvalidKernelArgs         = BasicError<RetCode::invalidKernelArguments>;
-		using InvalidWorkDimension      = BasicError<RetCode::invalidWorkDimension>;
-		using InvalidWorkGroupSize      = BasicError<RetCode::invalidWorkGroupSize>;
-		using InvalidWorkItemSize       = BasicError<RetCode::invalidWorkItemSize>;
-		using InvalidGlobalOffset       = BasicError<RetCode::invalidGlobalOffset>;
-		using InvalidEventWaitList      = BasicError<RetCode::invalidEventWaitList>;
-		using InvalidEvent              = BasicError<RetCode::invalidEvent>;
-		using InvalidOperation          = BasicError<RetCode::invalidOperation>;
-		using InvalidGLObject           = BasicError<RetCode::invalidGlObject>;
-		using InvalidBufferSize         = BasicError<RetCode::invalidBufferSize>;
-		using InvalidMipLevel           = BasicError<RetCode::invalidMipLevel>;
-		using InvalidGlobalWorkSize     = BasicError<RetCode::invalidGlobalWorkSize>;
-		using InvalidProperty           = BasicError<RetCode::invalidProperty>;
-		using InvalidImageDescriptor    = BasicError<RetCode::invalidImageDescriptor>;
-		using InvalidCompilerOptions    = BasicError<RetCode::invalidCompilerOptions>;
-		using InvalidLinkerOptions      = BasicError<RetCode::invalidLinkerOptions>;
+		                                = BasicError<CL_INVALID_IMAGE_DESCRIPTOR>;
+		using InvalidImageSize          = BasicError<CL_INVALID_IMAGE_SIZE>;
+		using InvalidSampler            = BasicError<CL_INVALID_SAMPLER>;
+		using InvalidBinary             = BasicError<CL_INVALID_BINARY>;
+		using InvalidBuildOptions       = BasicError<CL_INVALID_BUILD_OPTIONS>;
+		using InvalidProgram            = BasicError<CL_INVALID_PROGRAM>;
+		using InvalidProgramExecutable  = BasicError<CL_INVALID_PROGRAM_EXECUTABLE>;
+		using InvalidKernelName         = BasicError<CL_INVALID_KERNEL_NAME>;
+		using InvalidKernelDefinition   = BasicError<CL_INVALID_KERNEL_DEFINITION>;
+		using InvalidKernel             = BasicError<CL_INVALID_KERNEL>;
+		using InvalidArgIndex           = BasicError<CL_INVALID_ARG_INDEX>;
+		using InvalidArgValue           = BasicError<CL_INVALID_ARG_VALUE>;
+		using InvalidArgSize            = BasicError<CL_INVALID_ARG_SIZE>;
+		using InvalidKernelArgs         = BasicError<CL_INVALID_KERNEL_ARGS>;
+		using InvalidWorkDimension      = BasicError<CL_INVALID_WORK_DIMENSION>;
+		using InvalidWorkGroupSize      = BasicError<CL_INVALID_WORK_GROUP_SIZE>;
+		using InvalidWorkItemSize       = BasicError<CL_INVALID_WORK_ITEM_SIZE>;
+		using InvalidGlobalOffset       = BasicError<CL_INVALID_GLOBAL_OFFSET>;
+		using InvalidEventWaitList      = BasicError<CL_INVALID_EVENT_WAIT_LIST>;
+		using InvalidEvent              = BasicError<CL_INVALID_EVENT>;
+		using InvalidOperation          = BasicError<CL_INVALID_OPERATION>;
+		using InvalidGLObject           = BasicError<CL_INVALID_GL_OBJECT>;
+		using InvalidBufferSize         = BasicError<CL_INVALID_BUFFER_SIZE>;
+		using InvalidMipLevel           = BasicError<CL_INVALID_MIP_LEVEL>;
+		using InvalidGlobalWorkSize     = BasicError<CL_INVALID_GLOBAL_WORK_SIZE>;
+		using InvalidProperty           = BasicError<CL_INVALID_PROPERTY>;
+		using InvalidImageDescriptor    = BasicError<CL_INVALID_IMAGE_DESCRIPTOR>;
+		using InvalidCompilerOptions    = BasicError<CL_INVALID_COMPILER_OPTIONS>;
+		using InvalidLinkerOptions      = BasicError<CL_INVALID_LINKER_OPTIONS>;
 		using InvalidDevicePartitionCount
-		                                = BasicError<RetCode::invalidDevicePartitionCount>;
+		                                = BasicError<CL_INVALID_DEVICE_PARTITION_COUNT>;
 	}
 }
 

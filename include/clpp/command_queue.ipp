@@ -322,11 +322,11 @@ namespace cl {
 	//================================================================================
 
 	void CommandQueue::flush() const {
-		detail::error::handle(clFlush(get()));
+		detail::handleError(detail::CLFunction::clFlush(), clFlush(get()));
 	}
 
 	void CommandQueue::finish() const {
-		detail::error::handle(clFinish(get()));
+		detail::handleError(detail::CLFunction::clFinish(), clFinish(get()));
 	}
 
 	//================================================================================

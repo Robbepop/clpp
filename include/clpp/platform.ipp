@@ -29,10 +29,10 @@ namespace cl {
 		auto error          = cl_int{CL_INVALID_VALUE};
 		auto countPlatforms = cl_uint{0};
 		error               = clGetPlatformIDs(0, nullptr, std::addressof(countPlatforms));
-		detail::error::handle(error);
+		detail::handleError(detail::CLFunction::clGetPlatformIDs(), error);
 		auto platformIds    = std::vector<Platform::cl_type>(countPlatforms);
 		error               = clGetPlatformIDs(countPlatforms, platformIds.data(), nullptr);
-		detail::error::handle(error);
+		detail::handleError(detail::CLFunction::clGetPlatformIDs(), error);
 		auto platforms = std::vector<Platform>{};
 		for (auto&& id : platformIds) {
 			platforms.emplace_back(id);
@@ -58,7 +58,7 @@ namespace cl {
 
 	void Platform::unloadCompiler() const {
 		const auto error = clUnloadPlatformCompiler(get());
-		detail::error::handle(error);
+		detail::handleError(detail::CLFunction::clUnloadPlatformCompiler(), error);
 	}
 
 	//================================================================================
@@ -107,12 +107,12 @@ namespace cl {
 		auto numDevices = cl_uint{0};
 		auto error = clGetDeviceIDs(
 			get(), to_underlying(deviceType), 0, nullptr, std::addressof(numDevices));
-		detail::error::handle(error);
+		detail::handleError(detail::CLFunction::clGetDeviceIDs(), error);
 		auto deviceIds = std::vector<Device>(numDevices);
 		error = clGetDeviceIDs(
 			get(), to_underlying(deviceType), numDevices,
 			reinterpret_cast<cl_device_id*>(deviceIds.data()), nullptr);
-		detail::error::handle(error);
+		detail::handleError(detail::CLFunction::clGetDeviceIDs(), error);
 		return deviceIds;
 	}
 

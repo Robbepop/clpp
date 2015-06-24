@@ -18,7 +18,7 @@ namespace cl {
 		auto error = clWaitForEvents(
 			waitList.size(),
 			reinterpret_cast<const cl_type*>(waitList.data()));
-		detail::error::handle(error);
+		detail::handleError(detail::CLFunction::clWaitForEvents(), error);
 	}
 
 	template<typename... Events>
@@ -27,7 +27,8 @@ namespace cl {
 	}
 
 	void Event::wait() const {
-		detail::error::handle(
+		detail::handleError(
+			detail::CLFunction::clWaitForEvents(),
 			clWaitForEvents(1, reinterpret_cast<const cl_type*>(this)));
 	}
 
@@ -40,7 +41,7 @@ namespace cl {
 
 	void Event::setStatus(cl_int status) const {
 		auto error = clSetUserEventStatus(get(), status);
-		detail::error::handle(error);
+		detail::handleError(detail::CLFunction::clSetUserEventStatus(), error);
 	}
 
 	void Event::setStatusComplete() const {

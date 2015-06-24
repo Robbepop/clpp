@@ -83,7 +83,7 @@ namespace cl {
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId)
 			);
-			detail::error::handle(error);
+			detail::handleError(CLFunction::clEnqueueReadBuffer(), error);
 			return {eventId};
 		}
 
@@ -136,7 +136,7 @@ namespace cl {
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId)
 			);
-			detail::error::handle(error);
+			detail::handleError(CLFunction::clEnqueueWriteBuffer(), error);
 			return {eventId};
 		}
 
@@ -198,7 +198,7 @@ namespace cl {
 				std::addressof(first[0]),
 				getWaitListSize(), getWaitListData(),
 				nullptr);
-			detail::error::handle(error);
+			detail::handleError(CLFunction::clEnqueueReadBufferRect(), error);
 		}
 
 		template<typename OutputIterator, typename T>
@@ -226,7 +226,7 @@ namespace cl {
 				std::addressof(first[0]),
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId));
-			detail::error::handle(error);
+			detail::handleError(CLFunction::clEnqueueReadBufferRect(), error);
 			return {eventId};
 		}
 
@@ -258,7 +258,7 @@ namespace cl {
 				std::addressof(first[0]),
 				getWaitListSize(), getWaitListData(),
 				nullptr);
-			detail::error::handle(error);
+			detail::handleError(CLFunction::clEnqueueWriteBufferRect(), error);
 		}
 
 		template<typename InputIterator, typename T>
@@ -286,7 +286,7 @@ namespace cl {
 				std::addressof(first[0]),
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId));
-			detail::error::handle(error);
+			detail::handleError(CLFunction::clEnqueueWriteBufferRect(), error);
 			return {eventId};
 		}
 
@@ -305,7 +305,7 @@ namespace cl {
 				srcOffset * sizeof(T), dstOffset * sizeof(T), size * sizeof(T),
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId));
-			detail::error::handle(error);
+			detail::handleError(CLFunction::clEnqueueCopyBuffer(), error);
 			return {eventId};
 		}
 
@@ -339,7 +339,7 @@ namespace cl {
 				dstRowPitch * sizeof(T), dstSlidePitch * sizeof(T),
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId));
-			detail::error::handle(error);
+			detail::handleError(CLFunction::clEnqueueCopyBufferRect(), error);
 			return {eventId};
 		}
 
@@ -358,7 +358,7 @@ namespace cl {
 				offset * sizeof(T), size * sizeof(T),
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId));
-			detail::error::handle(error);
+			detail::handleError(CLFunction::clEnqueueFillBuffer(), error);
 			return {eventId};
 		}
 
@@ -387,7 +387,7 @@ namespace cl {
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId),
 				std::addressof(error));
-			detail::error::handle(error);
+			detail::handleError(CLFunction::clEnqueueMapBuffer(), error);
 			result = {m_queue, buffer, reinterpret_cast<T*>(region), size};
 			return {eventId};
 		}
@@ -446,7 +446,7 @@ namespace cl {
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId)
 			);
-			detail::error::handle(error);
+			detail::handleError(CLFunction::clEnqueueNDRangeKernel(), error);
 			return {eventId};
 		}
 
@@ -464,7 +464,7 @@ namespace cl {
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId)
 			);
-			detail::error::handle(error);
+			detail::handleError(CLFunction::clEnqueueNDRangeKernel(), error);
 			return {eventId};
 		}
 
@@ -481,7 +481,7 @@ namespace cl {
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId)
 			);
-			detail::error::handle(error);
+			detail::handleError(CLFunction::clEnqueueNDRangeKernel(), error);
 			return {eventId};
 		}
 
@@ -501,7 +501,7 @@ namespace cl {
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId)
 			);
-			detail::error::handle(error);
+			detail::handleError(CLFunction::clEnqueueNDRangeKernel(), error);
 			return {eventId};
 		}
 
@@ -513,7 +513,7 @@ namespace cl {
 			auto eventId = cl_event{nullptr};
 			auto error   = clEnqueueMarkerWithWaitList(
 				getQueueId(), getWaitListSize(), getWaitListData(), std::addressof(eventId));
-			detail::error::handle(error);
+			detail::handleError(CLFunction::clEnqueueMarkerWithWaitList(), error);
 			return {eventId};
 		}
 
@@ -521,7 +521,7 @@ namespace cl {
 			auto eventId = cl_event{nullptr};
 			auto error   = clEnqueueBarrierWithWaitList(
 				getQueueId(), getWaitListSize(), getWaitListData(), std::addressof(eventId));
-			detail::error::handle(error);
+			detail::handleError(CLFunction::clEnqueueBarrierWithWaitList(), error);
 			return {eventId};
 		}
 	}

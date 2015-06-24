@@ -27,7 +27,7 @@ namespace cl {
 	auto Program::createKernel(std::string const& name) const -> Kernel {
 		auto error = cl_int{CL_INVALID_VALUE};
 		auto kernelId = clCreateKernel(get(), name.c_str(), std::addressof(error));
-		detail::error::handle(error);
+		detail::handleError(detail::CLFunction::clCreateKernel(), error);
 		return {kernelId};
 	}
 
@@ -35,11 +35,11 @@ namespace cl {
 		auto countKernels = cl_uint{0};
 		auto error = clCreateKernelsInProgram(
 			get(), 0, nullptr, std::addressof(countKernels));
-		detail::error::handle(error);
+		detail::handleError(detail::CLFunction::clCreateKernelsInProgram(), error);
 		auto kernels = std::vector<Kernel>(countKernels);
 		error = clCreateKernelsInProgram(
 			get(), countKernels, reinterpret_cast<cl_kernel*>(kernels.data()), nullptr);
-		detail::error::handle(error);
+		detail::handleError(detail::CLFunction::clCreateKernelsInProgram(), error);
 		return kernels;
 	}
 
@@ -69,7 +69,7 @@ namespace cl {
 		auto error = clBuildProgram(
 			get(), std::distance(firstDevice, lastDevice), deviceIt,
 			nullptr, nullptr, nullptr);
-		detail::error::handle(error);
+		detail::handleError(detail::CLFunction::clBuildProgram(), error);
 	}
 
 	template<typename Function, typename T>
@@ -167,7 +167,7 @@ namespace cl {
 		auto info        = T{};
 		error = clGetProgramBuildInfo(
 			get(), device.get(), infoId, sizeof(T), std::addressof(info), nullptr);
-		detail::error::handle(error);
+		detail::handleError(detail::CLFunction::clGetProgramBuildInfo(), error);
 		return info;
 	}
 
@@ -179,12 +179,12 @@ namespace cl {
 		auto bufferSize = size_t{0};
 		error = clGetProgramBuildInfo(
 			get(), device.get(), infoId, 0, nullptr, std::addressof(bufferSize));
-		detail::error::handle(error);
+		detail::handleError(detail::CLFunction::clGetProgramBuildInfo(), error);
 		auto countElems = bufferSize / sizeof(T);
 		auto info = std::vector<T>(countElems);
 		error = clGetProgramBuildInfo(
 			get(), device.get(), infoId, bufferSize, info.data(), nullptr);
-		detail::error::handle(error);
+		detail::handleError(detail::CLFunction::clGetProgramBuildInfo(), error);
 		return info;
 	}
 

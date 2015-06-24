@@ -9,50 +9,50 @@
 #endif
 
 namespace cl {
-	auto RetCode2::getPreset() -> RetCode2 const& {
-		static const auto instance = RetCode2{c_presetId};
+	auto RetCode::getPreset() -> RetCode const& {
+		static const auto instance = RetCode{c_presetId};
 		return instance;
 	}
 
-	RetCode2::RetCode2(id_type id):
+	RetCode::RetCode(id_type id):
 		m_id{id}
 	{}
 
-	RetCode2::RetCode2(RetCode2 const& other) {
+	RetCode::RetCode(RetCode const& other) {
 		m_id = other.m_id;
 	}
 
-	auto RetCode2::operator=(RetCode2 const& rhs) -> RetCode2 & {
+	auto RetCode::operator=(RetCode const& rhs) -> RetCode & {
 		m_id = rhs.m_id;
 		return *this;
 	}
 
-	auto RetCode2::operator=(id_type const& rhs) -> RetCode2 & {
+	auto RetCode::operator=(id_type const& rhs) -> RetCode & {
 		m_id = rhs;
 		return *this;
 	}
 
-	constexpr auto RetCode2::operator==(RetCode2 const& rhs) -> bool {
+	constexpr auto RetCode::operator==(RetCode const& rhs) -> bool {
 		return m_id == rhs.m_id;
 	}
 
-	constexpr auto RetCode2::operator!=(RetCode2 const& rhs) -> bool {
+	constexpr auto RetCode::operator!=(RetCode const& rhs) -> bool {
 		return m_id != rhs.m_id;
 	}
 
-	auto RetCode2::data() -> id_type* {
+	auto RetCode::data() -> id_type* {
 		return std::addressof(m_id);
 	}
 
-	constexpr auto RetCode2::isError() const -> bool {
+	constexpr auto RetCode::isError() const -> bool {
 		return m_id != CL_SUCCESS;
 	}
 
-	constexpr auto RetCode2::isSuccess() const -> bool {
+	constexpr auto RetCode::isSuccess() const -> bool {
 		return m_id == CL_SUCCESS;
 	}
 
-	constexpr auto RetCode2::getCLId() const -> id_type {
+	constexpr auto RetCode::getCLId() const -> id_type {
 		return m_id;
 	}
 
@@ -64,7 +64,7 @@ namespace cl {
 	// when calling one of these functions which should happen very seldom.
 	//====================================================================================
 
-	constexpr auto RetCode2::getCLName() const -> std::experimental::string_view {
+	constexpr auto RetCode::getCLName() const -> std::experimental::string_view {
 		switch (m_id) {
 			default: assert(false);
 
@@ -199,19 +199,19 @@ namespace cl {
 	// and its wrapped value type.
 	//====================================================================================
 
-	constexpr auto operator==(RetCode2 const& lhs, RetCode2::id_type const& rhs) -> bool {
+	constexpr auto operator==(RetCode const& lhs, RetCode::id_type const& rhs) -> bool {
 		return lhs.getCLId() == rhs;
 	}
 
-	constexpr auto operator!=(RetCode2 const& lhs, RetCode2::id_type const& rhs) -> bool {
+	constexpr auto operator!=(RetCode const& lhs, RetCode::id_type const& rhs) -> bool {
 		return lhs.getCLId() != rhs;
 	}
 
-	constexpr auto operator==(RetCode2::id_type const& lhs, RetCode2 const& rhs) -> bool {
+	constexpr auto operator==(RetCode::id_type const& lhs, RetCode const& rhs) -> bool {
 		return rhs == lhs;
 	}
 
-	constexpr auto operator!=(RetCode2::id_type const& lhs, RetCode2 const& rhs) -> bool {
+	constexpr auto operator!=(RetCode::id_type const& lhs, RetCode const& rhs) -> bool {
 		return rhs != lhs;
 	}
 }

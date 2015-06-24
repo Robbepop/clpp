@@ -32,7 +32,7 @@ namespace cl {
 	template<typename T>
 	MappedMemory<T>::~MappedMemory() {
 		if (m_valid) {
-			auto error = clEnqeueUnmapMemObject(
+			auto error = clEnqueueUnmapMemObject(
 				m_queue.get(),
 				m_mem_obj.get(),
 				reinterpret_cast<void*>(m_data),
@@ -40,7 +40,7 @@ namespace cl {
 				std::addressof(m_wait_list),
 				nullptr
 			);
-			detail::error::handle(error);
+			detail::handleError(detail::CLFunction::clEnqueueUnmapMemObject(), error);
 		}
 	}
 

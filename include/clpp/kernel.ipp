@@ -23,7 +23,7 @@ namespace cl {
 	void Kernel::setArg(cl_uint index, T&& arg) const {
 		const auto error = clSetKernelArg(
 			get(), index, sizeof(T), std::addressof(std::forward<T>(arg)));
-		detail::error::handle(error);
+		detail::handleError(detail::CLFunction::clSetKernelArg(), error);
 	}
 
 	template<typename T>

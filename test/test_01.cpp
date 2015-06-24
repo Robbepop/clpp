@@ -553,8 +553,8 @@ auto main() -> int {
 		using namespace cl::detail;
 
 		std::cout << CLFunction::getByPtr(clCreateKernelsInProgram).getCLName() << '\n';
-		std::cout << RetCode2{CL_SUCCESS}.getCLName() << '\n';
-		std::cout << RetCode2{CL_INVALID_ARG_INDEX}.getCLName() << '\n';
+		std::cout << RetCode{CL_SUCCESS}.getCLName() << '\n';
+		std::cout << RetCode{CL_INVALID_ARG_INDEX}.getCLName() << '\n';
 		std::cout << CLFunction::clGetPlatformIDs().getCLName() << '\n';
 //		std::cout << to_string(cl::RetCode::invalidEvent) << '\n';
 //		std::cout << to_string(clCreateContext) << '\n';
