@@ -2,6 +2,7 @@
 #define CLPP_DETAIL_ERROR_HANDLER_HPP
 
 #include "clpp/ret_code.hpp"
+#include "clpp/ret_code2.hpp"
 #include "clpp/exception.hpp"
 
 #include <type_traits>
@@ -10,6 +11,11 @@
 
 namespace cl {
 	namespace detail {
+		namespace impl { // strange errors occur when naming this namespace 'detail'
+			inline void throwException(CLFunction const& func, RetCode2 const& code);
+		}
+		inline auto handleError(CLFunction const& func, RetCode2 const& code) -> bool;
+
 		class error final {
 		public:
 			using info_map = std::map<RetCode, std::string>;

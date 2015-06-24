@@ -411,7 +411,7 @@ void test_01() {
 	auto properties = cl::ContextProperties().setPlatform(platform);
 	std::cout << "Context properties created successfully!\n";
 
-	auto context = cl::Context::createForType(properties, cl::DeviceType::cpu);
+	auto context = cl::Context::createForType(properties, cl::DeviceType::gpu);
 //	auto context = cl::Context::createForDevices(defaultDevice);
 //	auto context = cl::Context::createDefault();
 	std::cout << "Context created successfully!\n";
@@ -561,9 +561,6 @@ auto main() -> int {
 //		assert(cl::to_string(cl::RetCode::invalidEvent) == std::experimental::string_view{"CL_INVAILD_EVENT"});
 	}
 	catch (cl::error::AnyError & e) {
-		std::cout
-			<< "Exception was thrown with error code "
-			<< utility::to_underlying(e.code())
-			<< " and message: " << e.what() << '\n';
+		std::cout << "what(): " << e.what() << '\n';
 	}
 }

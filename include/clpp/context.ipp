@@ -32,10 +32,8 @@ namespace cl {
 	//================================================================================
 
 	auto Context::createDefault() -> Context {
-		std::cout << "Context::createDefault() - start\n";
 		static auto const instance =
 			Context::createForType(DeviceType::defaultType);
-		std::cout << "Context::createDefault() - end\n";
 		return instance;
 	}
 
@@ -73,9 +71,9 @@ namespace cl {
 			nullptr, nullptr,
 			std::addressof(error)
 		);
-		std::cout << "Context::createForType() - error = " << error << '\n';
+//		std::cout << "Context::createForType() - error = " << error << '\n';
 		detail::error::handle(error);
-		std::cout << "Context::createForType() - end\n";
+//		std::cout << "Context::createForType() - end\n";
 		return {contextId};
 	}
 
@@ -85,15 +83,24 @@ namespace cl {
 	)
 		-> Context
 	{
-		auto error     = CL_INVALID_VALUE;
+		auto error     = RetCode2::getPreset();
 		auto contextId = clCreateContextFromType(
 			properties.data().data(),
 			utility::to_underlying(type),
 			nullptr, nullptr,
-			std::addressof(error)
+			error.data()
 		);
-		detail::error::handle(error);
+		detail::handleError(detail::CLFunction::clCreateContextFromType(), error);
 		return {contextId};
+//		auto error     = CL_INVALID_VALUE;
+//		auto contextId = clCreateContextFromType(
+//			properties.data().data(),
+//			utility::to_underlying(type),
+//			nullptr, nullptr,
+//			std::addressof(error)
+//		);
+//		detail::error::handle(error);
+//		return {contextId};
 	}
 
 	//====================================================================================

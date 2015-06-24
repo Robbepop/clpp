@@ -17,7 +17,7 @@ if (USE_CLANG)
     SET (CMAKE_C_FLAGS_RELWITHDEBINFO "-O2 -g")
 
     SET (CMAKE_CXX_COMPILER             "/usr/bin/clang++")
-    SET (CMAKE_CXX_FLAGS                "-g -ferror-limit=5 -Wall -Wextra -pedantic -std=c++14 -fdiagnostics-color=auto")
+    SET (CMAKE_CXX_FLAGS                "-g -ferror-limit=1000 -Wall -Wextra -pedantic -std=c++14 -fdiagnostics-color=auto")
     SET (CMAKE_CXX_FLAGS_DEBUG          "-g")
     SET (CMAKE_CXX_FLAGS_MINSIZEREL     "-Os -DNDEBUG")
     SET (CMAKE_CXX_FLAGS_RELEASE        "-O3 -DNDEBUG")
