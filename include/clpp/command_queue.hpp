@@ -10,21 +10,9 @@ namespace cl {
 			using cl_type        = cl_command_queue;
 			using info_type      = cl_command_queue_info;
 
-			static auto release(cl_type id) { return clReleaseCommandQueue(id); }
-
-			static auto retain(cl_type id) { return clRetainCommandQueue(id); }
-
-			static auto getInfo
-			(
-				cl_type   queue,
-				info_type param_name,
-				size_t    param_value_size,
-				void *    param_value,
-				size_t *  param_value_size_ret
-			) {
-				return clGetCommandQueueInfo(
-					queue, param_name, param_value_size, param_value, param_value_size_ret);
-			}
+			static constexpr auto retain  = clRetainCommandQueue;
+			static constexpr auto release = clReleaseCommandQueue;
+			static constexpr auto getInfo = clGetCommandQueueInfo;
 		};
 	}
 

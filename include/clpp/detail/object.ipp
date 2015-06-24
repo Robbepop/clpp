@@ -125,16 +125,16 @@ namespace cl {
 		template<typename CLType>
 		void Object<CLType>::release() {
 			if (m_object != nullptr) {
-				RetCode error = ObjectHandler<CLType>::release(m_object);
-				detail::handleError(error);
+				detail::handleError(
+					ObjectHandler<CLType>::release(m_object));
 			}
 		}
 
 		template<typename CLType>
 		void Object<CLType>::retain() {
 			if (m_object != nullptr) {
-				RetCode error = ObjectHandler<CLType>::retain(m_object);
-				detail::handleError(error);
+				detail::handleError(
+					ObjectHandler<CLType>::retain(m_object));
 			}
 		}
 

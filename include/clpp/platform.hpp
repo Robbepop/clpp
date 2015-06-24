@@ -14,23 +14,17 @@ namespace cl {
 	namespace detail {
 		template<>
 		struct ObjectHandler<cl_platform_id> final {
-			using cl_type        = cl_platform_id;
-			using info_type      = cl_platform_info;
+			using cl_type   = cl_platform_id;
+			using info_type = cl_platform_info;
 
-			static auto release(cl_type) { return CL_SUCCESS; }
+//			static inline auto retain (cl_type) -> decltype(CL_SUCCESS) { return CL_SUCCESS; }
+//			static inline auto release(cl_type) -> decltype(CL_SUCCESS) { return CL_SUCCESS; }
 
-			static auto retain(cl_type) { return CL_SUCCESS; }
+			static constexpr inline auto success(cl_type) -> decltype(CL_SUCCESS) { return CL_SUCCESS; }
 
-			static auto getInfo(
-				cl_type   platform,
-				info_type param_name,
-				size_t    param_value_size,
-				void *    param_value,
-				size_t *  param_value_size_ret
-			) {
-				return clGetPlatformInfo(
-					platform, param_name, param_value_size, param_value, param_value_size_ret);
-			}
+			static constexpr auto retain  = success;
+			static constexpr auto release = success;
+			static constexpr auto getInfo = clGetPlatformInfo;
 		};
 	}
 

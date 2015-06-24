@@ -32,20 +32,9 @@ namespace cl {
 			using cl_type        = cl_device_id;
 			using info_type      = cl_device_info;
 
-			static auto release(cl_type id) { return clReleaseDevice(id); }
-
-			static auto retain(cl_type id) { return clRetainDevice(id); }
-
-			static auto getInfo(
-				cl_type   device,
-				info_type param_name,
-				size_t    param_value_size,
-				void *    param_value,
-				size_t *  param_value_size_ret
-			) {
-				return clGetDeviceInfo(
-					device, param_name, param_value_size, param_value, param_value_size_ret);
-			}
+			static constexpr auto retain  = clRetainDevice;
+			static constexpr auto release = clReleaseDevice;
+			static constexpr auto getInfo = clGetDeviceInfo;
 		};
 	}
 

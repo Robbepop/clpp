@@ -12,20 +12,9 @@ namespace cl {
 			using cl_type        = cl_program;
 			using info_type      = cl_program_info;
 
-			static auto release(cl_type id) { return clReleaseProgram(id); }
-
-			static auto retain(cl_type id) { return clRetainProgram(id); }
-
-			static auto getInfo(
-				cl_type   program,
-				info_type param_name,
-				size_t    param_value_size,
-				void *    param_value,
-				size_t *  param_value_size_ret
-			) {
-				return clGetProgramInfo(
-					program, param_name, param_value_size, param_value, param_value_size_ret);
-			}
+			static constexpr auto retain  = clRetainProgram;
+			static constexpr auto release = clReleaseProgram;
+			static constexpr auto getInfo = clGetProgramInfo;
 		};
 	}
 

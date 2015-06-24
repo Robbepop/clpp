@@ -15,20 +15,9 @@ namespace cl {
 			using cl_type        = cl_mem;
 			using info_type      = cl_mem_info;
 
-			static auto release(cl_mem id) { return clReleaseMemObject(id); }
-
-			static auto retain(cl_mem id) { return clRetainMemObject(id); }
-
-			static auto getInfo(
-				cl_mem      memory_object,
-				cl_mem_info param_name,
-				size_t      param_value_size,
-				void *      param_value,
-				size_t *    param_value_size_ret
-			) {
-				return clGetMemObjectInfo(
-					memory_object, param_name, param_value_size, param_value, param_value_size_ret);
-			}
+			static constexpr auto retain  = clRetainMemObject;
+			static constexpr auto release = clReleaseMemObject;
+			static constexpr auto getInfo = clGetMemObjectInfo;
 		};
 	}
 

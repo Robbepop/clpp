@@ -6,24 +6,13 @@
 namespace cl {
 	namespace detail {
 		template<>
-		struct ObjectHandler<cl_kernel> {
+		struct ObjectHandler<cl_kernel> final {
 			using cl_type        = cl_kernel;
 			using info_type      = cl_kernel_info;
 
-			static auto release(cl_type id) { return clReleaseKernel(id); }
-
-			static auto retain(cl_type id) { return clRetainKernel(id); }
-
-			static auto getInfo(
-				cl_type   kernel,
-				info_type param_name,
-				size_t    param_value_size,
-				void *    param_value,
-				size_t *  param_value_size_ret
-			) {
-				return clGetKernelInfo(
-					kernel, param_name, param_value_size, param_value, param_value_size_ret);
-			}
+			static constexpr auto retain  = clRetainKernel;
+			static constexpr auto release = clReleaseKernel;
+			static constexpr auto getInfo = clGetKernelInfo;
 		};
 	}
 

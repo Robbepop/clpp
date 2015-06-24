@@ -23,23 +23,12 @@ namespace cl {
 	namespace detail {
 		template<>
 		struct ObjectHandler<cl_context> final {
-			using cl_type = cl_context;
+			using cl_type   = cl_context;
 			using info_type = cl_context_info;
 
-			static auto release(cl_type id) { return clReleaseContext(id); }
-
-			static auto retain(cl_type id) { return clRetainContext(id); }
-
-			static auto getInfo(
-				cl_type   context,
-				info_type param_name,
-				size_t    param_value_size,
-				void *    param_value,
-				size_t *  param_value_size_ret
-			) {
-				return clGetContextInfo(
-					context, param_name, param_value_size, param_value, param_value_size_ret);
-			}
+			static constexpr auto retain  = clRetainContext;
+			static constexpr auto release = clReleaseContext;
+			static constexpr auto getInfo = clGetContextInfo;
 		};
 	}
 

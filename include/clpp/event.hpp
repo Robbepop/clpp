@@ -11,20 +11,9 @@ namespace cl {
 			using cl_type        = cl_event;
 			using info_type      = cl_event_info;
 
-			static auto release(cl_type id) { return clReleaseEvent(id); }
-
-			static auto retain(cl_type id) { return clRetainEvent(id); }
-
-			static auto getInfo(
-				cl_type   event,
-				info_type param_name,
-				size_t    param_value_size,
-				void *    param_value,
-				size_t *  param_value_size_ret
-			) {
-				return clGetEventInfo(
-					event, param_name, param_value_size, param_value, param_value_size_ret);
-			}
+			static constexpr auto retain  = clRetainEvent;
+			static constexpr auto release = clReleaseEvent;
+			static constexpr auto getInfo = clGetEventInfo;
 		};
 	}
 

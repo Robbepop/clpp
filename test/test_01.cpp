@@ -198,8 +198,8 @@ auto operator<<(std::ostream & os, const cl::Platform & platform) -> std::ostrea
 	return os;
 }
 
-auto operator<<(std::ostream & os, const cl::ContextProperties & properties) -> std::ostream & {
-	auto tab = test::tabular{10, 30};
+auto operator<<(std::ostream & os, const cl::ContextProperties &) -> std::ostream & {
+//	auto tab = test::tabular{10, 30};
 //	os << tab << "Platform Name" << properties.getPlatform().getName()
 //	   << tab << "InteropUserSync" << properties.getInteropUserSync();
 	return os;
@@ -411,7 +411,7 @@ void test_01() {
 	auto properties = cl::ContextProperties().setPlatform(platform);
 	std::cout << "Context properties created successfully!\n";
 
-	auto context = cl::Context::createForType(properties, cl::DeviceType::gpu);
+	auto context = cl::Context::createForType(properties, cl::DeviceType::cpu);
 //	auto context = cl::Context::createForDevices(defaultDevice);
 //	auto context = cl::Context::createDefault();
 	std::cout << "Context created successfully!\n";
@@ -548,17 +548,6 @@ void test_01() {
 auto main() -> int {
 	try {
 		test_01();
-
-		using namespace cl;
-		using namespace cl::detail;
-
-		std::cout << CLFunction::getByPtr(clCreateKernelsInProgram).getCLName() << '\n';
-		std::cout << RetCode{CL_SUCCESS}.getCLName() << '\n';
-		std::cout << RetCode{CL_INVALID_ARG_INDEX}.getCLName() << '\n';
-		std::cout << CLFunction::clGetPlatformIDs().getCLName() << '\n';
-//		std::cout << to_string(cl::RetCode::invalidEvent) << '\n';
-//		std::cout << to_string(clCreateContext) << '\n';
-//		assert(cl::to_string(cl::RetCode::invalidEvent) == std::experimental::string_view{"CL_INVAILD_EVENT"});
 	}
 	catch (cl::error::AnyError & e) {
 		std::cout << "what(): " << e.what() << '\n';
