@@ -43,6 +43,7 @@ namespace cl {
 				auto bufferSize = size_t{0};
 				error           = getInfo(objId, infoId, 0, nullptr, std::addressof(bufferSize));
 				error::handle(error);
+				if (bufferSize == 0) { return {}; }
 				auto countElems = bufferSize / sizeof(T);
 				auto info = std::vector<T>(countElems);
 				error = getInfo(objId, infoId, bufferSize, info.data(), nullptr);

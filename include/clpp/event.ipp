@@ -22,8 +22,8 @@ namespace cl {
 	}
 
 	template<typename... Events>
-	void Event::wait(Events... events) {
-		wait(utility::make_array(events...));
+	void Event::wait(Events&&... events) {
+		wait(utility::make_array<Event>(events...));
 	}
 
 	void Event::wait() const {

@@ -115,6 +115,10 @@ namespace cl {
 		detail::error::handle(error);
 		return deviceIds;
 	}
+
+	auto Platform::getDevices() const -> std::vector<Device> {
+		return getDevices(DeviceType::all);
+	}
 }
 
 #endif

@@ -21,6 +21,7 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 
 namespace cl {
 	class Platform;

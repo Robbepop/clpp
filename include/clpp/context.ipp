@@ -13,6 +13,7 @@
 //#include <iostream>
 #include <iterator>
 #include <algorithm>
+#include <utility>
 
 namespace cl {
 	//====================================================================================
@@ -26,6 +27,74 @@ namespace cl {
         return *this;
 	}
 
+	//================================================================================
+	// Named Constructors - createForDevices & createForType
+	//================================================================================
+
+	auto Context::createDefault() -> Context {
+		std::cout << "Context::createDefault() - start\n";
+		static auto const instance =
+			Context::createForType(DeviceType::defaultType);
+		std::cout << "Context::createDefault() - end\n";
+		return instance;
+	}
+
+	template<typename DeviceIterator>
+	auto Context::createForDevices(DeviceIterator first, DeviceIterator last) -> Context {
+		auto error     = cl_int{CL_INVALID_VALUE};
+		auto contextId = clCreateContext(
+			nullptr,
+			utility::count_elements(first, last),
+			reinterpret_cast<cl_device_id*>(std::addressof(*first)),
+			nullptr, nullptr,
+			std::addressof(error)
+		);
+		detail::error::handle(error);
+		return {contextId};
+	}
+
+	template<typename DeviceRange, typename>
+	auto Context::createForDevices(DeviceRange const& devices) -> Context {
+		return createForDevices(devices.begin(), devices.end());
+	}
+
+	template<typename... Devices>
+	auto Context::createForDevices(Devices&&... devices) -> Context {
+		auto deviceArray = utility::make_array(devices...);
+		return createForDevices(deviceArray.begin(), deviceArray.end());
+	}
+
+	auto Context::createForType(DeviceType type) -> Context {
+		std::cout << "Context::createForType() - start\n";
+		auto error     = cl_int{CL_INVALID_VALUE};
+		auto contextId = clCreateContextFromType(
+			nullptr,
+			utility::to_underlying(type),
+			nullptr, nullptr,
+			std::addressof(error)
+		);
+		std::cout << "Context::createForType() - error = " << error << '\n';
+		detail::error::handle(error);
+		std::cout << "Context::createForType() - end\n";
+		return {contextId};
+	}
+
+	auto Context::createForType(
+		ContextProperties const& properties,
+		DeviceType type
+	)
+		-> Context
+	{
+		auto error     = CL_INVALID_VALUE;
+		auto contextId = clCreateContextFromType(
+			properties.data().data(),
+			utility::to_underlying(type),
+			nullptr, nullptr,
+			std::addressof(error)
+		);
+		detail::error::handle(error);
+		return {contextId};
+	}
 
 	//====================================================================================
 	// Special Constructors
@@ -137,22 +206,6 @@ namespace cl {
 				delete temp;
 			},
 			std::addressof(cbWrapper),
-			std::addressof(error)
-		);
-		if (detail::error::handle(error)) {
-			m_object = contex;
-		}
-	}
-
-	Context::Context(
-		ContextProperties const& properties,
-		DeviceType type
-	){
-		auto error  = cl_int{CL_INVALID_VALUE};
-		auto contex = clCreateContextFromType(
-			properties.data().data(),
-			static_cast<std::underlying_type<DeviceType>::type>(type),
-			nullptr, nullptr,
 			std::addressof(error)
 		);
 		if (detail::error::handle(error)) {

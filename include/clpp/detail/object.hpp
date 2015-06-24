@@ -94,23 +94,23 @@ namespace cl {
 			void release();
 			void retain();
 		};
+
+		template<typename CLType>
+		auto operator==(
+			const cl::detail::Object<CLType> & lhs, const CLType & rhs) -> bool;
+
+		template<typename CLType>
+		auto operator!=(
+			const cl::detail::Object<CLType> & lhs, const CLType & rhs) -> bool;
+
+		template<typename CLType>
+		auto operator==(
+			const CLType & rhs, const cl::detail::Object<CLType> & lhs) -> bool;
+
+		template<typename CLType>
+		auto operator!=(
+			const CLType & rhs, const cl::detail::Object<CLType> & lhs) -> bool;
 	}
 }
-
-template<typename CLType>
-auto operator==(
-	const cl::detail::Object<CLType> & lhs, const CLType & rhs) -> bool;
-
-template<typename CLType>
-auto operator!=(
-	const cl::detail::Object<CLType> & lhs, const CLType & rhs) -> bool;
-
-template<typename CLType>
-auto operator==(
-	const CLType & rhs, const cl::detail::Object<CLType> & lhs) -> bool;
-
-template<typename CLType>
-auto operator!=(
-	const CLType & rhs, const cl::detail::Object<CLType> & lhs) -> bool;
 
 #endif

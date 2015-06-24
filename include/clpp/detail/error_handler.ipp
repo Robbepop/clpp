@@ -36,7 +36,6 @@ namespace cl {
 
 		void error::throwException(RetCode code) {
 			using namespace error;
-			std::cout << "throwException start\n";
 			switch (code) {
 				case RetCode::deviceNotFound:
 					throw DeviceNotFound{"device not found"};
@@ -177,10 +176,11 @@ namespace cl {
 					const auto errorMessage =
 						it != local_info_map->end() ? it->second : ""s;
 					throwException(code);
+					assert(false);
 				}
 				const auto it = global_info_map.find(code);
 				const auto errorMessage =
-					it != local_info_map->end() ? it->second : ""s;
+					it != global_info_map.end() ? it->second : ""s;
 				throwException(code);
 				assert(false);
 			}

@@ -37,7 +37,7 @@ namespace cl {
 		static void wait(EventRange const& waitList);
 
 		template<typename... Events>
-		static void wait(Events...);
+		static void wait(Events&&...);
 
 		void inline wait() const;
 

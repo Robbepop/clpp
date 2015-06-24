@@ -6,6 +6,8 @@
 #include <unordered_map>
 #include <vector>
 
+#include "clpp/utility/concepts.hpp"
+
 #include "boost/optional.hpp"
 
 namespace cl {
@@ -18,8 +20,9 @@ namespace cl {
 
 		inline ContextProperties() = default;
 
-		template<typename InputRange>
-		ContextProperties(InputRange properties);
+		template<typename InputRange,
+			CLPP_REQUIRES(concept::is_range<InputRange>::value)>
+		ContextProperties(InputRange const& properties);
 
 		auto inline setPlatform(Platform platform)   -> ContextProperties &;
 		auto inline setInteropUserSync(cl_bool flag) -> ContextProperties &;

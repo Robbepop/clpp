@@ -3,12 +3,15 @@
 #include <string>
 #include <fstream>
 
+#include "clpp/utility/to_underlying.hpp"
 #include "clpp.hpp"
 
 #include <type_traits>
 #include <unordered_map>
 #include <map>
 #include <random>
+
+#include "clpp/detail/cl_function.hpp"
 
 namespace utility {
 	auto readFile(std::string const& filePath) -> std::string {
@@ -197,8 +200,8 @@ auto operator<<(std::ostream & os, const cl::Platform & platform) -> std::ostrea
 
 auto operator<<(std::ostream & os, const cl::ContextProperties & properties) -> std::ostream & {
 	auto tab = test::tabular{10, 30};
-	os << tab << "Platform Name" << properties.getPlatform().getName()
-	   << tab << "InteropUserSync" << properties.getInteropUserSync();
+//	os << tab << "Platform Name" << properties.getPlatform().getName()
+//	   << tab << "InteropUserSync" << properties.getInteropUserSync();
 	return os;
 }
 
@@ -408,7 +411,9 @@ void test_01() {
 	auto properties = cl::ContextProperties().setPlatform(platform);
 	std::cout << "Context properties created successfully!\n";
 
-	auto context = cl::Context(properties, cl::DeviceType::cpu);
+	auto context = cl::Context::createForType(properties, cl::DeviceType::cpu);
+//	auto context = cl::Context::createForDevices(defaultDevice);
+//	auto context = cl::Context::createDefault();
 	std::cout << "Context created successfully!\n";
 	std::cout << context << "\n\n";
 
@@ -541,5 +546,24 @@ void test_01() {
 }
 
 auto main() -> int {
-	test_01();
+	try {
+		test_01();
+
+		using namespace cl;
+		using namespace cl::detail;
+
+		std::cout << CLFunction::getByPtr(clCreateKernelsInProgram).getCLName() << '\n';
+		std::cout << RetCode2{CL_SUCCESS}.getCLName() << '\n';
+		std::cout << RetCode2{CL_INVALID_ARG_INDEX}.getCLName() << '\n';
+		std::cout << CLFunction::clGetPlatformIDs().getCLName() << '\n';
+//		std::cout << to_string(cl::RetCode::invalidEvent) << '\n';
+//		std::cout << to_string(clCreateContext) << '\n';
+//		assert(cl::to_string(cl::RetCode::invalidEvent) == std::experimental::string_view{"CL_INVAILD_EVENT"});
+	}
+	catch (cl::error::AnyError & e) {
+		std::cout
+			<< "Exception was thrown with error code "
+			<< utility::to_underlying(e.code())
+			<< " and message: " << e.what() << '\n';
+	}
 }

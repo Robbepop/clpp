@@ -12,13 +12,13 @@ namespace cl {
 		public:
 			using std::runtime_error::runtime_error;
 
-			virtual auto code() const noexcept -> cl::RetCode = 0;
+			virtual RetCode code() const noexcept = 0;
 		};
 
 		template<cl::RetCode retCode>
 		class BasicError : public AnyError {
 			using AnyError::AnyError;
-			cl::RetCode code() const noexcept override { return retCode; }
+			RetCode code() const noexcept override { return retCode; }
 		};
 
 		using DeviceNotFound            = BasicError<RetCode::deviceNotFound>;

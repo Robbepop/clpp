@@ -7,6 +7,10 @@
 
 #include "clpp/detail/common.hpp"
 
+#include "clpp/detail/cl_function.hpp"
+
+#include "clpp/ret_code2.hpp"
+
 #include "clpp/platform.hpp"
 #include "clpp/device.hpp"
 #include "clpp/context.hpp"
@@ -18,6 +22,7 @@
 // problems with circular dependencise between them.
 //===========================================================
 
+#include "clpp/detail/cl_function.ipp"
 #include "clpp/detail/error_handler.ipp"
 #include "clpp/detail/command_queue_executor.ipp"
 #include "clpp/detail/information_accessor.ipp"
@@ -43,6 +48,7 @@
 #include "clpp/partition_capabilities.ipp"
 #include "clpp/platform.ipp"
 #include "clpp/program.ipp"
+#include "clpp/ret_code2.ipp"
 #include "clpp/svm_capabilities.ipp"
 
 //===========================================================

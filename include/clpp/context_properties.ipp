@@ -9,15 +9,18 @@
 #endif
 
 namespace cl {
-	template<typename InputRange>
-	ContextProperties::ContextProperties(InputRange properties) {
-		assert(properties.size() % 2 == 1 && "size of properties must be odd");
-		for (auto it = properties.begin();; std::next(it)) {
-			const auto key = static_cast<ContextProperties::key_type>(*it);
-			const auto val = static_cast<ContextProperties::val_type>(*(it + 1));
-			m_properties[key] = val;
-			std::next(it);
-			if (it != properties.end()) { break; }
+	template<typename InputRange, typename>
+	ContextProperties::ContextProperties(InputRange const& properties) {
+		assert(properties.size() % 2 == 1 || properties.size() == 0
+			&& "size of properties must be odd");
+		if (properties.size() > 0) {
+			for (auto it = properties.begin();; std::next(it)) {
+				const auto key = static_cast<ContextProperties::key_type>(*it);
+				const auto val = static_cast<ContextProperties::val_type>(*(it + 1));
+				m_properties[key] = val;
+				std::next(it);
+				if (it != properties.end()) { break; }
+			}
 		}
 	}
 

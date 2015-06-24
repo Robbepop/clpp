@@ -68,6 +68,7 @@ namespace cl {
 		auto inline getVendor() const     -> std::string;
 		auto inline getExtensions() const -> std::vector<std::string>;
 		auto inline getDevices(DeviceType deviceType) const -> std::vector<Device>;
+		auto inline getDevices() const    -> std::vector<Device>;
 	};
 }
 

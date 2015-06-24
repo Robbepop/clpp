@@ -54,6 +54,40 @@ namespace cl {
 		auto inline operator=(const Context & rhs) -> Context &;
 
 		//================================================================================
+		// Named Constructors
+		//================================================================================
+
+		inline
+		static auto createDefault() -> Context;
+
+		template<typename DeviceIterator>
+		static auto createForDevices(
+			DeviceIterator first, DeviceIterator last
+		) -> Context;
+
+		template<typename DeviceRange,
+			CLPP_REQUIRES(concept::is_range<DeviceRange>::value)>
+		static auto createForDevices(
+			DeviceRange const& devices
+		) -> Context;
+
+		template<typename... Devices>
+		static auto createForDevices(
+			Devices&&... devices
+		) -> Context;
+
+		inline
+		static auto createForType(
+			DeviceType type
+		) -> Context;
+
+		inline
+		static auto createForType(
+			ContextProperties const& properties,
+			DeviceType type
+		) -> Context;
+
+		//================================================================================
 		// Special Constructors
 		//================================================================================
 
@@ -79,11 +113,6 @@ namespace cl {
 			DeviceType type,
 			Function callback,
 			T* user_data
-		);
-
-		inline Context(
-			ContextProperties const& properties,
-			DeviceType type
 		);
 
 		//================================================================================
@@ -113,7 +142,7 @@ namespace cl {
 		) const -> Buffer<T>;
 
 		template<typename T, typename InputRange,
-			CLPP_REQUIRES(concept::is_range<InputRange>::value>)
+			CLPP_REQUIRES(concept::is_range<InputRange>::value)>
 		auto createBuffer(
 			InputRange const& range,
 			TransferMode transferMode = TransferMode::copy,

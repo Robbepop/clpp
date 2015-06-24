@@ -3,6 +3,8 @@
 
 #include "clpp/detail/common.hpp"
 
+#include <experimental/string_view>
+
 namespace cl {
 	enum class RetCode : cl_int {
 		success                               = CL_SUCCESS,

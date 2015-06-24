@@ -137,27 +137,27 @@ namespace cl {
 					ObjectHandler<CLType>::retain(m_object));
 			}
 		}
+
+		template<typename CLType>
+		auto operator==(const cl::detail::Object<CLType> & lhs, const CLType & rhs) -> bool {
+			return lhs.get() == rhs;
+		}
+
+		template<typename CLType>
+		auto operator!=(const cl::detail::Object<CLType> & lhs, const CLType & rhs) -> bool {
+			return lhs.get() != rhs;
+		}
+
+		template<typename CLType>
+		auto operator==(const CLType & lhs, const cl::detail::Object<CLType> & rhs) -> bool {
+			return rhs == lhs;
+		}
+
+		template<typename CLType>
+		auto operator!=(const CLType & lhs, const cl::detail::Object<CLType> & rhs) -> bool {
+			return rhs != lhs;
+		}
 	}
-}
-
-template<typename CLType>
-auto operator==(const cl::detail::Object<CLType> & lhs, const CLType & rhs) -> bool {
-	return lhs.get() == rhs;
-}
-
-template<typename CLType>
-auto operator!=(const cl::detail::Object<CLType> & lhs, const CLType & rhs) -> bool {
-	return lhs.get() != rhs;
-}
-
-template<typename CLType>
-auto operator==(const CLType & lhs, const cl::detail::Object<CLType> & rhs) -> bool {
-	return rhs == lhs;
-}
-
-template<typename CLType>
-auto operator!=(const CLType & lhs, const cl::detail::Object<CLType> & rhs) -> bool {
-	return rhs != lhs;
 }
 
 #endif
