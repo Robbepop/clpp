@@ -11,6 +11,8 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 
+#include "clpp/local_memory.hpp"
+
 namespace cl {
 	auto Kernel::operator=(Kernel const& rhs) -> Kernel & {
 		if (this != &rhs) {
@@ -19,10 +21,26 @@ namespace cl {
 		return *this;
 	}
 
+	namespace detail {
+		template<typename V>
+		struct SetArgImpl final {
+			static auto setArg(cl_kernel kernelId, cl_uint index, V&& arg) {
+				return clSetKernelArg(
+					kernelId, index, sizeof(V), std::addressof(std::forward<V>(arg)));
+			}
+		};
+
+		template<typename V>
+		struct SetArgImpl<LocalMemory<V>> final {
+			static auto setArg(cl_kernel kernelId, cl_uint index, LocalMemory<V> const& arg) {
+				return clSetKernelArg(kernelId, index, arg.getSizeInBytes(), nullptr);
+			}
+		};
+	}
+
 	template<typename T>
 	void Kernel::setArg(cl_uint index, T&& arg) const {
-		const auto error = clSetKernelArg(
-			get(), index, sizeof(T), std::addressof(std::forward<T>(arg)));
+		const auto error = detail::SetArgImpl<T>::setArg(get(), index, arg);
 		detail::handleError(detail::CLFunction::clSetKernelArg(), error);
 	}
 

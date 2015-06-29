@@ -4,7 +4,8 @@ __kernel void vectorAdd(
 	__global int* bufferA,
 	__global int* bufferB,
 	__global int* result,
-	const unsigned int size
+	const unsigned int size,
+	__local int* flags
 ){
 	size_t id = get_global_id(0);
 	if (id < size) {

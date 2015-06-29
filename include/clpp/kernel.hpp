@@ -18,6 +18,7 @@ namespace cl {
 
 	class Context;
 	class Program;
+	template<typename T> class LocalMemory;
 
 	class Kernel final : public detail::Object<cl_kernel> {
 	public:
@@ -37,6 +38,9 @@ namespace cl {
 
 		template<typename T>
 		void setArg(cl_uint index, T&& arg) const;
+
+//		template<typename T>
+//		void setArg(cl_uint index, LocalMemory<T> const& arg) const;
 
 	private:
 		template<typename T>

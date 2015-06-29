@@ -3,7 +3,6 @@ Improvements & Bug fixes:
 - Add convenience methods for context creation as Context::createBest() etc. based on
   the Context with the Device with the most compute units.
 - Add convenience methods for command queue creation as Context::createDefaultQueue() etc.
-- Extend detail::error's global_info_map for all possible RetCodes.
 - Context's constructor with callback still requires 'new' keyword with current implementation.
 
 Experimental:
@@ -20,10 +19,10 @@ TODO:
         - Context::createForDevices(device1, device2, ...); // may also take only one argument
         - Context::createForDevices(deviceRange);
         - Context::createForType(deviceType);
-    - add Context::createBest() named constructor which constructs the Context with
-      the device with the most compute units.
+    - add Context::createDefault();
 - Implementation of CommandQueue:
     - read/write (rect) image functions
+	- add all possible operations for ranges building on top of their iterator based counterparts.
 - Complete API and implementation of several Image objects. E.g. Image2D, Image3D, Image1D etc...
 - Implementation of Program:
     - clCreateProgramWithSource

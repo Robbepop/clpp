@@ -411,7 +411,7 @@ void test_01() {
 	auto properties = cl::ContextProperties().setPlatform(platform);
 	std::cout << "Context properties created successfully!\n";
 
-	auto context = cl::Context::createForType(properties, cl::DeviceType::gpu);
+	auto context = cl::Context::createForType(properties, cl::DeviceType::cpu);
 //	auto context = cl::Context::createForDevices(defaultDevice);
 //	auto context = cl::Context::createDefault();
 	std::cout << "Context created successfully!\n";
@@ -467,7 +467,7 @@ void test_01() {
 
 	auto kernel = program.createKernel("vectorAdd");
 
-	kernel.setArgs(bufferA, bufferB, bufferC, vectorSize);
+	kernel.setArgs(bufferA, bufferB, bufferC, vectorSize, cl::LocalMemory<cl_int>(10));
 
 	queue.execute1DRange(kernel, vectorSize);
 
