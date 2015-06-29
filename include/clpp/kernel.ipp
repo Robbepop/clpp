@@ -24,7 +24,7 @@ namespace cl {
 	namespace detail {
 		template<typename V>
 		struct SetArgImpl final {
-			static auto setArg(Kernel const& kernel, cl_uint index, V&& arg) {
+			static inline auto setArg(Kernel const& kernel, cl_uint index, V&& arg) {
 				return clSetKernelArg(
 					kernel.get(), index, sizeof(V), std::addressof(std::forward<V>(arg)));
 			}
@@ -32,7 +32,7 @@ namespace cl {
 
 		template<typename V>
 		struct SetArgImpl<LocalMemory<V>> final {
-			static auto setArg(Kernel const& kernel, cl_uint index, LocalMemory<V> const& arg) {
+			static inline auto setArg(Kernel const& kernel, cl_uint index, LocalMemory<V> const& arg) {
 				return clSetKernelArg(kernel.get(), index, arg.getSizeInBytes(), nullptr);
 			}
 		};
