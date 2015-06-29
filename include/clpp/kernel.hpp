@@ -39,9 +39,6 @@ namespace cl {
 		template<typename T>
 		void setArg(cl_uint index, T&& arg) const;
 
-//		template<typename T>
-//		void setArg(cl_uint index, LocalMemory<T> const& arg) const;
-
 	private:
 		template<typename T>
 		void setArgsHelper(cl_uint index, T&& head) const;
