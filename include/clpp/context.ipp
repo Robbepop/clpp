@@ -94,6 +94,23 @@ namespace cl {
 		return {contextId};
 	}
 
+	auto Context::createBest() -> Context {
+		Device  bestDevice;
+		cl_uint mostComputeUnits = 0;
+		auto platforms = Platform::getPlatforms();
+		for (auto&& platform : platforms) {
+			auto devices = platform.getDevices();
+			for (auto&& device : devices) {
+				auto curComputeUnits = device.getMaxComputeUnits();
+				if (curComputeUnits > mostComputeUnits) {
+					bestDevice       = device;
+					mostComputeUnits = curComputeUnits;
+				}
+			}
+		}
+		return createForDevices(bestDevice);
+	}
+
 	//====================================================================================
 	// Special Constructors
 	//====================================================================================

@@ -387,7 +387,7 @@ void test_01() {
 	std::cout << '\n';
 	auto platform = platforms[0];
 
-	auto devices = platform.getDevices(cl::DeviceType::all);
+	auto devices = platform.getDevices();
 	std::cout << "Count devices: " << devices.size() << '\n';
 	for (auto&& device : devices) {
 		std::cout << device;
@@ -411,7 +411,8 @@ void test_01() {
 	auto properties = cl::ContextProperties().setPlatform(platform);
 	std::cout << "Context properties created successfully!\n";
 
-	auto context = cl::Context::createForType(properties, cl::DeviceType::cpu);
+	auto context = cl::Context::createBest();
+//	auto context = cl::Context::createForType(properties, cl::DeviceType::cpu);
 //	auto context = cl::Context::createForDevices(defaultDevice);
 //	auto context = cl::Context::createDefault();
 	std::cout << "Context created successfully!\n";

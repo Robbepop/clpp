@@ -76,6 +76,9 @@ namespace cl {
 			DeviceType type
 		) -> Context;
 
+		inline
+		static auto createBest() -> Context;
+
 		//================================================================================
 		// Special Constructors
 		//================================================================================
