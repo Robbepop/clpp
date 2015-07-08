@@ -324,9 +324,8 @@ namespace cl {
 		return getInfo<cl_uint>(CL_DEVICE_PIPE_MAX_PACKET_SIZE);
 	}
 
-	auto Device::getPlatform() const -> std::unique_ptr<Platform> {
-		return std::make_unique<Platform>(
-			getInfo<cl_platform_id>(CL_DEVICE_PLATFORM));
+	auto Device::getPlatform() const -> Platform {
+		return {getInfo<cl_platform_id>(CL_DEVICE_PLATFORM)};
 	}
 
 	auto Device::getPreferredGlobalAtomicAlignment() const -> cl_uint {

@@ -12,6 +12,7 @@
 #include "clpp/fp_config.hpp"
 #include "clpp/memory_cache_type.hpp"
 #include "clpp/local_memory_type.hpp"
+#include "clpp/platform.hpp"
 #include "clpp/partition.hpp"
 #include "clpp/partition_capabilities.hpp"
 #include "clpp/scalar_type.hpp"
@@ -141,7 +142,7 @@ namespace cl {
 		auto inline getPipeMaxActiveReservations() const -> cl_uint;
 		auto inline getPipeMaxPacketSize() const         -> cl_uint;
 
-		auto inline getPlatform() const                         -> std::unique_ptr<Platform>;
+		auto inline getPlatform() const                         -> Platform;
 		auto inline getPreferredGlobalAtomicAlignment() const   -> cl_uint;
 		auto inline hasPreferredInteropUserSync() const         -> cl_bool;
 		auto inline getPreferredLocalAtomicAlignment() const    -> cl_uint;

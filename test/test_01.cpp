@@ -327,7 +327,7 @@ auto operator<<(std::ostream & os, const cl::Device & device) -> std::ostream & 
 
 	   << tab << "Pipe Max Active Reservations" << device.getPipeMaxActiveReservations()
 	   << tab << "Pipe Max Packet Size"         << device.getPipeMaxPacketSize()
-	   << tab << "Platform Name"                << device.getPlatform()->getName()
+	   << tab << "Platform Name"                << device.getPlatform().getName()
 
 	   << '\n'
 

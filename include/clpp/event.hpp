@@ -21,6 +21,7 @@ namespace cl {
 		//================================================================================
 		// Wrapper API for clWaitForEvents
 		//================================================================================
+	public:
 
 		template<typename EventRange>
 		static void wait(EventRange const& waitList);
