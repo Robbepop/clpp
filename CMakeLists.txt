@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required (VERSION 3.2)
 
 project (CLPP)
 
@@ -36,17 +36,14 @@ endif (USE_CLANG)
 set (Version_Major 1)
 set (Version_Minor 0)
 set (Version_Patch 0)
-set (Version "$(Version_Major).$(Version_Minor).$(Version_Patch)")
+set (Version "${Version_Major}.${Version_Minor}.${Version_Patch}")
 
 #-----------------------------------------------------------------------------------------
 # Environment
 #-----------------------------------------------------------------------------------------
 
 include_directories (
-	$(PROJECT_SOURCE_DIR)include
+	${PROJECT_SOURCE_DIR}/include
 )
-
-#-L/opt/AMDAPP/SDK/lib -lOpenCL
-
 
 add_subdirectory (test)
