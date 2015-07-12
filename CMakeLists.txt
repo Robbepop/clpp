@@ -5,7 +5,9 @@ project (CLPP)
 #-----------------------------------------------------------------------------------------
 # Compiler Flags
 #-----------------------------------------------------------------------------------------
-set (CMAKE_CXX_FLAGS "-g -ferror-limit=5 -Wall -Wextra -pedantic -std=c++14 -fdiagnostics-color=auto")
+set (CMAKE_CXX_FLAGS "-g -Wall -Wextra -pedantic -std=c++14 -fdiagnostics-color=auto")
+
+# -ferror-limit=5
 
 option(USE_CLANG "build application with clang" OFF) # OFF is the default
 if (USE_CLANG)
