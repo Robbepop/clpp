@@ -3,6 +3,9 @@ debug/
 release/
 local/
 
+# CLion files
+.idea
+
 # Compiled Object files
 *.slo
 *.lo
