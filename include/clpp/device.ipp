@@ -386,7 +386,11 @@ namespace cl {
 	}
 
 	auto Device::getQueueOnHostProperties() const -> CommandQueueProperties {
-		return {getInfo<cl_command_queue_properties>(CL_DEVICE_QUEUE_ON_HOST_PROPERTIES)};
+		#if defined(CL_VERSION_2_0)
+			return {getInfo<cl_command_queue_properties>(CL_DEVICE_QUEUE_ON_HOST_PROPERTIES)};
+		#else
+			return {getInfo<cl_command_queue_properties>(CL_DEVICE_QUEUE_PROPERTIES)};
+		#endif
 	}
 
 
