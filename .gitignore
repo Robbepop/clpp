@@ -4,6 +4,7 @@ release/
 local/
 
 # CLion files
+CMakeFiles/
 .idea
 
 # Compiled Object files
