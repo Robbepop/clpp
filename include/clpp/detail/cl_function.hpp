@@ -38,7 +38,11 @@ namespace cl {
 			CLPP_FUNC_GETTER(clReleaseContext);
 			CLPP_FUNC_GETTER(clGetContextInfo);
 
-			CLPP_FUNC_GETTER(clCreateCommandQueueWithProperties);
+			#if defined(CL_VERSION_2_0)
+				CLPP_FUNC_GETTER(clCreateCommandQueueWithProperties);
+			#else
+				CLPP_FUNC_GETTER(clCreateCommandQueue);
+			#endif
 			CLPP_FUNC_GETTER(clRetainCommandQueue);
 			CLPP_FUNC_GETTER(clReleaseCommandQueue);
 			CLPP_FUNC_GETTER(clGetCommandQueueInfo);

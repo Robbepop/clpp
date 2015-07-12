@@ -234,10 +234,17 @@ namespace cl {
 
 	auto Context::createCommandQueue(Device const& device) const -> CommandQueue {
 		auto error   = RetCode::getPreset();
-		auto queueId = clCreateCommandQueueWithProperties(
-			get(), device.get(), nullptr, error.data());
-		detail::handleError(detail::CLFunction::clCreateCommandQueueWithProperties(), error);
-		return {queueId};
+		#if defined(CL_VERSION_2_0)
+			auto queueId = clCreateCommandQueueWithProperties(
+				get(), device.get(), nullptr, error.data());
+			detail::handleError(detail::CLFunction::clCreateCommandQueueWithProperties(), error);
+			return {queueId};
+		#else
+			auto queueId = clCreateCommandQueue(
+				get(), device.get(), nullptr, error.data());
+			detail::handleError(detail::CLFunction::clCreateCommandQueue(), error);
+			return {queueId};
+		#endif
 	}
 
 	//================================================================================
