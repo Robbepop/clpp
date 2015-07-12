@@ -38,11 +38,11 @@ namespace cl {
 			CLPP_FUNC_GETTER(clReleaseContext);
 			CLPP_FUNC_GETTER(clGetContextInfo);
 
-			#if defined(CL_VERSION_2_0)
-				CLPP_FUNC_GETTER(clCreateCommandQueueWithProperties);
-			#else
-				CLPP_FUNC_GETTER(clCreateCommandQueue);
-			#endif
+		#if defined(CL_VERSION_2_0)
+			CLPP_FUNC_GETTER(clCreateCommandQueueWithProperties);
+		#else
+			CLPP_FUNC_GETTER(clCreateCommandQueue);
+		#endif
 			CLPP_FUNC_GETTER(clRetainCommandQueue);
 			CLPP_FUNC_GETTER(clReleaseCommandQueue);
 			CLPP_FUNC_GETTER(clGetCommandQueueInfo);
@@ -69,7 +69,9 @@ namespace cl {
 			CLPP_FUNC_GETTER(clEnqueueMapImage);
 
 			CLPP_FUNC_GETTER(clEnqueueUnmapMemObject);
+		#if defined(CL_VERSION_1_2)
 			CLPP_FUNC_GETTER(clEnqueueMigrateMemObjects);
+		#endif
 			CLPP_FUNC_GETTER(clGetImageInfo);
 			CLPP_FUNC_GETTER(clGetMemObjectInfo);
 			CLPP_FUNC_GETTER(clRetainMemObject);

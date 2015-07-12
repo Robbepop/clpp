@@ -346,6 +346,7 @@ namespace cl {
 		//============================================================================
 		// Overloads to access clEnqueueFillBuffer
 		//============================================================================
+	#if defined(CL_VERSION_1_2)
 
 		template<typename T>
 		auto CommandQueueExecutor::fillBuffer(
@@ -368,6 +369,8 @@ namespace cl {
 		) const -> Event {
 			return fillBuffer(buffer, value, 0, buffer.size());
 		}
+
+	#endif // defined(CL_VERSION_1_2)
 
 		//============================================================================
 		// Overloads to access clEnqueueMapBuffer
@@ -426,6 +429,51 @@ namespace cl {
 		) const -> Event {
 			return mapBufferImpl<CL_NON_BLOCKING>(buffer, access, 0, buffer.getSize(), result);
 		}
+
+		//============================================================================
+		// Migration of Memory Objects
+		//============================================================================
+	#if defined(CL_VERSION_1_2)
+
+		template<typename MemObjectsIterator>
+		auto CommandQueueExecutor::migrateMemObjectsToDevice(
+			MemObjectsIterator first,
+			MemObjectsIterator last,
+			Migration flags
+		) const -> Event {
+			auto eventId = cl_event{nullptr};
+			auto size    = ::utility::count_elements(first, last);
+			auto error   = clEnqueueMigrateMemObjects(
+				getQueueId(), size,
+				reinterpret_cast<cl_mem*>(first),
+				::utility::to_underlying(flags),
+				getWaitListSize(), getWaitListData(),
+				std::addressof(eventId)
+			);
+			detail::handleError(CLFunction::clEnqueueMigrateMemObjects(), error);
+			return {eventId};
+		}
+
+		template<typename MemObjectsIterator>
+		auto CommandQueueExecutor::migrateMemObjectsToHost(
+			MemObjectsIterator first,
+			MemObjectsIterator last,
+			Migration flags
+		) const -> Event {
+			auto eventId = cl_event{nullptr};
+			auto size    = ::utility::count_elements(first, last);
+			auto error   = clEnqueueMigrateMemObjects(
+				getQueueId(), size,
+				reinterpret_cast<cl_mem*>(first),
+				::utility::to_underlying(flags) | CL_MIGRATE_MEM_OBJECT_HOST,
+				getWaitListSize(), getWaitListData(),
+				std::addressof(eventId)
+			);
+			detail::handleError(CLFunction::clEnqueueMigrateMemObjects(), error);
+			return {eventId};
+		}
+
+	#endif // defined(CL_VERSION_1_2)
 
 		//============================================================================
 		// ND Range Kernel Execution

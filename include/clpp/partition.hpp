@@ -1,3 +1,5 @@
+#if defined(CL_VERSION_1_2)
+
 #ifndef CLPP_PARTITION_HPP
 #define CLPP_PARTITION_HPP
 
@@ -64,4 +66,5 @@ namespace cl {
 	};
 }
 
-#endif
+#endif // CLPP_PARTITION_HPP
+#endif // defined(CL_VERSION_1_2)

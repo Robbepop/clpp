@@ -53,6 +53,7 @@ namespace cl {
 		//================================================================================
 		// Methods to partition the device.
 		//================================================================================
+	#if defined(CL_VERSION_1_2)
 
 	private:
 		inline
@@ -69,6 +70,8 @@ namespace cl {
 		inline
 		auto partitionByAffinityDomain(AffinityDomain domain)
 			-> std::vector<Device>;
+
+	#endif // defined(CL_VERSION_1_2)
 
 		//================================================================================
 		// Information access helper methods.

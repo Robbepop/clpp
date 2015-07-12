@@ -209,6 +209,7 @@ namespace cl {
 	//================================================================================
 	// Overloads to access clEnqueueFillBuffer
 	//================================================================================
+#if defined(CL_VERSION_1_2)
 
 	template<typename T>
 	auto CommandQueue::fillBuffer(
@@ -221,6 +222,8 @@ namespace cl {
 	auto CommandQueue::fillBuffer(Buffer<T> const& buffer, T const& value) const -> Event {
 		return getExecutor().fillBuffer(buffer, value);
 	}
+
+#endif // defined(CL_VERSION_1_2)
 
 	//================================================================================
 	// Overloads to access clEnqueueMapBuffer
@@ -253,6 +256,31 @@ namespace cl {
 	) const -> Event {
 		return getExecutor().mapBuffer(buffer, access, result);
 	}
+
+	//============================================================================
+	// Migration of Memory Objects
+	//============================================================================
+#if defined(CL_VERSION_1_2)
+
+	template<typename MemObjectsIterator>
+	auto CommandQueue::migrateMemObjectsToDevice(
+		MemObjectsIterator first,
+		MemObjectsIterator last,
+		Migration flags
+	) const -> Event {
+		return getExecutor().migrateMemObjectsToDevice(first, last, flags);
+	}
+
+	template<typename MemObjectsIterator>
+	auto CommandQueue::migrateMemObjectsToHost(
+		MemObjectsIterator first,
+		MemObjectsIterator last,
+		Migration flags
+	) const -> Event {
+		return getExecutor().migrateMemObjectsToHost(first, last, flags);
+	}
+
+#endif // defined(CL_VERSION_1_2)
 
 	//================================================================================
 	// ND Range Kernel Execution

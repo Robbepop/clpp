@@ -3,6 +3,7 @@
 
 #include "clpp/nd_range.hpp"
 #include "clpp/buffer.hpp"
+#include "clpp/migration.hpp"
 #include "clpp/map_access.hpp"
 #include "clpp/kernel.hpp"
 
@@ -205,6 +206,7 @@ namespace cl {
 			//============================================================================
 			// Overloads to access clEnqueueFillBuffer
 			//============================================================================
+		#if defined(CL_VERSION_1_2)
 		public:
 
 			template<typename T>
@@ -216,6 +218,8 @@ namespace cl {
 			auto fillBuffer(
 				Buffer<T> const& buffer, T const& value
 			) const -> Event;
+
+		#endif // defined(CL_VERSION_1_2)
 
 			//============================================================================
 			// Overloads to access clEnqueueMapBuffer
@@ -252,6 +256,27 @@ namespace cl {
 			auto mapBuffer(
 				Buffer<T> const& buffer, MapAccess access, MappedMemory<T> & result
 			) const -> Event;
+
+			//============================================================================
+			// Migration of Memory Objects
+			//============================================================================
+		#if defined(CL_VERSION_1_2)
+
+			template<typename MemObjectsIterator>
+			auto migrateMemObjectsToDevice(
+				MemObjectsIterator first,
+				MemObjectsIterator last,
+				Migration flags = Migration::contents
+			) const -> Event;
+
+			template<typename MemObjectsIterator>
+			auto migrateMemObjectsToHost(
+				MemObjectsIterator first,
+				MemObjectsIterator last,
+				Migration flags = Migration::contents
+			) const -> Event;
+
+		#endif // defined(CL_VERSION_1_2)
 
 			//============================================================================
 			// ND Range Kernel Execution

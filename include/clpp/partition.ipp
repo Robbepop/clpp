@@ -1,3 +1,5 @@
+#if defined(CL_VERSION_1_2)
+
 #ifdef  CLPP_PARTITION_IPP
 	#error "multiple inclusions of the same implementation file"
 #else
@@ -128,4 +130,5 @@ namespace cl {
 	}
 }
 
-#endif
+#endif // CLPP_PARTITION_IPP
+#endif // defined(CL_VERSION_1_2)

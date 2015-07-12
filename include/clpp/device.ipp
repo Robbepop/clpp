@@ -29,6 +29,7 @@ namespace cl {
 	//====================================================================================
 	// Partitioning
 	//====================================================================================
+#if defined(CL_VERSION_1_2)
 
 	auto Device::partition(Partition partition) -> std::vector<Device> {
 		auto error      = RetCode::getPreset();
@@ -57,6 +58,8 @@ namespace cl {
 	{
 		return partition(Partition::byAffinityDomain(domain));
 	}
+
+#endif // defined(CL_VERSION_1_2)
 
 	//====================================================================================
 	// getInfo helper methods
