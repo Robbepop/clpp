@@ -323,7 +323,7 @@ namespace cl {
 	}
 
 	//================================================================================
-	// Wait (for events), Marker & Barrier and When for async calls
+	// When API for async calls
 	//================================================================================
 
 	template<typename EventRange>
@@ -337,6 +337,10 @@ namespace cl {
 		return {*this, waitList.begin(), waitList.end()};
 	}
 
+	//================================================================================
+	// Wait (for events), Marker & Barrier
+	//================================================================================
+#if defined(CL_VERSION_1_2)
 	auto CommandQueue::marker() const -> Event {
 		return getExecutor().marker();
 	}
@@ -344,6 +348,42 @@ namespace cl {
 	auto CommandQueue::barrier() const -> Event {
 		return getExecutor().barrier();
 	}
+
+#else // OpenCL v1.1 or lower
+	auto CommandQueue::marker() const -> Event {
+		auto eventId = cl_event{nullptr};
+		auto error   = clEnqueueMarker(get(), std::addressof(eventId));
+		detail::handleError(detail::CLFunction::clEnqueueMarker(), error);
+		return {eventId};
+	}
+
+	void CommandQueue::barrier() const {
+		auto error = clEnqueueBarrier(get());
+		detail::handleError(detail::CLFunction::clEnqueueBarrier(), error);
+	}
+
+	template<typename EventIterator>
+	void inline wait(
+		EventIterator first,
+		EventIterator last
+	) const {
+		auto size  = utility::count_elements(first, last);
+		auto error = clEnqueueWaitForEvents(size, reinterpret_cast<cl_event*>(first));
+		detail::handleError(detail::CLFunction::clEnqueueWaitForEvents(), error);
+	}
+
+	template<typename EventRange>
+	void inline wait(EventRange const& waitList) const {
+		wait(waitList.begin(), waitList.end());
+	}
+
+	template<typename... Events>
+	void inline wait(Events... events) const {
+		auto waitList = utility::make_array<Event>(events...);
+		wait(waitList.begin(), waitList.end());
+	}
+
+#endif // defined(CL_VERSION_1_2)
 
 	//================================================================================
 	// Flush & Finish

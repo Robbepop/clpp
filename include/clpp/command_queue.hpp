@@ -270,7 +270,7 @@ namespace cl {
 		) const -> Event;
 
 		//================================================================================
-		// Wait (for events), Marker & Barrier and When for async calls
+		// When API for async calls
 		//================================================================================
 	public:
 
@@ -280,9 +280,27 @@ namespace cl {
 		template<typename...Events>
 		auto when(Events... events) const -> detail::CommandQueueExecutor;
 
+		//================================================================================
+		// Wait (for events), Marker & Barrier
+		//================================================================================
+	public:
+
+	#if defined(CL_VERSION_1_2)
 		auto inline marker() const -> Event;
 
 		auto inline barrier() const -> Event;
+
+	#else
+		auto inline marker() const -> Event;
+
+		void inline barrier() const;
+
+		template<typename EventRange>
+		void inline wait(EventRange const& waitList) const;
+
+		template<typename... Events>
+		void inline wait(Events... events) const;
+	#endif
 
 		//================================================================================
 		// Flush & Finish

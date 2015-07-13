@@ -91,7 +91,11 @@ namespace cl {
 			CLPP_FUNC_GETTER(clBuildProgram);
 			CLPP_FUNC_GETTER(clCompileProgram);
 			CLPP_FUNC_GETTER(clLinkProgram);
+		#if defined(CL_VERSION_2_0)
 			CLPP_FUNC_GETTER(clUnloadPlatformCompiler);
+		#else
+			CLPP_FUNC_GETTER(clUnloadCompiler);
+		#endif
 			CLPP_FUNC_GETTER(clGetProgramInfo);
 			CLPP_FUNC_GETTER(clGetProgramBuildInfo);
 
@@ -117,8 +121,17 @@ namespace cl {
 			CLPP_FUNC_GETTER(clRetainEvent);
 			CLPP_FUNC_GETTER(clReleaseEvent);
 
+		#if !defined(CL_VERSION_1_2)
+			CLPP_FUNC_GETTER(clEnqueueWaitForEvents);
+		#endif
+
+		#if defined(CL_VERSION_1_2)
 			CLPP_FUNC_GETTER(clEnqueueMarkerWithWaitList);
 			CLPP_FUNC_GETTER(clEnqueueBarrierWithWaitList);
+		#else
+			CLPP_FUNC_GETTER(clEnqueueMarker);
+			CLPP_FUNC_GETTER(clEnqueueBarrier);
+		#endif // defined(CL_VERSION_1_2)
 
 			CLPP_FUNC_GETTER(clGetEventProfilingInfo);
 			CLPP_FUNC_GETTER(clFlush);

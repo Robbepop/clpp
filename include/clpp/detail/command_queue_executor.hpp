@@ -313,11 +313,14 @@ namespace cl {
 			//============================================================================
 			// Wait (for events), Marker & Barrier and When for async calls
 			//============================================================================
+		#if defined(CL_VERSION_1_2)
 		public:
 
 			auto inline marker() const -> Event;
 
 			auto inline barrier() const -> Event;
+
+		#endif // defined(CL_VERSION_1_2)
 
 			//============================================================================
 			// Members

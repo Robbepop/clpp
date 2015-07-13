@@ -556,7 +556,7 @@ namespace cl {
 		//============================================================================
 		// Wait (for events), Marker & Barrier and When for async calls
 		//============================================================================
-
+	#if defined(CL_VERSION_1_2)
 		auto CommandQueueExecutor::marker() const -> Event {
 			auto eventId = cl_event{nullptr};
 			auto error   = clEnqueueMarkerWithWaitList(
@@ -572,6 +572,7 @@ namespace cl {
 			detail::handleError(CLFunction::clEnqueueBarrierWithWaitList(), error);
 			return {eventId};
 		}
+	#endif // defined(CL_VERSION_1_2)
 	}
 }
 
