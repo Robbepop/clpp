@@ -1,3 +1,5 @@
+#if defined(CL_VERSION_2_0)
+
 #ifndef CLPP_TYPE_QUALIFIER_HPP
 #define CLPP_TYPE_QUALIFIER_HPP
 
@@ -16,4 +18,5 @@ namespace cl {
 	};
 }
 
-#endif
+#endif // CLPP_TYPE_QUALIFIER_HPP
+#endif // defined(CL_VERSION_2_0)

@@ -1,3 +1,5 @@
+#if defined(CL_VERSION_1_2)
+
 #ifndef CLPP_MIGRATION_HPP
 #define CLPP_MIGRATION_HPP
 
@@ -10,4 +12,5 @@ namespace cl {
 	};
 }
 
-#endif
+#endif // CLPP_MIGRATION_HPP
+#endif // defined(CL_VERSION_1_2)
