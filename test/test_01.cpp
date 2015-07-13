@@ -421,7 +421,7 @@ void test_01() {
 //	auto context = cl::Context::createForDevices(defaultDevice);
 //	auto context = cl::Context::createDefault();
 	std::cout << "Context created successfully!\n";
-	std::cout << context << "\n\n";
+//	std::cout << context << "\n\n";
 
 	constexpr auto vectorSize = 1000000;
 
