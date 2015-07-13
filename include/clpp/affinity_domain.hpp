@@ -1,3 +1,5 @@
+#if defined(CL_VERSION_1_2)
+
 #ifndef CLPP_AFFINITY_DOMAIN_HPP
 #define CLPP_AFFINITY_DOMAIN_HPP
 
@@ -13,4 +15,6 @@ namespace cl {
 		nextPartitionable = CL_DEVICE_AFFINITY_DOMAIN_NEXT_PARTITIONABLE
 	};
 }
-#endif
+
+#endif // CLPP_AFFINITY_DOMAIN_HPP
+#endif // defined(CL_VERSION_1_2)

@@ -1,3 +1,5 @@
+#if defined(CL_VERSION_1_2)
+
 #ifndef CLPP_AFFINITY_DOMAIN_CAPABILITIES_HPP
 #define CLPP_AFFINITY_DOMAIN_CAPABILITIES_HPP
 
@@ -20,4 +22,5 @@ namespace cl {
 	};
 }
 
-#endif
+#endif // CLPP_AFFINITY_DOMAIN_CAPABILITIES_HPP
+#endif // defined(CL_VERSION_1_2)
