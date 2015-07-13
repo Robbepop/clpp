@@ -461,10 +461,10 @@ void test_01() {
 //	queue.writeBufferBlocked(bufferA, vectorA); // API does not exist by now
 //	queue.writeBufferBlocked(bufferB, vectorB); // API does not exist by now
 
-	std::cout << "OpenCL Buffers:\n\n";
-	std::cout << "bufferA" << bufferA << "\n\n";
-	std::cout << "bufferB" << bufferB << "\n\n";
-	std::cout << "bufferC" << bufferC << "\n\n";
+//	std::cout << "OpenCL Buffers:\n\n";
+//	std::cout << "bufferA" << bufferA << "\n\n";
+//	std::cout << "bufferB" << bufferB << "\n\n";
+//	std::cout << "bufferC" << bufferC << "\n\n";
 
 	auto programSource = utility::readFile("../test/kernel_add.cl");
 	auto program = context.createProgramWithSource(programSource);
