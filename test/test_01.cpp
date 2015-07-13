@@ -23,6 +23,8 @@ namespace utility {
 	}
 }
 
+#if defined(CL_VERSION_2_0)
+
 template <typename T>
 auto operator<<(std::ostream& out, const std::vector<T>& v) -> std::ostream & {
 	if (!v.empty()) {
@@ -378,21 +380,23 @@ auto operator<<(std::ostream & os, const cl::Device & device) -> std::ostream & 
 	return os;
 }
 
-void test_01() {
-	auto platforms = cl::Platform::getPlatforms();
-	std::cout << "Count platforms: " << platforms.size() << '\n';
-	for (auto&& platform : platforms) {
-		std::cout << platform;
-	}
-	std::cout << '\n';
-	auto platform = platforms[0];
+#endif // defined(CL_VERSION_2_0)
 
-	auto devices = platform.getDevices();
-	std::cout << "Count devices: " << devices.size() << '\n';
-	for (auto&& device : devices) {
-		std::cout << device;
-	}
-	auto defaultDevice = devices[0];
+void test_01() {
+//	auto platforms = cl::Platform::getPlatforms();
+//	std::cout << "Count platforms: " << platforms.size() << '\n';
+//	for (auto&& platform : platforms) {
+//		std::cout << platform;
+//	}
+//	std::cout << '\n';
+//	auto platform = platforms[0];
+
+//	auto devices = platform.getDevices();
+//	std::cout << "Count devices: " << devices.size() << '\n';
+//	for (auto&& device : devices) {
+//		std::cout << device;
+//	}
+//	auto defaultDevice = devices[0];
 
 //	auto usr_data = int{5};
 //	auto properties = cl::ContextProperties().setPlatform(platform);
@@ -408,10 +412,11 @@ void test_01() {
 //		&usr_data
 //	);
 
-	auto properties = cl::ContextProperties().setPlatform(platform);
-	std::cout << "Context properties created successfully!\n";
+//	auto properties = cl::ContextProperties().setPlatform(platform);
+//	std::cout << "Context properties created successfully!\n";
 
 	auto context = cl::Context::createBest();
+	auto defaultDevice = context.getDevices().front();
 //	auto context = cl::Context::createForType(properties, cl::DeviceType::cpu);
 //	auto context = cl::Context::createForDevices(defaultDevice);
 //	auto context = cl::Context::createDefault();
@@ -490,7 +495,7 @@ void test_01() {
 		    && vectorB[0][i] == vectorB[1][i]
 		    && vectorC[0][i] == vectorC[1][i]);
 	}
-	std::cout << "are vectors equal? " << isEqual << '\n';
+	std::cout << "are vectors equal? " << std::boolalpha << isEqual << '\n';
 
 //	std::ignore = context;
 	//std::cout << "Context information ...\n";
