@@ -41,21 +41,22 @@ namespace cl {
 	template<size_t N>
 	auto NDRange<N>::operator=(NDRange<N> const& rhs) -> NDRange& {
 		m_data = rhs.m_data;
+		return *this;
 	}
 
 	template<size_t N>
 	auto NDRange<N>::size() const -> size_t {
-		m_data.size();
+		return m_data.size();
 	}
 
 	template<size_t N>
 	auto NDRange<N>::data() -> size_t* {
-		m_data.data();
+		return m_data.data();
 	}
 
 	template<size_t N>
 	auto NDRange<N>::data() const -> const size_t* {
-		m_data.data();
+		return m_data.data();
 	}
 }
 
