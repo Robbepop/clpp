@@ -60,13 +60,79 @@ namespace cl {
 		setArgsHelper(0, std::forward<Args>(tail)...);
 	}
 
-//	auto Kernel::getArg(cl_uint index) const -> KernelArg {
-//		// TODO
-//	}
+	//================================================================================
+	// Used to retrieve information about kernel arguments.
+	//================================================================================
+#if defined(CL_VERSION_1_2)
+	template<typename T>
+	auto Kernel::getArgInfo(
+		cl_uint index, cl_kernel_arg_info infoId
+	) const -> T {
+		auto error = RetCode::getPreset();
+		auto info  = T{};
+		error      = clGetKernelArgInfo(
+			get(), index, infoId, sizeof(T), std::addressof(info), nullptr);
+		detail::handleError(detail::CLFunction::clGetKernelArgInfo(), error);
+		return info;
+	}
 
-//	auto Kernel::getWorkGroup(Device const& device) const -> KernelWorkGroup {
-//		// TODO
-//	}
+	template<typename T>
+	auto Kernel::getArgInfoVector(
+		cl_uint index, cl_kernel_arg_info infoId
+	) const -> std::vector<T> {
+		auto error = RetCode::getPreset();
+		auto bufferSize = size_t{0};
+		error = clGetKernelArgInfo(
+			get(), index, infoId, 0, nullptr, std::addressof(bufferSize));
+		detail::handleError(detail::CLFunction::clGetKernelArgInfo(), error);
+		auto countElems = bufferSize / sizeof(T);
+		auto info = std::vector<T>(countElems);
+		error = clGetKernelArgInfo(
+			get(), index, infoId, bufferSize, info.data(), nullptr);
+		detail::handleError(detail::CLFunction::clGetKernelArgInfo(), error);
+		return info;
+	}
+
+	auto inline Kernel::getArgInfoString(
+		cl_uint index, cl_kernel_arg_info infoId
+	) const -> std::string {
+		const auto info = getArgInfoVector<char>(index, infoId);
+		return {info.begin(), info.end()};
+	}
+
+	auto Kernel::getArgAddressQualifier(cl_uint index) const -> AddressQualifier {
+		return static_cast<AddressQualifier>(getArgInfo<cl_kernel_arg_address_qualifier>(
+			index, CL_KERNEL_ARG_ADDRESS_QUALIFIER));
+	}
+
+	auto Kernel::getArgAccessQualifier(cl_uint index) const -> AccessQualifier {
+		return static_cast<AccessQualifier>(getArgInfo<cl_kernel_arg_access_qualifier>(
+			index, CL_KERNEL_ARG_ACCESS_QUALIFIER));
+	}
+
+	auto Kernel::getArgTypeName(cl_uint index) const -> std::string {
+		return getArgInfoString(index, CL_KERNEL_ARG_TYPE_NAME);
+	}
+
+	auto Kernel::getArgTypeQualifier(cl_uint index) const -> TypeQualifier {
+		return {getArgInfo<cl_kernel_arg_type_qualifier>(
+			index, CL_KERNEL_ARG_TYPE_QUALIFIER)};
+	}
+
+	auto Kernel::getArgName(cl_uint index) const -> std::string {
+		return getArgInfoString(index, CL_KERNEL_ARG_NAME);
+	}
+#endif // defined(CL_VERSION_1_2)
+
+	//================================================================================
+	// Used to retrieve information about kernel work groups.
+	//================================================================================
+
+	// TODO
+
+	//================================================================================
+	// Information access profiling helper methods.
+	//================================================================================
 
 	auto Kernel::getFunctionName() const -> std::string {
 		return getInfoString(CL_KERNEL_FUNCTION_NAME);

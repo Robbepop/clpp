@@ -2,6 +2,9 @@
 #define CLPP_KERNEL_HPP
 
 #include "clpp/detail/object.hpp"
+#include "clpp/address_qualifier.hpp"
+#include "clpp/access_qualifier.hpp"
+#include "clpp/type_qualifier.hpp"
 
 namespace cl {
 	namespace detail {
@@ -51,11 +54,37 @@ namespace cl {
 		void setArgs(Args&&... tail) const;
 
 		//================================================================================
-		// Used to retrieve information about kernel arguments and kernel work groups.
+		// Used to retrieve information about kernel arguments.
 		//================================================================================
-	public:
+	#if defined(CL_VERSION_1_2)
+	private:
+		template<typename T>
+		auto getArgInfo(
+			cl_uint index, cl_kernel_arg_info info
+		) const -> T;
 
-//		auto getArg(cl_uint index) const              -> KernelArg;
+		template<typename T>
+		auto getArgInfoVector(
+			cl_uint index, cl_kernel_arg_info info
+		) const -> std::vector<T>;
+
+		auto inline getArgInfoString(
+			cl_uint index, cl_kernel_arg_info info
+		) const -> std::string;
+
+	public:
+		auto inline getArgAddressQualifier(cl_uint index) const -> AddressQualifier;
+		auto inline getArgAccessQualifier(cl_uint index) const -> AccessQualifier;
+		auto inline getArgTypeName(cl_uint index) const -> std::string;
+		auto inline getArgTypeQualifier(cl_uint index) const -> TypeQualifier;
+		auto inline getArgName(cl_uint index) const -> std::string;
+
+	#endif // defined(CL_VERSION_1_2)
+
+		//================================================================================
+		// Used to retrieve information about kernel work groups.
+		//================================================================================
+
 //		auto getWorkGroup(Device const& device) const -> KernelWorkGroup;
 
 		//================================================================================

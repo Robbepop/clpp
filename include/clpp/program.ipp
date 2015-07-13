@@ -144,6 +144,7 @@ namespace cl {
 //		 TODO
 //	}
 
+#if defined(CL_VERSION_1_2)
 	auto Program::getNumKernels() const -> cl_uint {
 		return getInfo<cl_uint>(CL_PROGRAM_NUM_KERNELS);
 	}
@@ -154,6 +155,7 @@ namespace cl {
 		boost::split(kernelNames, kernelNamesStr, boost::is_any_of(";"), boost::token_compress_on);
 		return kernelNames;
 	}
+#endif // defined(CL_VERSION_1_2)
 
 	//================================================================================
 	// Information access helper methods for build.
@@ -163,8 +165,8 @@ namespace cl {
 	auto Program::getBuildInfo(
 		Device const& device, cl_program_build_info infoId
 	) const -> T {
-		auto error = cl_int{CL_INVALID_VALUE};
-		auto info        = T{};
+		auto error = RetCode::getPreset();
+		auto info  = T{};
 		error = clGetProgramBuildInfo(
 			get(), device.get(), infoId, sizeof(T), std::addressof(info), nullptr);
 		detail::handleError(detail::CLFunction::clGetProgramBuildInfo(), error);
@@ -175,7 +177,7 @@ namespace cl {
 	auto Program::getBuildInfoVector(
 		Device const& device, cl_program_build_info infoId
 	) const -> std::vector<T> {
-		auto error      = cl_int{CL_INVALID_VALUE};
+		auto error      = RetCode::getPreset();
 		auto bufferSize = size_t{0};
 		error = clGetProgramBuildInfo(
 			get(), device.get(), infoId, 0, nullptr, std::addressof(bufferSize));

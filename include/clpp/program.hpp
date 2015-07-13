@@ -100,8 +100,11 @@ namespace cl {
 		auto inline getProgramSource() const  -> std::string;
 		auto inline getBinarySizes() const    -> std::vector<size_t>;
 //		auto inline getBinaries() const       -> std::vector<std::vector<unsigned char>>;
+
+	#if defined(CL_VERSION_1_2)
 		auto inline getNumKernels() const     -> cl_uint;
 		auto inline getKernelNames() const    -> std::vector<std::string>;
+	#endif // defined(CL_VERSION_1_2)
 
 		//================================================================================
 		// Information access helper methods for build.
@@ -111,8 +114,14 @@ namespace cl {
 		auto inline getBuildStatus(Device const& device) const                  -> BuildStatus;
 		auto inline getBuildOptions(Device const& device) const                 -> std::string;
 		auto inline getBuildLog(Device const& device) const                     -> std::string;
+
+	#if defined(CL_VERSION_1_2)
 		auto inline getBinaryType(Device const& device) const                   -> BinaryType;
+	#endif // defined(CL_VERSION_1_2)
+
+	#if defined(CL_VERSION_2_0)
 		auto inline getBuildGlobalVariableTotalSize(Device const& device) const -> size_t;
+	#endif // defined(CL_VERSION_2_0)
 	};
 }
 
