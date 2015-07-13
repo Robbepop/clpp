@@ -29,8 +29,10 @@ namespace cl {
 			CLPP_FUNC_GETTER(clGetDeviceIDs);
 			CLPP_FUNC_GETTER(clGetDeviceInfo);
 			CLPP_FUNC_GETTER(clCreateSubDevices);
+		#if defined(CL_VERSION_1_2)
 			CLPP_FUNC_GETTER(clRetainDevice);
 			CLPP_FUNC_GETTER(clReleaseDevice);
+		#endif // defined(CL_VERSION_1_2)
 
 			CLPP_FUNC_GETTER(clCreateContext);
 			CLPP_FUNC_GETTER(clCreateContextFromType);
@@ -42,7 +44,7 @@ namespace cl {
 			CLPP_FUNC_GETTER(clCreateCommandQueueWithProperties);
 		#else
 			CLPP_FUNC_GETTER(clCreateCommandQueue);
-		#endif
+		#endif // defined(CL_VERSION_2_0)
 			CLPP_FUNC_GETTER(clRetainCommandQueue);
 			CLPP_FUNC_GETTER(clReleaseCommandQueue);
 			CLPP_FUNC_GETTER(clGetCommandQueueInfo);
@@ -121,16 +123,13 @@ namespace cl {
 			CLPP_FUNC_GETTER(clRetainEvent);
 			CLPP_FUNC_GETTER(clReleaseEvent);
 
-		#if !defined(CL_VERSION_1_2)
-			CLPP_FUNC_GETTER(clEnqueueWaitForEvents);
-		#endif
-
 		#if defined(CL_VERSION_1_2)
 			CLPP_FUNC_GETTER(clEnqueueMarkerWithWaitList);
 			CLPP_FUNC_GETTER(clEnqueueBarrierWithWaitList);
 		#else
 			CLPP_FUNC_GETTER(clEnqueueMarker);
 			CLPP_FUNC_GETTER(clEnqueueBarrier);
+			CLPP_FUNC_GETTER(clEnqueueWaitForEvents);
 		#endif // defined(CL_VERSION_1_2)
 
 			CLPP_FUNC_GETTER(clGetEventProfilingInfo);

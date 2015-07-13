@@ -76,7 +76,9 @@ namespace cl {
 		auto inline getProfilingSubmit() const   -> cl_ulong;
 		auto inline getProfilingStart() const    -> cl_ulong;
 		auto inline getProfilingEnd() const      -> cl_ulong;
+	#if defined(CL_VERSION_2_0)
 		auto inline getProfilingComplete() const -> cl_ulong;
+	#endif // defined(CL_VERSION_2_0)
 	};
 }
 

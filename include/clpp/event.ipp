@@ -115,9 +115,11 @@ namespace cl {
 		return getInfo<cl_ulong>(CL_PROFILING_COMMAND_END);
 	}
 
+#if defined(CL_VERSION_2_0)
 	auto Event::getProfilingComplete() const -> cl_ulong {
 		return getInfo<cl_ulong>(CL_PROFILING_COMMAND_COMPLETE);
 	}
+#endif // defined(CL_VERSION_2_0)
 }
 
 #endif
