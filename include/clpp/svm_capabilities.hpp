@@ -1,3 +1,5 @@
+#if defined(CL_VERSION_2_0)
+
 #ifndef CLPP_SVM_CAPABILITIES_HPP
 #define CLPP_SVM_CAPABILITIES_HPP
 
@@ -18,4 +20,5 @@ namespace cl {
 	};
 }
 
-#endif
+#endif // CLPP_SVM_CAPABILITIES_HPP
+#endif // defined(CL_VERSION_2_0)

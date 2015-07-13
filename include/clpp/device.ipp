@@ -140,9 +140,11 @@ namespace cl {
 		return getInfo<cl_ulong>(CL_DEVICE_GLOBAL_MEM_SIZE);
 	}
 
+#if defined(CL_VERSION_2_0)
 	auto Device::getGlobalVariablePreferredTotalSize() const -> size_t {
 		return getInfo<size_t>(CL_DEVICE_GLOBAL_VARIABLE_PREFERRED_TOTAL_SIZE);
 	}
+#endif // defined(CL_VERSION_2_0)
 
 	auto Device::getImage2DMaxHeight() const -> size_t {
 		return getInfo<size_t>(CL_DEVICE_IMAGE2D_MAX_HEIGHT);
@@ -234,9 +236,11 @@ namespace cl {
 		return getInfo<size_t>(CL_DEVICE_MAX_PARAMETER_SIZE);
 	}
 
+#if defined(CL_VERSION_2_0)
 	auto Device::getMaxPipeArgs() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_MAX_PIPE_ARGS);
 	}
+#endif // defined(CL_VERSION_2_0)
 
 	auto Device::getMaxReadImageArgs() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_MAX_READ_IMAGE_ARGS);
@@ -295,6 +299,7 @@ namespace cl {
 		return getInfoString(CL_DEVICE_OPENCL_C_VERSION);
 	}
 
+#if defined(CL_VERSION_1_2)
 	auto Device::getParentDevice() const -> boost::optional<Device> {
 		const auto parentId = getInfo<cl_device_id>(CL_DEVICE_PARENT_DEVICE);
 		if (parentId == nullptr) {
@@ -318,7 +323,9 @@ namespace cl {
 	auto Device::getPartition() const -> Partition {
 		return {getInfoVector<cl_device_partition_property>(CL_DEVICE_PARTITION_TYPE)};
 	}
+#endif // defined(CL_VERSION_1_2)
 
+#if defined(CL_VERSION_2_0)
 	auto Device::getPipeMaxActiveReservations() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_PIPE_MAX_ACTIVE_RESERVATIONS);
 	}
@@ -326,6 +333,7 @@ namespace cl {
 	auto Device::getPipeMaxPacketSize() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_PIPE_MAX_PACKET_SIZE);
 	}
+#endif // defined(CL_VERSION_2_0)
 
 	auto Device::getPlatform() const -> Platform {
 		return {getInfo<cl_platform_id>(CL_DEVICE_PLATFORM)};
@@ -409,10 +417,11 @@ namespace cl {
 //		return versions;
 //	}
 
+#if defined(CL_VERSION_2_0)
 	auto Device::getSvmCapabilities() const -> SvmCapabilities {
 		return {getInfo<cl_device_svm_capabilities>(CL_DEVICE_SVM_CAPABILITIES)};
 	}
-
+#endif // defined(CL_VERSION_2_0)
 
 	auto Device::getType() const -> DeviceType {
 		return static_cast<DeviceType>(getInfo<cl_device_type>(CL_DEVICE_TYPE));

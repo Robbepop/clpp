@@ -57,8 +57,13 @@ namespace cl {
 	//================================================================================
 
 	void Platform::unloadCompiler() const {
+	#if defined(CL_VERSION_1_2)
 		const auto error = clUnloadPlatformCompiler(get());
 		detail::handleError(detail::CLFunction::clUnloadPlatformCompiler(), error);
+	#else
+		const auto error = clUnloadCompiler();
+		detail::handleError(detail::CLFunction::clUnloadCompiler(), error);
+	#endif
 	}
 
 	//================================================================================

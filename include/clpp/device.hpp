@@ -93,7 +93,10 @@ namespace cl {
 		auto inline getGlobalMemoryCacheType() const     -> MemoryCacheType;
 		auto inline getGlobalMemoryCachelineSize() const -> cl_uint;
 		auto inline getGlobalMemorySize() const          -> cl_ulong;
+
+	#if defined(CL_VERSION_2_0)
 		auto inline getGlobalVariablePreferredTotalSize() const -> size_t;
+	#endif // defined(CL_VERSION_2_0)
 
 		auto inline getImage2DMaxHeight() const -> size_t;
 		auto inline getImage2DMaxWidth() const  -> size_t;
@@ -121,7 +124,9 @@ namespace cl {
 		auto inline getMaxOnDeviceEvents() const       -> cl_uint;
 		auto inline getMaxOnDeviceQueues() const       -> cl_uint;
 		auto inline getMaxParameterSize() const        -> size_t;
+	#if defined(CL_VERSION_2_0)
 		auto inline getMaxPipeArgs() const             -> cl_uint;
+	#endif // defined(CL_VERSION_2_0)
 		auto inline getMaxReadImageArgs() const        -> cl_uint;
 		auto inline getMaxReadWriteImageArgs() const   -> cl_uint;
 		auto inline getMaxSamplers() const             -> cl_uint;
@@ -136,14 +141,18 @@ namespace cl {
 		auto inline getNativeVectorWidth(ScalarType type) const -> cl_uint;
 		auto inline getOpenCLCVersion() const                   -> std::string;
 
+	#if defined(CL_VERSION_1_2)
 		auto inline getParentDevice() const                   -> boost::optional<Device>;
 		auto inline getPartitionAffinityDomain() const        -> AffinityDomainCapabilities;
 		auto inline getPartitionMaxSubDevices() const         -> cl_uint;
 		auto inline getPartitionProperties() const            -> PartitionCapabilities;
 		auto inline getPartition() const                      -> Partition;
+	#endif // defined(CL_VERSION_1_2)
 
+	#if defined(CL_VERSION_2_0)
 		auto inline getPipeMaxActiveReservations() const -> cl_uint;
 		auto inline getPipeMaxPacketSize() const         -> cl_uint;
+	#endif // defined(CL_VERSION_2_0)
 
 		auto inline getPlatform() const                         -> Platform;
 		auto inline getPreferredGlobalAtomicAlignment() const   -> cl_uint;
@@ -165,7 +174,10 @@ namespace cl {
 
 //		'use of undeclared CL_DEVICE_SPIR_VERSIONS' in OpenCL 2.0 conformant code ...
 //		auto inline getSpirVersions() const                   -> std::vector<std::string>;
+
+	#if defined(CL_VERSION_2_0)
 		auto inline getSvmCapabilities() const                -> SvmCapabilities;
+	#endif // defined(CL_VERSION_2_0)
 
 		auto inline getType() const                           -> DeviceType;
 		auto inline getVendor() const                         -> std::string;

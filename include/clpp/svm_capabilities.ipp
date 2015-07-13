@@ -1,3 +1,5 @@
+#if defined(CL_VERSION_2_0)
+
 #ifdef  CLPP_SVM_CAPABILITIES_IPP
 	#error "multiple inclusions of the same implementation file"
 #else
@@ -26,4 +28,5 @@ namespace cl {
 	}
 }
 
-#endif
+#endif // CLPP_SVM_CAPABILITIES_IPP
+#endif // defined(CL_VERSION_2_0)
