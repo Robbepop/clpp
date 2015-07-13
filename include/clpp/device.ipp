@@ -392,18 +392,19 @@ namespace cl {
 		return getInfo<cl_uint>(CL_DEVICE_QUEUE_ON_DEVICE_PREFERRED_SIZE);
 	}
 
-	auto Device::getQueueOnDeviceProperties() const -> CommandQueueProperties {
+#if defined(CL_VERSION_2_0)
+	auto Device::getQueueOnDeviceFlags() const -> CommandQueueFlags {
 		return {getInfo<cl_command_queue_properties>(CL_DEVICE_QUEUE_ON_DEVICE_PROPERTIES)};
 	}
 
-	auto Device::getQueueOnHostProperties() const -> CommandQueueProperties {
-		#if defined(CL_VERSION_2_0)
-			return {getInfo<cl_command_queue_properties>(CL_DEVICE_QUEUE_ON_HOST_PROPERTIES)};
-		#else
-			return {getInfo<cl_command_queue_properties>(CL_DEVICE_QUEUE_PROPERTIES)};
-		#endif
+	auto Device::getQueueOnHostFlags() const -> CommandQueueFlags {
+		return {getInfo<cl_command_queue_properties>(CL_DEVICE_QUEUE_ON_HOST_PROPERTIES)};
 	}
-
+#else
+	auto Device::getCommandQueueFlags() const -> CommandQueueFlags {
+		return {getInfo<cl_command_queue_properties>(CL_DEVICE_QUEUE_PROPERTIES)};
+	}
+#endif // defined(CL_VERSION_2_0)
 
 	auto Device::getReferenceCount() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_REFERENCE_COUNT);

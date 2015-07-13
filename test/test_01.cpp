@@ -123,11 +123,11 @@ auto operator<<(std::ostream & os, const cl::AffinityDomainCapabilities & caps) 
 	return os;
 }
 
-auto operator<<(std::ostream & os, const cl::CommandQueueProperties & props) -> std::ostream & {
+auto operator<<(std::ostream & os, const cl::CommandQueueFlags & flags) -> std::ostream & {
 	using cast::to;
 	auto tab = test::tabular{10, 30};
-	os << tab << "Out Of Order Exec. Enabled" << props.isOutOfOrderExecModeEnabled()
-	   << tab << "Profiling Enabled"          << props.isProfilingEnabled();
+	os << tab << "Out Of Order Exec. Enabled" << flags.isOutOfOrderExecModeEnabled()
+	   << tab << "Profiling Enabled"          << flags.isProfilingEnabled();
 	return os;
 }
 
@@ -357,8 +357,8 @@ auto operator<<(std::ostream & os, const cl::Device & device) -> std::ostream & 
 
 	   << tab << "Queue on Device Max Size"   << device.getQueueOnDeviceMaxSize()
 	   << tab << "Queue on Device Pref. Size" << device.getQueueOnDevicePreferredSize()
-	   << tab << "Queue on Device Properties" << device.getQueueOnDeviceProperties()
-	   << tab << "Queue on Host Properties"   << device.getQueueOnHostProperties()
+	   << tab << "Queue on Device Properties" << device.getQueueOnDeviceFlags()
+	   << tab << "Queue on Host Properties"   << device.getQueueOnHostFlags()
 
 	   << '\n'
 

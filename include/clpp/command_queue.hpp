@@ -295,11 +295,14 @@ namespace cl {
 
 		void inline barrier() const;
 
+		template<typename EventIterator>
+		void wait(EventIterator first, EventIterator last) const;
+
 		template<typename EventRange>
-		void inline wait(EventRange const& waitList) const;
+		void wait(EventRange const& waitList) const;
 
 		template<typename... Events>
-		void inline wait(Events... events) const;
+		void wait(Events... events) const;
 	#endif
 
 		//================================================================================
@@ -318,7 +321,7 @@ namespace cl {
 		auto inline getContext() const        -> Context;
 		auto inline getDevice() const         -> Device;
 		auto inline getReferenceCount() const -> cl_uint;
-		auto inline getProperties() const     -> CommandQueueProperties;
+		auto inline getFlags() const          -> CommandQueueFlags;
 		auto inline getSize() const           -> cl_uint; // the same as 'size()'
 		auto inline size() const              -> cl_uint; // the same as 'getSize()'
 	};

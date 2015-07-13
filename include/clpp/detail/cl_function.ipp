@@ -34,12 +34,14 @@ namespace cl {
 				equals(::clGetDeviceInfo) ?
 				    clf::clGetDeviceInfo():
 
+			#if defined(CL_VERSION_1_2)
 				equals(::clCreateSubDevices) ?
 				    clf::clCreateSubDevices():
 				equals(::clRetainDevice) ?
 				    clf::clRetainDevice():
 				equals(::clReleaseDevice) ?
 				    clf::clReleaseDevice():
+			#endif // defined(CL_VERSION_1_2)
 
 				equals(::clCreateContext) ?
 				    clf::clCreateContext():
@@ -52,8 +54,13 @@ namespace cl {
 				equals(::clGetContextInfo) ?
 				    clf::clGetContextInfo():
 
+			#if defined(CL_VERSION_2_0)
 				equals(::clCreateCommandQueueWithProperties) ?
 				    clf::clCreateCommandQueueWithProperties():
+			#else
+				equals(::clCreateCommandQueue) ?
+				    clf::clCreateCommandQueue():
+			#endif // defined(CL_VERSION_2_0)
 				equals(::clRetainCommandQueue) ?
 				    clf::clRetainCommandQueue():
 				equals(::clReleaseCommandQueue) ?
@@ -77,8 +84,10 @@ namespace cl {
 				    clf::clEnqueueCopyBuffer():
 				equals(::clEnqueueCopyBufferRect) ?
 				    clf::clEnqueueCopyBufferRect():
+			#if defined(CL_VERSION_1_2)
 				equals(::clEnqueueFillBuffer) ?
 				    clf::clEnqueueFillBuffer():
+			#endif // defined(CL_VERSION_1_2)
 				equals(::clEnqueueMapBuffer) ?
 				    clf::clEnqueueMapBuffer():
 
@@ -96,15 +105,19 @@ namespace cl {
 				    clf::clEnqueueCopyImageToBuffer():
 				equals(::clEnqueueCopyBufferToImage) ?
 				    clf::clEnqueueCopyBufferToImage():
+			#if defined(CL_VERSION_1_2)
 				equals(::clEnqueueFillImage) ?
 				    clf::clEnqueueFillImage():
+			#endif // defined(CL_VERSION_1_2)
 				equals(::clEnqueueMapImage) ?
 				    clf::clEnqueueMapImage():
 
 				equals(::clEnqueueUnmapMemObject) ?
 				    clf::clEnqueueUnmapMemObject():
+			#if defined(CL_VERSION_1_2)
 				equals(::clEnqueueMigrateMemObjects) ?
 				    clf::clEnqueueMigrateMemObjects():
+			#endif // defined(CL_VERSION_1_2)
 				equals(::clGetImageInfo) ?
 				    clf::clGetImageInfo():
 				equals(::clGetMemObjectInfo) ?
@@ -137,12 +150,16 @@ namespace cl {
 				    clf::clReleaseProgram():
 				equals(::clBuildProgram) ?
 				    clf::clBuildProgram():
+			#if defined(CL_VERSION_1_2)
 				equals(::clCompileProgram) ?
 				    clf::clCompileProgram():
 				equals(::clLinkProgram) ?
 				    clf::clLinkProgram():
+			#endif // defined(CL_VERSION_1_2)
+			#if defined(CL_VERSION_2_0)
 				equals(::clUnloadPlatformCompiler) ?
 				    clf::clUnloadPlatformCompiler():
+			#endif // defined(CL_VERSION_2_0)
 				equals(::clGetProgramInfo) ?
 				    clf::clGetProgramInfo():
 				equals(::clGetProgramBuildInfo) ?
@@ -189,10 +206,19 @@ namespace cl {
 				equals(::clReleaseEvent) ?
 				    clf::clReleaseEvent():
 
+			#if defined(CL_VERSION_1_2)
 				equals(::clEnqueueMarkerWithWaitList) ?
 				    clf::clEnqueueMarkerWithWaitList():
 				equals(::clEnqueueBarrierWithWaitList) ?
 				    clf::clEnqueueBarrierWithWaitList():
+			#else
+				equals(::clEnqueueMarker) ?
+				    clf::clEnqueueMarker():
+				equals(::clEnqueueBarrier) ?
+				    clf::clEnqueueBarrier():
+				equals(::clEnqueueWaitForEvents) ?
+				    clf::clEnqueueWaitForEvents():
+			#endif // defined(CL_VERSION_1_2)
 
 				equals(::clGetEventProfilingInfo) ?
 				    clf::clGetEventProfilingInfo():
@@ -201,11 +227,14 @@ namespace cl {
 				equals(::clFinish) ?
 				    clf::clFinish():
 
+			#if defined(CL_VERSION_2_0)
 				equals(::clCreatePipe) ?
 				    clf::clCreatePipe():
 				equals(::clGetPipeInfo) ?
 				    clf::clGetPipeInfo():
+			#endif // defined(CL_VERSION_2_0)
 
+			#if defined(CL_VERSION_2_0)
 				equals(::clSVMAlloc) ?
 				    clf::clSVMAlloc():
 				equals(::clSVMFree) ?
@@ -220,6 +249,7 @@ namespace cl {
 				    clf::clEnqueueSVMMap():
 				equals(::clEnqueueSVMUnmap) ?
 				    clf::clEnqueueSVMUnmap():
+			#endif // defined(CL_VERSION_2_0)
 
 				    clf::unknown(); // default case
 		}

@@ -9,36 +9,21 @@
 #endif
 
 namespace cl {
-	auto CommandQueueProperties::isOutOfOrderExecModeEnabled() const -> bool {
-		return readMask<CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE>();
+	void CommandQueueProperties::setCommandQueueFlags(CommandQueueFlags flags) {
+		set(CL_QUEUE_PROPERTIES, static_cast<cl_list_type>(flags.mask()));
 	}
 
-	auto CommandQueueProperties::isProfilingEnabled() const -> bool {		
-		return readMask<CL_QUEUE_PROFILING_ENABLE>();
+	auto CommandQueueProperties::getCommandQueueFlags() -> CommandQueueFlags {
+		return static_cast<CommandQueueFlags>(get(CL_QUEUE_PROPERTIES));
 	}
 
-
-	auto CommandQueueProperties::enableOutOfOrderExecMode() -> CommandQueueProperties & {
-		modifyMask<CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE>(true);
-		return *this;
+	void CommandQueueProperties::setCommandQueueSize(cl_uint size) {
+		set(CL_QUEUE_SIZE, static_cast<cl_list_type>(size));
 	}
 
-	auto CommandQueueProperties::enableProfiling() -> CommandQueueProperties & {
-		modifyMask<CL_QUEUE_PROFILING_ENABLE>(true);
-		return *this;
+	auto CommandQueueProperties::getCommandQueueSize() -> cl_uint {
+		return static_cast<cl_uint>(get(CL_QUEUE_SIZE));
 	}
-
-
-	auto CommandQueueProperties::disableOutOfOrderExecMode() -> CommandQueueProperties & {
-		modifyMask<CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE>(false);
-		return *this;
-	}
-
-	auto CommandQueueProperties::disableProfiling() -> CommandQueueProperties & {
-		modifyMask<CL_QUEUE_PROFILING_ENABLE>(false);
-		return *this;
-	}
-
 }
 
 #endif

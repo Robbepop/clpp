@@ -174,8 +174,12 @@ namespace cl {
 
 		auto inline getQueueOnDeviceMaxSize() const           -> cl_uint;
 		auto inline getQueueOnDevicePreferredSize() const     -> cl_uint;
-		auto inline getQueueOnDeviceProperties() const        -> CommandQueueProperties;
-		auto inline getQueueOnHostProperties() const          -> CommandQueueProperties;
+	#if defined(CL_VERSION_2_0)
+		auto inline getQueueOnDeviceFlags() const        -> CommandQueueFlags;
+		auto inline getQueueOnHostFlags() const          -> CommandQueueFlags;
+	#else
+		auto inlien getCommandQueueFlags() const                     -> CommandQueueFlags;
+	#endif // defined(CL_VERSION_2_0)
 
 		auto inline getReferenceCount() const                 -> cl_uint;
 

@@ -26,10 +26,12 @@
 #include "clpp/detail/information_accessor.ipp"
 #include "clpp/detail/mask_wrapper.ipp"
 #include "clpp/detail/object.ipp"
+#include "clpp/detail/property_list_wrapper.ipp"
 
 #include "clpp/affinity_domain_capabilities.ipp"
 #include "clpp/buffer.ipp"
 #include "clpp/command_queue.ipp"
+#include "clpp/command_queue_flags.ipp"
 #include "clpp/command_queue_properties.ipp"
 #include "clpp/context.ipp"
 #include "clpp/context_properties.ipp"

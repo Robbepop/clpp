@@ -28,8 +28,8 @@ namespace cl {
 			CLPP_FUNC_GETTER(clGetPlatformInfo);
 			CLPP_FUNC_GETTER(clGetDeviceIDs);
 			CLPP_FUNC_GETTER(clGetDeviceInfo);
-			CLPP_FUNC_GETTER(clCreateSubDevices);
 		#if defined(CL_VERSION_1_2)
+			CLPP_FUNC_GETTER(clCreateSubDevices);
 			CLPP_FUNC_GETTER(clRetainDevice);
 			CLPP_FUNC_GETTER(clReleaseDevice);
 		#endif // defined(CL_VERSION_1_2)
@@ -57,7 +57,9 @@ namespace cl {
 			CLPP_FUNC_GETTER(clEnqueueWriteBufferRect);
 			CLPP_FUNC_GETTER(clEnqueueCopyBuffer);
 			CLPP_FUNC_GETTER(clEnqueueCopyBufferRect);
+		#if defined(CL_VERSION_1_2)
 			CLPP_FUNC_GETTER(clEnqueueFillBuffer);
+		#endif // defined(CL_VERSION_1_2)
 			CLPP_FUNC_GETTER(clEnqueueMapBuffer);
 
 			CLPP_FUNC_GETTER(clCreateImage);
@@ -67,7 +69,9 @@ namespace cl {
 			CLPP_FUNC_GETTER(clEnqueueCopyImage);
 			CLPP_FUNC_GETTER(clEnqueueCopyImageToBuffer);
 			CLPP_FUNC_GETTER(clEnqueueCopyBufferToImage);
+		#if defined(CL_VERSION_1_2)
 			CLPP_FUNC_GETTER(clEnqueueFillImage);
+		#endif // defined(CL_VERSION_1_2)
 			CLPP_FUNC_GETTER(clEnqueueMapImage);
 
 			CLPP_FUNC_GETTER(clEnqueueUnmapMemObject);
@@ -91,8 +95,10 @@ namespace cl {
 			CLPP_FUNC_GETTER(clRetainProgram);
 			CLPP_FUNC_GETTER(clReleaseProgram);
 			CLPP_FUNC_GETTER(clBuildProgram);
+		#if defined(CL_VERSION_1_2)
 			CLPP_FUNC_GETTER(clCompileProgram);
 			CLPP_FUNC_GETTER(clLinkProgram);
+		#endif
 		#if defined(CL_VERSION_2_0)
 			CLPP_FUNC_GETTER(clUnloadPlatformCompiler);
 		#else
@@ -136,9 +142,12 @@ namespace cl {
 			CLPP_FUNC_GETTER(clFlush);
 			CLPP_FUNC_GETTER(clFinish);
 
+		#if defined(CL_VERSION_2_0)
 			CLPP_FUNC_GETTER(clCreatePipe);
 			CLPP_FUNC_GETTER(clGetPipeInfo);
+		#endif // defined(CL_VERSION_2_0)
 
+		#if defined(CL_VERSION_2_0)
 			CLPP_FUNC_GETTER(clSVMAlloc);
 			CLPP_FUNC_GETTER(clSVMFree);
 			CLPP_FUNC_GETTER(clEnqueueSVMFree);
@@ -146,6 +155,7 @@ namespace cl {
 			CLPP_FUNC_GETTER(clEnqueueSVMMemFill);
 			CLPP_FUNC_GETTER(clEnqueueSVMMap);
 			CLPP_FUNC_GETTER(clEnqueueSVMUnmap);
+		#endif // defined(CL_VERSION_2_0)
 
 			#undef CLPP_FUNC_GETTER
 

@@ -363,7 +363,7 @@ namespace cl {
 	}
 
 	template<typename EventIterator>
-	void inline wait(
+	void CommandQueue::wait(
 		EventIterator first,
 		EventIterator last
 	) const {
@@ -373,12 +373,12 @@ namespace cl {
 	}
 
 	template<typename EventRange>
-	void inline wait(EventRange const& waitList) const {
+	void CommandQueue::wait(EventRange const& waitList) const {
 		wait(waitList.begin(), waitList.end());
 	}
 
 	template<typename... Events>
-	void inline wait(Events... events) const {
+	void CommandQueue::wait(Events... events) const {
 		auto waitList = utility::make_array<Event>(events...);
 		wait(waitList.begin(), waitList.end());
 	}
@@ -413,7 +413,7 @@ namespace cl {
 		return getInfo<cl_uint>(CL_QUEUE_REFERENCE_COUNT);
 	}
 
-	auto CommandQueue::getProperties() const -> CommandQueueProperties {
+	auto CommandQueue::getFlags() const -> CommandQueueFlags {
 		return {getInfo<cl_command_queue_properties>(CL_QUEUE_PROPERTIES)};
 	}
 

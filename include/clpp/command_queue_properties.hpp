@@ -1,25 +1,27 @@
+#if defined(CL_VERSION_2_0)
+
 #ifndef CLPP_COMMAND_QUEUE_PROPERTIES_HPP
 #define CLPP_COMMAND_QUEUE_PROPERTIES_HPP
 
 #include "clpp/detail/common.hpp"
-#include "clpp/detail/mask_wrapper.hpp"
+#include "clpp/detail/property_list_wrapper.hpp"
+#include "clpp/command_queue_flags.hpp"
 
 namespace cl {
 	class CommandQueueProperties final :
-		public detail::MaskWrapper<cl_command_queue_properties>
+		public detail::PropertyListWrapper<cl_queue_properties>
 	{
 	public:
-		using detail::MaskWrapper<CommandQueueProperties::cl_mask_type>::MaskWrapper;
+		using detail::PropertyListWrapper<
+			CommandQueueProperties::cl_list_type>::PropertyListWrapper;
 
-		auto inline isOutOfOrderExecModeEnabled() const -> bool;
-		auto inline isProfilingEnabled() const          -> bool;
+		void setCommandQueueFlags(CommandQueueFlags flags);
+		auto getCommandQueueFlags() -> CommandQueueFlags;
 
-		auto inline enableOutOfOrderExecMode() -> CommandQueueProperties &;
-		auto inline enableProfiling()          -> CommandQueueProperties &;
-
-		auto inline disableOutOfOrderExecMode() -> CommandQueueProperties &;
-		auto inline disableProfiling()          -> CommandQueueProperties &;
+		void setCommandQueueSize(cl_uint size);
+		auto getCommandQueueSize() -> cl_uint;
 	};
 }
 
-#endif
+#endif // CLPP_COMMAND_QUEUE_PROPERTIES_HPP
+#endif // defined(CL_VERSION_2_0)
