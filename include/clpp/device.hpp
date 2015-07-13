@@ -33,8 +33,15 @@ namespace cl {
 			using cl_type        = cl_device_id;
 			using info_type      = cl_device_info;
 
+		static constexpr inline auto success(cl_type) -> decltype(CL_SUCCESS) { return CL_SUCCESS; }
+
+		#if defined(CL_VERSION_1_2)
 			static constexpr auto retain  = clRetainDevice;
 			static constexpr auto release = clReleaseDevice;
+		#else
+			static constexpr auto retain  = success;
+			static constexpr auto release = success;
+		#endif
 			static constexpr auto getInfo = clGetDeviceInfo;
 		};
 	}
