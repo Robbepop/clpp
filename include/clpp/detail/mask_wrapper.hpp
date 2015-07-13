@@ -8,6 +8,8 @@ namespace cl {
 		template<typename MaskType>
 		class MaskWrapper {
 		public:
+			static constexpr MaskType null = 0;
+
 			using cl_mask_type = MaskType;
 
 			MaskWrapper(MaskType mask);

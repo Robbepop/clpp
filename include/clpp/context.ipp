@@ -241,7 +241,7 @@ namespace cl {
 			return {queueId};
 		#else
 			auto queueId = clCreateCommandQueue(
-				get(), device.get(), nullptr, error.data());
+				get(), device.get(), CommandQueueFlags::null, error.data());
 			detail::handleError(detail::CLFunction::clCreateCommandQueue(), error);
 			return {queueId};
 		#endif
@@ -336,7 +336,7 @@ namespace cl {
 	}
 
 	auto Context::getProperties() const -> ContextProperties {
-		return {getInfoVector<cl_context_properties>(CL_CONTEXT_PROPERTIES)};
+		return {getInfoVector<cl_context_properties>(CL_CONTEXT_PROPERTIES).data()};
 	}
 
 }

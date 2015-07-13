@@ -13,6 +13,8 @@
 #include "clpp/device.hpp"
 #include "clpp/context.hpp"
 
+#include "clpp/command_queue_properties.hpp" // maybe this can be removed again
+
 //===========================================================
 // Include implementations of already included header files.
 // This is required as the header files themselve must not

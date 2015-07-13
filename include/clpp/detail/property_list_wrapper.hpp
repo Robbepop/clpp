@@ -1,6 +1,8 @@
 #ifndef CLPP_DETAIL_PROPERTY_LIST_WRAPPER_HPP
 #define CLPP_DETAIL_PROPERTY_LIST_WRAPPER_HPP
 
+#include "boost/optional.hpp"
+
 #include <unordered_map>
 #include <vector>
 
@@ -20,10 +22,11 @@ namespace cl {
 
 			auto data() const -> std::vector<ListType>;
 
-			void set(ListType property, ListType value);
+			template<typename SetType = ListType>
+			void set(ListType property, SetType value);
 
-			auto get(ListType property) const -> ListType;
-			auto get(ListType property)       -> ListType &;
+			template<typename RetType = ListType>
+			auto get(ListType property) const -> boost::optional<RetType>;
 
 		protected:
 			PropertyMap m_properties;

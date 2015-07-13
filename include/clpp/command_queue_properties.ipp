@@ -1,3 +1,5 @@
+#if defined(CL_VERSION_2_0)
+
 #ifdef  CLPP_COMMAND_QUEUE_PROPERTIES_IPP
 	#error "multiple inclusions of the same implementation file"
 #else
@@ -10,20 +12,22 @@
 
 namespace cl {
 	void CommandQueueProperties::setCommandQueueFlags(CommandQueueFlags flags) {
-		set(CL_QUEUE_PROPERTIES, static_cast<cl_list_type>(flags.mask()));
+		set(CL_QUEUE_PROPERTIES, flags.mask());
 	}
 
 	auto CommandQueueProperties::getCommandQueueFlags() -> CommandQueueFlags {
-		return static_cast<CommandQueueFlags>(get(CL_QUEUE_PROPERTIES));
+		return get<CommandQueueFlags>(CL_QUEUE_PROPERTIES).
+			value_or(CommandQueueFlags::null);
 	}
 
 	void CommandQueueProperties::setCommandQueueSize(cl_uint size) {
-		set(CL_QUEUE_SIZE, static_cast<cl_list_type>(size));
+		set(CL_QUEUE_SIZE, size);
 	}
 
 	auto CommandQueueProperties::getCommandQueueSize() -> cl_uint {
-		return static_cast<cl_uint>(get(CL_QUEUE_SIZE));
+		return get<cl_uint>(CL_QUEUE_SIZE).value_or(0);
 	}
 }
 
-#endif
+#endif // CLPP_COMMAND_QUEUE_PROPERTIES_IPP
+#endif // defined(CL_VERSION_2_0)

@@ -6,7 +6,7 @@
 
 #include "clpp/affinity_domain.hpp"
 #include "clpp/affinity_domain_capabilities.hpp"
-#include "clpp/command_queue_properties.hpp"
+#include "clpp/command_queue_flags.hpp"
 #include "clpp/execution_capabilities.hpp"
 #include "clpp/fp_type.hpp"
 #include "clpp/fp_config.hpp"
@@ -178,7 +178,7 @@ namespace cl {
 		auto inline getQueueOnDeviceFlags() const        -> CommandQueueFlags;
 		auto inline getQueueOnHostFlags() const          -> CommandQueueFlags;
 	#else
-		auto inlien getCommandQueueFlags() const                     -> CommandQueueFlags;
+		auto inline getCommandQueueFlags() const                     -> CommandQueueFlags;
 	#endif // defined(CL_VERSION_2_0)
 
 		auto inline getReferenceCount() const                 -> cl_uint;

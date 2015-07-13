@@ -210,15 +210,19 @@ namespace cl {
 		return getBuildInfoString(device, CL_PROGRAM_BUILD_LOG);
 	}
 
+#if defined(CL_VERSION_1_2)
 	auto Program::getBinaryType(Device const& device) const -> BinaryType {
 		return static_cast<BinaryType>(
 			getBuildInfo<cl_program_binary_type>(device, CL_PROGRAM_BINARY_TYPE));
 	}
+#endif // defined(CL_VERSION_1_2)
 
+#if defined(CL_VERSION_2_0)
 	auto Program::getBuildGlobalVariableTotalSize(Device const& device) const -> size_t {
 		return getBuildInfo<size_t>(
 			device, CL_PROGRAM_BUILD_GLOBAL_VARIABLE_TOTAL_SIZE);
 	}
+#endif // defined(CL_VERSION_2_0)
 }
 
 #endif

@@ -15,11 +15,11 @@ namespace cl {
 		using detail::PropertyListWrapper<
 			CommandQueueProperties::cl_list_type>::PropertyListWrapper;
 
-		void setCommandQueueFlags(CommandQueueFlags flags);
-		auto getCommandQueueFlags() -> CommandQueueFlags;
+		void inline setCommandQueueFlags(CommandQueueFlags flags);
+		auto inline getCommandQueueFlags() -> CommandQueueFlags;
 
-		void setCommandQueueSize(cl_uint size);
-		auto getCommandQueueSize() -> cl_uint;
+		void inline setCommandQueueSize(cl_uint size);
+		auto inline getCommandQueueSize() -> cl_uint;
 	};
 }
 

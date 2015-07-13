@@ -55,25 +55,24 @@ namespace cl {
 		}
 
 		template<typename ListType>
+		template<typename SetType>
 		void PropertyListWrapper<ListType>::set(
 			ListType property,
-			ListType value
+			SetType  value
 		) {
-			m_properties[property] = value;
+			m_properties[property] = (ListType) value;
 		}
 
 		template<typename ListType>
+		template<typename RetType>
 		auto PropertyListWrapper<ListType>::get(
 			ListType property
-		) const -> ListType {
-			return m_properties[property];
-		}
-
-		template<typename ListType>
-		auto PropertyListWrapper<ListType>::get(
-			ListType property
-		) -> ListType & {
-			return m_properties[property];
+		) const -> boost::optional<RetType> {
+			const auto it = m_properties.find(property);
+			if (it == m_properties.end()) {
+				return {};
+			}
+			return {(RetType) it->second};
 		}
 	}
 }
