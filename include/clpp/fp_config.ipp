@@ -33,9 +33,11 @@ namespace cl {
 		return readMask<CL_FP_FMA>();
 	}
 
+#if defined(CL_VERSION_1_2)
 	auto FPConfig::supportsCorrectlyRoundedDivideSqrt() const -> bool {
 		return readMask<CL_FP_CORRECTLY_ROUNDED_DIVIDE_SQRT>();
 	}
+#endif // defined(CL_VERSION_1_2)
 
 	auto FPConfig::supportsSoftFloat() const -> bool {
 		return readMask<CL_FP_SOFT_FLOAT>();

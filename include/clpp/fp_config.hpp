@@ -15,7 +15,9 @@ namespace cl {
 		auto inline supportsRoundToZero() const                -> bool;
 		auto inline supportsRoundToInf() const                 -> bool;
 		auto inline supportsFusedMultiplyAdd() const           -> bool;
+	#if defined(CL_VERSION_1_2)
 		auto inline supportsCorrectlyRoundedDivideSqrt() const -> bool;
+	#endif // defined(CL_VERSION_1_2)
 		auto inline supportsSoftFloat() const                  -> bool;
 	};
 }
