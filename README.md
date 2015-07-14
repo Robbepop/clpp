@@ -1,6 +1,12 @@
 # clpp
 A thin header-only wrapper around OpenCL 2.0+ for modern and highlevel C++.
 
+Note
+----
+
+Although this wrapper mainly focusses on OpenCL 2.0+ it also supports usage
+of OpenCL 1.1 and 1.2 with minor adjustments to the interfaces.
+
 Usage
 -----
 
