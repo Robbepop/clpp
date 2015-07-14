@@ -15,6 +15,7 @@ namespace cl {
 	public:
 		static inline auto getPreset() -> RetCode const&;
 
+		inline RetCode();
 		inline RetCode(id_type id);
 		inline RetCode(RetCode const& other);
 		inline RetCode(RetCode && other) = default;

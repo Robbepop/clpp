@@ -14,6 +14,10 @@ namespace cl {
 		return instance;
 	}
 
+	RetCode::RetCode():
+		m_id{c_presetId}
+	{}
+
 	RetCode::RetCode(id_type id):
 		m_id{id}
 	{}
