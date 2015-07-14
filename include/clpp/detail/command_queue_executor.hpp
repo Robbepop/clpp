@@ -37,7 +37,7 @@ namespace cl {
 			static constexpr auto asyncOperation    = CL_NON_BLOCKING;
 		#else
 			static constexpr auto blockingOperation = CL_TRUE;
-			static constexpr auto asyncOperation    = CL_NON_BLOCKING;
+			static constexpr auto asyncOperation    = CL_FALSE;
 		#endif // defined(CL_VERSION_1_2)
 
 			//============================================================================
