@@ -417,6 +417,7 @@ namespace cl {
 		return {getInfo<cl_command_queue_properties>(CL_QUEUE_PROPERTIES)};
 	}
 
+#if defined(CL_VERSION_2_0)
 	auto CommandQueue::getSize() const -> cl_uint {
 		return getInfo<cl_uint>(CL_QUEUE_SIZE);
 	}
@@ -424,6 +425,7 @@ namespace cl {
 	auto CommandQueue::size() const -> cl_uint {
 		return getSize();
 	}
+#endif // defined(CL_VERSION_2_0)
 }
 
 #endif

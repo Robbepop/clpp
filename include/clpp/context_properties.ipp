@@ -14,18 +14,20 @@ namespace cl {
 		return *this;
 	}
 
+	auto ContextProperties::getPlatform() const -> Platform {
+		return {get<cl_platform_id>(CL_CONTEXT_PLATFORM).value_or(nullptr)};
+	}
+
+#if defined(CL_VERSION_1_2)
 	auto ContextProperties::setInteropUserSync(cl_bool flag) -> ContextProperties & {
 		set(CL_CONTEXT_INTEROP_USER_SYNC, flag);
 		return *this;
 	}
 
-	auto ContextProperties::getPlatform() const -> Platform {
-		return {get<cl_platform_id>(CL_CONTEXT_PLATFORM).value_or(nullptr)};
-	}
-
 	auto ContextProperties::getInteropUserSync() const -> bool {
 		return get<cl_bool>(CL_CONTEXT_INTEROP_USER_SYNC).value_or(false);
 	}
+#endif // defined(CL_VERSION_1_2)
 }
 
-#endif
+#endif // CLPP_CONTEXT_PROPERTIES_IPP

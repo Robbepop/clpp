@@ -15,10 +15,12 @@ namespace cl {
 			ContextProperties::cl_list_type>::PropertyListWrapper;
 
 		auto inline setPlatform(Platform platform) -> ContextProperties &;
-		auto inline setInteropUserSync(cl_bool flag) -> ContextProperties &;
-
 		auto inline getPlatform() const        -> Platform;
+
+	#if defined(CL_VERSION_1_2)
+		auto inline setInteropUserSync(cl_bool flag) -> ContextProperties &;
 		auto inline getInteropUserSync() const -> bool;
+	#endif // defined(CL_VERSION_1_2)
 	};
 }
 
