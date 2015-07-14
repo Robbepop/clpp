@@ -156,12 +156,14 @@ namespace cl {
 			getInfo<cl_program>(CL_KERNEL_PROGRAM));
 	}
 
+#if defined(CL_VERSION_1_2)
 	auto Kernel::getAttributes() const -> std::vector<std::string> {
 			  auto attributes = std::vector<std::string>{};
 		const auto attrStr    = getInfoString(CL_KERNEL_ATTRIBUTES);
 		boost::split(attributes, attrStr, boost::is_any_of("\t "), boost::token_compress_on);
 		return attributes;
 	}
+#endif // defined(CL_VERSION_1_2)
 }
 
 #endif

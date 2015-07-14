@@ -97,7 +97,9 @@ namespace cl {
 		auto inline getReferenceCount() const -> cl_uint;
 		auto inline getContext() const        -> std::unique_ptr<Context>;
 		auto inline getProgram() const        -> std::unique_ptr<Program>;
+	#if defined(CL_VERSION_1_2)
 		auto inline getAttributes() const     -> std::vector<std::string>;
+	#endif // defined(CL_VERSION_1_2)
 	};
 }
 

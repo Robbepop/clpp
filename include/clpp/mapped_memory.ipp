@@ -33,11 +33,11 @@ namespace cl {
 	MappedMemory<T>::~MappedMemory() {
 		if (m_valid) {
 			auto error = clEnqueueUnmapMemObject(
-				m_queue.get(),
-				m_mem_obj.get(),
-				reinterpret_cast<void*>(m_data),
-				m_wait_list.size(),
-				std::addressof(m_wait_list),
+				getQueueId(),
+				getMemObjectId(),
+				getDataAsVoidPtr(),
+				getWaitListSize(),
+				getWaitListData(),
 				nullptr
 			);
 			detail::handleError(detail::CLFunction::clEnqueueUnmapMemObject(), error);
@@ -49,6 +49,10 @@ namespace cl {
 	void MappedMemory<T>::setUnmapWaitList(EventRange const& waitList) const {
 		m_wait_list.assign(waitList.begin(), waitList.end());
 	}
+
+	//================================================================================
+	// General getter for size and data information.
+	//================================================================================
 
 	template<typename T>
 	auto MappedMemory<T>::MappedMemory::data() -> T* {
@@ -64,6 +68,10 @@ namespace cl {
 	auto MappedMemory<T>::size() const -> size_t {
 		return m_size;
 	}
+
+	//================================================================================
+	// Data getters checked and unchecked for MappedMemory objects.
+	//================================================================================
 
 	template<typename T>
 	auto MappedMemory<T>::operator[](size_t index) -> T & {
@@ -111,6 +119,10 @@ namespace cl {
 		return m_data[m_size - 1];
 	}
 
+	//================================================================================
+	// Methods for iterator based access of the mapped memory.
+	//================================================================================
+
 	template<typename T>
 	auto MappedMemory<T>::begin() noexcept -> T* {
 		return m_data;
@@ -139,6 +151,35 @@ namespace cl {
 	template<typename T>
 	auto MappedMemory<T>::cend() const noexcept -> T const* {
 		return m_data + m_size;
+	}
+
+	//================================================================================
+	// Helper methods for access to underlaying data.
+	//================================================================================
+
+	template<typename T>
+	auto MappedMemory<T>::getQueueId() const -> cl_command_queue {
+		return reinterpret_cast<cl_command_queue>(m_queue);
+	}
+
+	template<typename T>
+	auto MappedMemory<T>::getMemObjectId() const -> cl_mem {
+		return reinterpret_cast<cl_mem>(m_mem_obj);
+	}
+
+	template<typename T>
+	auto MappedMemory<T>::getDataAsVoidPtr() const -> void* {
+		return reinterpret_cast<void*>(m_data);
+	}
+
+	template<typename T>
+	auto MappedMemory<T>::getWaitListData() const -> cl_event const* {
+		return reinterpret_cast<cl_event const*>(m_wait_list.data());
+	}
+
+	template<typename T>
+	auto MappedMemory<T>::getWaitListSize() const -> cl_uint {
+		return static_cast<cl_uint>(m_wait_list.size());
 	}
 }
 
