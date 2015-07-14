@@ -55,6 +55,7 @@ namespace cl {
 						throw MisalignedSubBufferOffset{func, msg};
 					case CL_EXEC_STATUS_ERROR_FOR_EVENTS_IN_WAIT_LIST:
 						throw ExecStatusErrorForEventsInWaitList{func, msg};
+				#if defined(CL_VERSION_1_2)
 					case CL_COMPILE_PROGRAM_FAILURE:
 						throw CompileProgramFailure{func, msg};
 					case CL_LINKER_NOT_AVAILABLE:
@@ -65,6 +66,7 @@ namespace cl {
 						throw DevicePartitionFailure{func, msg};
 					case CL_KERNEL_ARG_INFO_NOT_AVAILABLE:
 						throw KernelArgInfoNotAvailable{func, msg};
+				#endif // defined(CL_VERSION_1_2)
 
 					case CL_INVALID_VALUE:
 						throw InvalidValue{func, msg};
@@ -136,6 +138,7 @@ namespace cl {
 						throw InvalidGlobalWorkSize{func, msg};
 					case CL_INVALID_PROPERTY:
 						throw InvalidProperty{func, msg};
+				#if defined(CL_VERSION_1_2)
 					case CL_INVALID_IMAGE_DESCRIPTOR:
 						throw InvalidImageDescriptor{func, msg};
 					case CL_INVALID_COMPILER_OPTIONS:
@@ -144,6 +147,7 @@ namespace cl {
 						throw InvalidLinkerOptions{func, msg};
 					case CL_INVALID_DEVICE_PARTITION_COUNT:
 						throw InvalidDevicePartitionCount{func, msg};
+				#endif // defined(CL_VERSION_1_2)
 				}
 			}
 		}

@@ -47,12 +47,14 @@ namespace cl {
 		using MisalignedSubBufferOffset = BasicError<CL_MISALIGNED_SUB_BUFFER_OFFSET>;
 		using ExecStatusErrorForEventsInWaitList
 		                                = BasicError<CL_EXEC_STATUS_ERROR_FOR_EVENTS_IN_WAIT_LIST>;
+
+	#if defined(CL_VERSION_1_2)
 		using CompileProgramFailure     = BasicError<CL_COMPILE_PROGRAM_FAILURE>;
 		using LinkerNotAvailable        = BasicError<CL_LINKER_NOT_AVAILABLE>;
 		using LinkProgramFailure        = BasicError<CL_LINK_PROGRAM_FAILURE>;
 		using DevicePartitionFailure    = BasicError<CL_DEVICE_PARTITION_FAILED>;
 		using KernelArgInfoNotAvailable = BasicError<CL_KERNEL_ARG_INFO_NOT_AVAILABLE>;
-
+	#endif // defined(CL_VERSION_1_2)
 
 		using InvalidValue              = BasicError<CL_INVALID_VALUE>;
 		using InvalidDeviceType         = BasicError<CL_INVALID_DEVICE_TYPE>;
@@ -64,7 +66,8 @@ namespace cl {
 		using InvalidHostPtr            = BasicError<CL_INVALID_HOST_PTR>;
 		using InvalidMemoryObject       = BasicError<CL_INVALID_MEM_OBJECT>;
 		using InvalidImageFormatDescriptor
-		                                = BasicError<CL_INVALID_IMAGE_DESCRIPTOR>;
+		                                = BasicError<CL_INVALID_IMAGE_FORMAT_DESCRIPTOR>;
+
 		using InvalidImageSize          = BasicError<CL_INVALID_IMAGE_SIZE>;
 		using InvalidSampler            = BasicError<CL_INVALID_SAMPLER>;
 		using InvalidBinary             = BasicError<CL_INVALID_BINARY>;
@@ -90,11 +93,14 @@ namespace cl {
 		using InvalidMipLevel           = BasicError<CL_INVALID_MIP_LEVEL>;
 		using InvalidGlobalWorkSize     = BasicError<CL_INVALID_GLOBAL_WORK_SIZE>;
 		using InvalidProperty           = BasicError<CL_INVALID_PROPERTY>;
+
+	#if defined(CL_VERSION_1_2)
 		using InvalidImageDescriptor    = BasicError<CL_INVALID_IMAGE_DESCRIPTOR>;
 		using InvalidCompilerOptions    = BasicError<CL_INVALID_COMPILER_OPTIONS>;
 		using InvalidLinkerOptions      = BasicError<CL_INVALID_LINKER_OPTIONS>;
 		using InvalidDevicePartitionCount
 		                                = BasicError<CL_INVALID_DEVICE_PARTITION_COUNT>;
+	#endif // defined(CL_VERSION_1_2)
 	}
 }
 
