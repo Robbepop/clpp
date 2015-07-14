@@ -21,7 +21,7 @@ namespace cl {
 		constexpr inline RetCode(RetCode && other) = default;
 
 		constexpr inline auto operator=(RetCode const& rhs) -> RetCode &;
-		constexpr inline auto operator=(RetCode && rhs)     -> RetCode & = default;
+//		constexpr inline auto operator=(RetCode && rhs)     -> RetCode & = default;
 		constexpr inline auto operator=(id_type const& rhs)  -> RetCode &;
 
 		constexpr inline auto operator==(RetCode const& rhs) -> bool;
