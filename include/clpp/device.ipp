@@ -73,12 +73,14 @@ namespace cl {
 		return getInfo<cl_bool>(CL_DEVICE_AVAILABLE);
 	}
 
+#if defined(CL_VERSION_1_2)
 	auto Device::getBuiltinKernels() const -> std::vector<std::string> {
 			  auto kernels       = std::vector<std::string>{};
 		const auto kernelsString = getInfoString(CL_DEVICE_BUILT_IN_KERNELS);
 		boost::split(kernels, kernelsString, boost::is_any_of("\t "), boost::token_compress_on);
 		return kernels;
 	}
+#endif // defined(CL_VERSION_1_2)
 
 	auto Device::isCompilerAvailable() const -> cl_bool {
 		return getInfo<cl_bool>(CL_DEVICE_COMPILER_AVAILABLE);
@@ -91,8 +93,10 @@ namespace cl {
 		//	return {getInfo<cl_device_fp_config>(CL_DEVICE_HALF_FP_CONFIG)};
 		case FPType::singlePrecision:
 			return {getInfo<cl_device_fp_config>(CL_DEVICE_SINGLE_FP_CONFIG)};
+	#if defined(CL_VERSION_1_2)
 		case FPType::doublePrecision:
 			return {getInfo<cl_device_fp_config>(CL_DEVICE_DOUBLE_FP_CONFIG)};
+	#endif // defined(CL_VERSION_1_2)
 		default:
 			assert(false);
 		}
@@ -166,7 +170,7 @@ namespace cl {
 		return getInfo<size_t>(CL_DEVICE_IMAGE3D_MAX_DEPTH);
 	}
 
-
+#if defined(CL_VERSION_1_2)
 	auto Device::getImageBaseAddressAlignment() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_IMAGE_BASE_ADDRESS_ALIGNMENT);
 	}
@@ -182,14 +186,17 @@ namespace cl {
 	auto Device::getImagePitchAlignment() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_IMAGE_PITCH_ALIGNMENT);
 	}
+#endif // defined(CL_VERSION_1_2)
 
 	auto Device::hasImageSupport() const -> cl_bool {
 		return getInfo<cl_bool>(CL_DEVICE_IMAGE_SUPPORT);
 	}
 
+#if defined(CL_VERSION_1_2)
 	auto Device::isLinkerAvailable() const -> cl_bool {
 		return getInfo<cl_bool>(CL_DEVICE_LINKER_AVAILABLE);
 	}
+#endif // defined(CL_VERSION_1_2)
 
 	auto Device::getLocalMemorySize() const -> cl_ulong {
 		return getInfo<cl_ulong>(CL_DEVICE_LOCAL_MEM_SIZE);
@@ -216,14 +223,17 @@ namespace cl {
 		return getInfo<cl_ulong>(CL_DEVICE_MAX_CONSTANT_BUFFER_SIZE);
 	}
 
+#if defined(CL_VERSION_2_0)
 	auto Device::getMaxGlobalVariableSize() const -> size_t {
 		return getInfo<size_t>(CL_DEVICE_MAX_GLOBAL_VARIABLE_SIZE);
 	}
+#endif // defined(CL_VERSION_2_0)
 
 	auto Device::getMaxMemoryAllocationSize() const -> cl_ulong {
 		return getInfo<cl_ulong>(CL_DEVICE_MAX_MEM_ALLOC_SIZE);
 	}
 
+#if defined(CL_VERSION_2_0)
 	auto Device::getMaxOnDeviceEvents() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_MAX_ON_DEVICE_EVENTS);
 	}
@@ -231,6 +241,7 @@ namespace cl {
 	auto Device::getMaxOnDeviceQueues() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_MAX_ON_DEVICE_QUEUES);
 	}
+#endif // defined(CL_VERSION_2_0)
 
 	auto Device::getMaxParameterSize() const -> size_t {
 		return getInfo<size_t>(CL_DEVICE_MAX_PARAMETER_SIZE);
@@ -246,9 +257,11 @@ namespace cl {
 		return getInfo<cl_uint>(CL_DEVICE_MAX_READ_IMAGE_ARGS);
 	}
 
+#if defined(CL_VERSION_2_0)
 	auto Device::getMaxReadWriteImageArgs() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_MAX_READ_WRITE_IMAGE_ARGS);
 	}
+#endif // defined(CL_VERSION_2_0)
 
 	auto Device::getMaxSamplers() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_MAX_SAMPLERS);
@@ -339,12 +352,15 @@ namespace cl {
 		return {getInfo<cl_platform_id>(CL_DEVICE_PLATFORM)};
 	}
 
-	auto Device::getPreferredGlobalAtomicAlignment() const -> cl_uint {
-		return getInfo<cl_uint>(CL_DEVICE_PREFERRED_GLOBAL_ATOMIC_ALIGNMENT);
-	}
-
+#if defined(CL_VERSION_1_2)
 	auto Device::hasPreferredInteropUserSync() const -> cl_bool {
 		return getInfo<cl_bool>(CL_DEVICE_PREFERRED_INTEROP_USER_SYNC);
+	}
+#endif // defined(CL_VERSION_1_2)
+
+#if defined(CL_VERSION_2_0)
+	auto Device::getPreferredGlobalAtomicAlignment() const -> cl_uint {
+		return getInfo<cl_uint>(CL_DEVICE_PREFERRED_GLOBAL_ATOMIC_ALIGNMENT);
 	}
 
 	auto Device::getPreferredLocalAtomicAlignment() const -> cl_uint {
@@ -354,6 +370,7 @@ namespace cl {
 	auto Device::getPreferredPlatformAtomicAlignment() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_PREFERRED_PLATFORM_ATOMIC_ALIGNMENT);
 	}
+#endif // defined(CL_VERSION_2_0)
 
 	auto Device::getPreferredVectorWidth(ScalarType type) const -> cl_uint {
 		auto id = cl_device_info{};
@@ -370,10 +387,11 @@ namespace cl {
 		return getInfo<cl_uint>(id);
 	}
 
-
+#if defined(CL_VERSION_1_2)
 	auto Device::getPrintfBufferSize() const -> size_t {
 		return getInfo<size_t>(CL_DEVICE_PRINTF_BUFFER_SIZE);
 	}
+#endif // defined(CL_VERSION_1_2)
 
 	auto Device::getProfile() const -> std::string {
 		return getInfoString(CL_DEVICE_PROFILE);
@@ -383,7 +401,7 @@ namespace cl {
 		return getInfo<size_t>(CL_DEVICE_PROFILING_TIMER_RESOLUTION);
 	}
 
-
+#if defined(CL_VERSION_2_0)
 	auto Device::getQueueOnDeviceMaxSize() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_QUEUE_ON_DEVICE_MAX_SIZE);
 	}
@@ -392,7 +410,6 @@ namespace cl {
 		return getInfo<cl_uint>(CL_DEVICE_QUEUE_ON_DEVICE_PREFERRED_SIZE);
 	}
 
-#if defined(CL_VERSION_2_0)
 	auto Device::getQueueOnDeviceFlags() const -> CommandQueueFlags {
 		return {getInfo<cl_command_queue_properties>(CL_DEVICE_QUEUE_ON_DEVICE_PROPERTIES)};
 	}
@@ -406,9 +423,11 @@ namespace cl {
 	}
 #endif // defined(CL_VERSION_2_0)
 
+#if defined(CL_VERSION_1_2)
 	auto Device::getReferenceCount() const -> cl_uint {
 		return getInfo<cl_uint>(CL_DEVICE_REFERENCE_COUNT);
 	}
+#endif // defined(CL_VERSION_1_2)
 
 
 //	auto Device::getSpirVersions() const -> std::vector<std::string> {

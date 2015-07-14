@@ -33,15 +33,15 @@ namespace cl {
 			using cl_type        = cl_device_id;
 			using info_type      = cl_device_info;
 
-		static constexpr inline auto success(cl_type) -> decltype(CL_SUCCESS) { return CL_SUCCESS; }
-
 		#if defined(CL_VERSION_1_2)
 			static constexpr auto retain  = clRetainDevice;
 			static constexpr auto release = clReleaseDevice;
 		#else
+			static constexpr auto success(cl_type) -> decltype(CL_SUCCESS) { return CL_SUCCESS; }
 			static constexpr auto retain  = success;
 			static constexpr auto release = success;
 		#endif
+
 			static constexpr auto getInfo = clGetDeviceInfo;
 		};
 	}
@@ -87,7 +87,11 @@ namespace cl {
 	public:
 		auto inline getAddressBits() const                    -> cl_uint;
 		auto inline isAvailable() const                       -> cl_bool;
+
+	#if defined(CL_VERSION_1_2)
 		auto inline getBuiltinKernels() const                 -> std::vector<std::string>;
+	#endif // defined(CL_VERSION_1_2)
+
 		auto inline isCompilerAvailable() const               -> cl_bool;
 		auto inline getFpConfig(FPType type) const            -> FPConfig;
 		auto inline isLittleEndian() const                    -> cl_bool;
@@ -111,13 +115,18 @@ namespace cl {
 		auto inline getImage3DMaxWidth() const  -> size_t;
 		auto inline getImage3DMaxDepth() const  -> size_t;
 
+	#if defined(CL_VERSION_1_2)
 		auto inline getImageBaseAddressAlignment() const -> cl_uint;
 		auto inline getImageMaxArraySize() const         -> size_t;
 		auto inline getImageMaxBufferSize() const        -> size_t;
 		auto inline getImagePitchAlignment() const       -> cl_uint;
+	#endif // defined(CL_VERSION_1_2)
+
 		auto inline hasImageSupport() const              -> cl_bool;
 
+	#if defined(CL_VERSION_1_2)
 		auto inline isLinkerAvailable() const   -> cl_bool;
+	#endif // defined(CL_VERSION_1_2)
 
 		auto inline getLocalMemorySize() const  -> cl_ulong;
 		auto inline getLocalMemoryType() const  -> LocalMemoryType;
@@ -126,16 +135,30 @@ namespace cl {
 		auto inline getMaxComputeUnits() const         -> cl_uint;
 		auto inline getMaxConstantArgs() const         -> cl_uint;
 		auto inline getMaxConstantBufferSize() const   -> cl_ulong;
+
+	#if defined(CL_VERSION_2_0)
 		auto inline getMaxGlobalVariableSize() const   -> size_t;
+	#endif // defined(CL_VERSION_2_0)
+
 		auto inline getMaxMemoryAllocationSize() const -> cl_ulong;
+
+	#if defined(CL_VERSION_2_0)
 		auto inline getMaxOnDeviceEvents() const       -> cl_uint;
 		auto inline getMaxOnDeviceQueues() const       -> cl_uint;
+	#endif // defined(CL_VERSION_2_0)
+
 		auto inline getMaxParameterSize() const        -> size_t;
+
 	#if defined(CL_VERSION_2_0)
 		auto inline getMaxPipeArgs() const             -> cl_uint;
 	#endif // defined(CL_VERSION_2_0)
+
 		auto inline getMaxReadImageArgs() const        -> cl_uint;
+
+	#if defined(CL_VERSION_2_0)
 		auto inline getMaxReadWriteImageArgs() const   -> cl_uint;
+	#endif // defined(CL_VERSION_2_0)
+
 		auto inline getMaxSamplers() const             -> cl_uint;
 		auto inline getMaxWorkGroupSize() const        -> size_t;
 		auto inline getMaxWorkItemDimensions() const   -> cl_uint;
@@ -162,26 +185,38 @@ namespace cl {
 	#endif // defined(CL_VERSION_2_0)
 
 		auto inline getPlatform() const                         -> Platform;
-		auto inline getPreferredGlobalAtomicAlignment() const   -> cl_uint;
+
+	#if defined(CL_VERSION_1_2)
 		auto inline hasPreferredInteropUserSync() const         -> cl_bool;
+	#endif // defined(CL_VERSION_1_2)
+
+	#if defined(CL_VERSION_2_0)
+		auto inline getPreferredGlobalAtomicAlignment() const   -> cl_uint;
 		auto inline getPreferredLocalAtomicAlignment() const    -> cl_uint;
 		auto inline getPreferredPlatformAtomicAlignment() const -> cl_uint;
+	#endif // defined(CL_VERSION_2_0)
+
 		auto inline getPreferredVectorWidth(ScalarType type) const -> cl_uint;
 
+	#if defined(CL_VERSION_1_2)
 		auto inline getPrintfBufferSize() const               -> size_t;
+	#endif // defined(CL_VERSION_1_2)
+
 		auto inline getProfile() const                        -> std::string;
 		auto inline getProfilingTimerResolution() const       -> size_t;
 
+	#if defined(CL_VERSION_2_0)
 		auto inline getQueueOnDeviceMaxSize() const           -> cl_uint;
 		auto inline getQueueOnDevicePreferredSize() const     -> cl_uint;
-	#if defined(CL_VERSION_2_0)
 		auto inline getQueueOnDeviceFlags() const        -> CommandQueueFlags;
 		auto inline getQueueOnHostFlags() const          -> CommandQueueFlags;
 	#else
 		auto inline getCommandQueueFlags() const                     -> CommandQueueFlags;
 	#endif // defined(CL_VERSION_2_0)
 
+	#if defined(CL_VERSION_1_2)
 		auto inline getReferenceCount() const                 -> cl_uint;
+	#endif // defined(CL_VERSION_1_2)
 
 //		'use of undeclared CL_DEVICE_SPIR_VERSIONS' in OpenCL 2.0 conformant code ...
 //		auto inline getSpirVersions() const                   -> std::vector<std::string>;

@@ -17,10 +17,7 @@ namespace cl {
 			using cl_type   = cl_platform_id;
 			using info_type = cl_platform_info;
 
-//			static inline auto retain (cl_type) -> decltype(CL_SUCCESS) { return CL_SUCCESS; }
-//			static inline auto release(cl_type) -> decltype(CL_SUCCESS) { return CL_SUCCESS; }
-
-			static constexpr inline auto success(cl_type) -> decltype(CL_SUCCESS) { return CL_SUCCESS; }
+			static constexpr auto success(cl_type) -> decltype(CL_SUCCESS) { return CL_SUCCESS; }
 
 			static constexpr auto retain  = success;
 			static constexpr auto release = success;
