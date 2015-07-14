@@ -32,6 +32,14 @@ namespace cl {
 			template<template<class, size_t> class A, class T, size_t N>
 			auto toByteArray(A<T,N> const& values) const -> A<T,N>;
 
+		#if defined(CL_VERSION_1_2)
+			static constexpr auto blockingOperation = CL_BLOCKING;
+			static constexpr auto asyncOperation    = CL_NON_BLOCKING;
+		#else
+			static constexpr auto blockingOperation = CL_TRUE;
+			static constexpr auto asyncOperation    = CL_NON_BLOCKING;
+		#endif // defined(CL_VERSION_1_2)
+
 			//============================================================================
 			// Constructors and Assignment
 			//============================================================================

@@ -93,28 +93,28 @@ namespace cl {
 		void CommandQueueExecutor::readBufferBlocked(
 			Buffer<T> const& buffer, size_t offset, OutputIterator first, OutputIterator last
 		) const {
-			readBufferImpl<CL_BLOCKING>(buffer, offset, first, last);
+			readBufferImpl<blockingOperation>(buffer, offset, first, last);
 		}
 
 		template<typename OutputIterator, typename T>
 		void CommandQueueExecutor::readBufferBlocked(
 			Buffer<T> const& buffer, OutputIterator first, OutputIterator last
 		) const {
-			readBufferImpl<CL_BLOCKING>(buffer, 0, first, last);
+			readBufferImpl<blockingOperation>(buffer, 0, first, last);
 		}
 
 		template<typename OutputIterator, typename T>
 		auto CommandQueueExecutor::readBuffer(
 			Buffer<T> const& buffer, size_t offset, OutputIterator first, OutputIterator last
 		) const -> Event {
-			return readBufferImpl<CL_NON_BLOCKING>(buffer, offset, first, last);
+			return readBufferImpl<asyncOperation>(buffer, offset, first, last);
 		}
 
 		template<typename OutputIterator, typename T>
 		auto CommandQueueExecutor::readBuffer(
 			Buffer<T> const& buffer, OutputIterator first, OutputIterator last
 		) const -> Event {
-			return readBufferImpl<CL_NON_BLOCKING>(buffer, 0, first, last);
+			return readBufferImpl<asyncOperation>(buffer, 0, first, last);
 		}
 
 		//============================================================================
@@ -146,28 +146,28 @@ namespace cl {
 		void CommandQueueExecutor::writeBufferBlocked(
 			Buffer<T> const& buffer, size_t offset, InputIterator first, InputIterator last
 		) const {
-			writeBufferImpl<CL_BLOCKING>(buffer, offset, first, last);
+			writeBufferImpl<blockingOperation>(buffer, offset, first, last);
 		}
 
 		template<typename InputIterator, typename T>
 		void CommandQueueExecutor::writeBufferBlocked(
 			Buffer<T> const& buffer, InputIterator first, InputIterator last
 		) const {
-			writeBufferImpl<CL_BLOCKING>(buffer, 0, first, last);
+			writeBufferImpl<blockingOperation>(buffer, 0, first, last);
 		}
 
 		template<typename InputIterator, typename T>
 		auto CommandQueueExecutor::writeBuffer(
 			Buffer<T> const& buffer, size_t offset, InputIterator first, InputIterator last
 		) const -> Event {
-			return writeBufferImpl<CL_NON_BLOCKING>(buffer, offset, first, last);
+			return writeBufferImpl<asyncOperation>(buffer, offset, first, last);
 		}
 
 		template<typename InputIterator, typename T>
 		auto CommandQueueExecutor::writeBuffer(
 			Buffer<T> const& buffer, InputIterator first, InputIterator last
 		) const -> Event {
-			return writeBufferImpl<CL_NON_BLOCKING>(buffer, 0, first, last);
+			return writeBufferImpl<asyncOperation>(buffer, 0, first, last);
 		}
 
 		//============================================================================
@@ -189,7 +189,7 @@ namespace cl {
 				typename Buffer<T>::value_type>::value,
 				"value_type of OutIterator must be the same as value_type of buffer");
 			auto error = clEnqueueReadBufferRect(
-				getQueueId(), buffer.get(), CL_BLOCKING,
+				getQueueId(), buffer.get(), blockingOperation,
 				toByteArray(bufferOrigin).data(),
 				toByteArray(hostOrigin).data(),
 				toByteArray(region).data(),
@@ -217,7 +217,7 @@ namespace cl {
 				"value_type of OutIterator must be the same as value_type of buffer");
 			auto eventId = cl_event{nullptr};
 			auto error   = clEnqueueReadBufferRect(
-				getQueueId(), buffer.get(), CL_NON_BLOCKING,
+				getQueueId(), buffer.get(), asyncOperation,
 				toByteArray(bufferOrigin).data(),
 				toByteArray(hostOrigin).data(),
 				toByteArray(region).data(),
@@ -249,7 +249,7 @@ namespace cl {
 				typename Buffer<T>::value_type>::value,
 				"value_type of InIterator must be the same as value_type of buffer");
 			auto error = clEnqueueWriteBufferRect(
-				getQueueId(), buffer.get(), CL_BLOCKING,
+				getQueueId(), buffer.get(), blockingOperation,
 				toByteArray(bufferOrigin).data(),
 				toByteArray(hostOrigin).data(),
 				toByteArray(region).data(),
@@ -277,7 +277,7 @@ namespace cl {
 				"value_type of InIterator must be the same as value_type of buffer");
 			auto eventId = cl_event{nullptr};
 			auto error   = clEnqueueWriteBufferRect(
-				getQueueId(), buffer.get(), CL_NON_BLOCKING,
+				getQueueId(), buffer.get(), asyncOperation,
 				toByteArray(bufferOrigin).data(),
 				toByteArray(hostOrigin).data(),
 				toByteArray(region).data(),
@@ -403,14 +403,14 @@ namespace cl {
 			size_t offset, size_t size,
 			MappedMemory<T> & result
 		) const {
-			mapBufferImpl<CL_BLOCKING>(buffer, access, offset, size, result);
+			mapBufferImpl<blockingOperation>(buffer, access, offset, size, result);
 		}
 
 		template<typename T>
 		void CommandQueueExecutor::mapBufferBlocked(
 			Buffer<T> const& buffer, MapAccess access, MappedMemory<T> & result
 		) const {
-			mapBufferImpl<CL_BLOCKING>(buffer, access, 0, buffer.getSize(), result);
+			mapBufferImpl<blockingOperation>(buffer, access, 0, buffer.getSize(), result);
 		}
 
 		template<typename T>
@@ -420,14 +420,14 @@ namespace cl {
 			size_t offset, size_t size,
 			MappedMemory<T> & result
 		) const -> Event {
-			return mapBufferImpl<CL_NON_BLOCKING>(buffer, access, offset, size, result);
+			return mapBufferImpl<asyncOperation>(buffer, access, offset, size, result);
 		}
 
 		template<typename T>
 		auto CommandQueueExecutor::mapBuffer(
 			Buffer<T> const& buffer, MapAccess access, MappedMemory<T> & result
 		) const -> Event {
-			return mapBufferImpl<CL_NON_BLOCKING>(buffer, access, 0, buffer.getSize(), result);
+			return mapBufferImpl<asyncOperation>(buffer, access, 0, buffer.getSize(), result);
 		}
 
 		//============================================================================
