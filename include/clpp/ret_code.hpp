@@ -15,14 +15,14 @@ namespace cl {
 	public:
 		static inline auto getPreset() -> RetCode const&;
 
-		inline RetCode();
-		inline RetCode(id_type id);
-		inline RetCode(RetCode const& other);
-		inline RetCode(RetCode && other) = default;
+		constexpr inline RetCode();
+		constexpr inline RetCode(id_type id);
+		constexpr inline RetCode(RetCode const& other);
+		constexpr inline RetCode(RetCode && other) = default;
 
-		inline auto operator=(RetCode const& rhs) -> RetCode &;
-		inline auto operator=(RetCode && rhs)     -> RetCode & = default;
-		inline auto operator=(id_type const& rhs)  -> RetCode &;
+		constexpr inline auto operator=(RetCode const& rhs) -> RetCode &;
+		constexpr inline auto operator=(RetCode && rhs)     -> RetCode & = default;
+		constexpr inline auto operator=(id_type const& rhs)  -> RetCode &;
 
 		inline constexpr auto operator==(RetCode const& rhs) -> bool;
 		inline constexpr auto operator!=(RetCode const& rhs) -> bool;

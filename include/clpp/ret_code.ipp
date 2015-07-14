@@ -10,28 +10,28 @@
 
 namespace cl {
 	auto RetCode::getPreset() -> RetCode const& {
-		static const auto instance = RetCode{c_presetId};
+		static const RetCode instance = RetCode{c_presetId};
 		return instance;
 	}
 
-	RetCode::RetCode():
+	constexpr RetCode::RetCode():
 		m_id{c_presetId}
 	{}
 
-	RetCode::RetCode(id_type id):
+	constexpr RetCode::RetCode(id_type id):
 		m_id{id}
 	{}
 
-	RetCode::RetCode(RetCode const& other) {
-		m_id = other.m_id;
-	}
+	constexpr RetCode::RetCode(RetCode const& other):
+		m_id{other.m_id}
+	{}
 
-	auto RetCode::operator=(RetCode const& rhs) -> RetCode & {
+	constexpr auto RetCode::operator=(RetCode const& rhs) -> RetCode & {
 		m_id = rhs.m_id;
 		return *this;
 	}
 
-	auto RetCode::operator=(id_type const& rhs) -> RetCode & {
+	constexpr auto RetCode::operator=(id_type const& rhs) -> RetCode & {
 		m_id = rhs;
 		return *this;
 	}

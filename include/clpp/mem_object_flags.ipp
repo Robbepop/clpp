@@ -35,7 +35,7 @@ namespace cl {
 
 	auto MemoryFlags::allowsHostReadWrite() -> bool {
 	#if defined(CL_VERSION_1_2)
-		return !allowsHostReadOnly() && !allowsHostWriteOnly && !allowsHostNoAccess();
+		return !allowsHostReadOnly() && !allowsHostWriteOnly() && !allowsHostNoAccess();
 	#else
 		return true;
 	#endif
