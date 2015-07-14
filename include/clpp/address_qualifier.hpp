@@ -1,4 +1,4 @@
-#if defined(CL_VERSION_2_0)
+#if defined(CL_VERSION_1_2)
 
 #ifndef CLPP_ADDRESS_QUALIFIER_HPP
 #define CLPP_ADDRESS_QUALIFIER_HPP
@@ -15,4 +15,4 @@ namespace cl {
 }
 
 #endif // CLPP_ADDRESS_QUALIFIER_HPP
-#endif // defined(CL_VERSION_2_0)
+#endif // defined(CL_VERSION_1_2)

@@ -62,7 +62,12 @@ namespace cl {
 		#endif // defined(CL_VERSION_1_2)
 			CLPP_FUNC_GETTER(clEnqueueMapBuffer);
 
+		#if defined(CL_VERSION_1_2)
 			CLPP_FUNC_GETTER(clCreateImage);
+		#else
+			CLPP_FUNC_GETTER(clCreateImage2D);
+			CLPP_FUNC_GETTER(clCreateImage3D);
+		#endif
 			CLPP_FUNC_GETTER(clGetSupportedImageFormats);
 			CLPP_FUNC_GETTER(clEnqueueReadImage);
 			CLPP_FUNC_GETTER(clEnqueueWriteImage);
@@ -84,14 +89,20 @@ namespace cl {
 			CLPP_FUNC_GETTER(clReleaseMemObject);
 			CLPP_FUNC_GETTER(clSetMemObjectDestructorCallback);
 
+		#if defined(CL_VERSION_2_0)
 			CLPP_FUNC_GETTER(clCreateSamplerWithProperties);
+		#else
+			CLPP_FUNC_GETTER(clCreateSampler);
+		#endif
 			CLPP_FUNC_GETTER(clRetainSampler);
 			CLPP_FUNC_GETTER(clReleaseSampler);
 			CLPP_FUNC_GETTER(clGetSamplerInfo);
 
 			CLPP_FUNC_GETTER(clCreateProgramWithSource);
 			CLPP_FUNC_GETTER(clCreateProgramWithBinary);
+		#if defined(CL_VERSION_1_2)
 			CLPP_FUNC_GETTER(clCreateProgramWithBuiltInKernels);
+		#endif // defined(CL_VERSION_1_2)
 			CLPP_FUNC_GETTER(clRetainProgram);
 			CLPP_FUNC_GETTER(clReleaseProgram);
 			CLPP_FUNC_GETTER(clBuildProgram);
@@ -110,13 +121,17 @@ namespace cl {
 			CLPP_FUNC_GETTER(clCreateKernel);
 			CLPP_FUNC_GETTER(clCreateKernelsInProgram);
 			CLPP_FUNC_GETTER(clGetKernelInfo);
+		#if defined(CL_VERSION_1_2)
 			CLPP_FUNC_GETTER(clGetKernelArgInfo);
+		#endif // defined(CL_VERSION_1_2)
 			CLPP_FUNC_GETTER(clGetKernelWorkGroupInfo);
 			CLPP_FUNC_GETTER(clRetainKernel);
 			CLPP_FUNC_GETTER(clReleaseKernel);
 			CLPP_FUNC_GETTER(clSetKernelArg);
+		#if defined(CL_VERSION_2_0)
 			CLPP_FUNC_GETTER(clSetKernelArgSVMPointer);
 			CLPP_FUNC_GETTER(clSetKernelExecInfo);
+		#endif // defined(CL_VERSION_2_0)
 
 			CLPP_FUNC_GETTER(clEnqueueNDRangeKernel);
 			CLPP_FUNC_GETTER(clEnqueueNativeKernel);

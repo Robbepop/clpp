@@ -91,8 +91,16 @@ namespace cl {
 				equals(::clEnqueueMapBuffer) ?
 				    clf::clEnqueueMapBuffer():
 
+			#if defined(CL_VERSION_1_2)
 				equals(::clCreateImage) ?
 				    clf::clCreateImage():
+			#else
+				equals(::clCreateImage2D) ?
+				    clf::clCreateImage2D():
+				equals(::clCreateImage3D) ?
+				    clf::clCreateImage3D():
+			#endif // defined(CL_VERSION_1_2)
+
 				equals(::clGetSupportedImageFormats) ?
 				    clf::clGetSupportedImageFormats():
 				equals(::clEnqueueReadImage) ?
@@ -129,8 +137,13 @@ namespace cl {
 				equals(::clSetMemObjectDestructorCallback) ?
 				    clf::clSetMemObjectDestructorCallback():
 
+			#if defined(CL_VERSION_2_0)
 				equals(::clCreateSamplerWithProperties) ?
 				    clf::clCreateSamplerWithProperties():
+			#else
+				equals(::clCreateSampler) ?
+				    clf::clCreateSampler():
+			#endif // defined(CL_VERSION_2_0)
 				equals(::clRetainSampler) ?
 				    clf::clRetainSampler():
 				equals(::clReleaseSampler) ?
@@ -142,8 +155,10 @@ namespace cl {
 				    clf::clCreateProgramWithSource():
 				equals(::clCreateProgramWithBinary) ?
 				    clf::clCreateProgramWithBinary():
+			#if defined(CL_VERSION_1_2)
 				equals(::clCreateProgramWithBuiltInKernels) ?
 				    clf::clCreateProgramWithBuiltInKernels():
+			#endif // defined(CL_VERSION_1_2)
 				equals(::clRetainProgram) ?
 				    clf::clRetainProgram():
 				equals(::clReleaseProgram) ?
@@ -171,8 +186,10 @@ namespace cl {
 				    clf::clCreateKernelsInProgram():
 				equals(::clGetKernelInfo) ?
 				    clf::clGetKernelInfo():
+			#if defined(CL_VERSION_1_2)
 				equals(::clGetKernelArgInfo) ?
 				    clf::clGetKernelArgInfo():
+			#endif // defined(CL_VERSION_1_2)
 				equals(::clGetKernelWorkGroupInfo) ?
 				    clf::clGetKernelWorkGroupInfo():
 				equals(::clRetainKernel) ?
@@ -181,10 +198,12 @@ namespace cl {
 				    clf::clReleaseKernel():
 				equals(::clSetKernelArg) ?
 				    clf::clSetKernelArg():
+			#if defined(CL_VERSION_2_0)
 				equals(::clSetKernelArgSVMPointer) ?
 				    clf::clSetKernelArgSVMPointer():
 				equals(::clSetKernelExecInfo) ?
 				    clf::clSetKernelExecInfo():
+			#endif // defined(CL_VERSION_2_0)
 
 				equals(::clEnqueueNDRangeKernel) ?
 				    clf::clEnqueueNDRangeKernel():

@@ -1,4 +1,4 @@
-#if defined(CL_VERSION_2_0)
+#if defined(CL_VERSION_1_2)
 
 #ifdef  CLPP_TYPE_QUALIFIER_IPP
 	#error "multiple inclusions of the same implementation file"
@@ -29,4 +29,4 @@ namespace cl {
 }
 
 #endif // CLPP_TYPE_QUALIFIER_IPP
-#endif // defined(CL_VERSION_2_0)
+#endif // defined(CL_VERSION_1_2)

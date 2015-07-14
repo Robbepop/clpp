@@ -1,11 +1,11 @@
-#ifdef  CLPP_RET_CODE2_IPP
+#ifdef  CLPP_RET_CODE_IPP
 	#error "multiple inclusions of the same implementation file"
 #else
-#define CLPP_RET_CODE2_IPP
+#define CLPP_RET_CODE_IPP
 
-#ifndef CLPP_RET_CODE2_HPP
+#ifndef CLPP_RET_CODE_HPP
 	#error "header file has not been included; maybe it isn't required anymore?"
-	#include "clpp/ret_code2.hpp"
+	#include "clpp/ret_code.hpp"
 #endif
 
 namespace cl {
