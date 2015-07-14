@@ -7,7 +7,7 @@
 	#include <CL/cl.h>
 #endif
 
-//#undef CL_VERSION_2_0
-//#undef CL_VERSION_1_2
+#undef CL_VERSION_2_0
+#undef CL_VERSION_1_2
 
 #endif

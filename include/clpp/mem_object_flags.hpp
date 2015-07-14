@@ -16,9 +16,12 @@ namespace cl {
 		auto inline allocHostPtr() -> bool;
 		auto inline copyHostPtr()  -> bool;
 
+		auto inline allowsHostReadWrite() -> bool;
+	#if defined(CL_VERSION_1_2)
 		auto inline allowsHostReadOnly()  -> bool;
 		auto inline allowsHostWriteOnly() -> bool;
 		auto inline allowsHostNoAccess()  -> bool;
+	#endif // defined(CL_VERSION_1_2)
 	};
 }
 

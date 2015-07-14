@@ -76,9 +76,11 @@ namespace cl {
 		return getInfo<size_t>(CL_MEM_OFFSET);
 	}
 
+#if defined(CL_VERSION_2_0)
 	auto MemObject::usesSvmPointer() const -> cl_bool {
 		return getInfo<cl_bool>(CL_MEM_USES_SVM_POINTER);
 	}
+#endif // defined(CL_VERSION_2_0)
 }
 
 #endif

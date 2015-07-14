@@ -33,6 +33,15 @@ namespace cl {
 		return readMask<CL_MEM_COPY_HOST_PTR>();
 	}
 
+	auto MemoryFlags::allowsHostReadWrite() -> bool {
+	#if defined(CL_VERSION_1_2)
+		return !allowsHostReadOnly() && !allowsHostWriteOnly && !allowsHostNoAccess();
+	#else
+		return true;
+	#endif
+	}
+
+#if defined(CL_VERSION_1_2)
 	auto MemoryFlags::allowsHostReadOnly() -> bool {
 		return readMask<CL_MEM_HOST_WRITE_ONLY>();
 	}
@@ -44,6 +53,7 @@ namespace cl {
 	auto MemoryFlags::allowsHostNoAccess() -> bool {
 		return readMask<CL_MEM_HOST_NO_ACCESS>();
 	}
+#endif // defined(CL_VERSION_1_2)
 }
 
 #endif

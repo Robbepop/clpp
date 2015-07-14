@@ -54,7 +54,10 @@ namespace cl {
 		auto inline getContext() const             -> std::unique_ptr<Context>;
 		auto inline getAssociatedMemObject() const -> boost::optional<std::unique_ptr<MemObject>>;
 		auto inline getOffset() const              -> size_t;
+
+	#if defined(CL_VERSION_2_0)
 		auto inline usesSvmPointer() const         -> cl_bool;
+	#endif // defined(CL_VERSION_2_0)
 	};
 }
 
