@@ -24,16 +24,16 @@ namespace cl {
 		constexpr inline auto operator=(RetCode && rhs)     -> RetCode & = default;
 		constexpr inline auto operator=(id_type const& rhs)  -> RetCode &;
 
-		inline constexpr auto operator==(RetCode const& rhs) -> bool;
-		inline constexpr auto operator!=(RetCode const& rhs) -> bool;
+		constexpr inline auto operator==(RetCode const& rhs) -> bool;
+		constexpr inline auto operator!=(RetCode const& rhs) -> bool;
 
 		inline auto data() -> id_type*;
 
-		inline constexpr auto isError() const   -> bool;
-		inline constexpr auto isSuccess() const -> bool;
+		constexpr inline auto isError() const   -> bool;
+		constexpr inline auto isSuccess() const -> bool;
 
-		inline constexpr auto getCLId() const   -> id_type;
-		inline constexpr auto getCLName() const -> std::experimental::string_view;
+		constexpr inline auto getCLId() const   -> id_type;
+		constexpr inline auto getCLName() const -> std::experimental::string_view;
 
 	private:
 		id_type m_id;
