@@ -3,15 +3,12 @@
 #include <string>
 #include <fstream>
 
-#include "clpp/utility/to_underlying.hpp"
 #include "clpp.hpp"
 
 #include <type_traits>
 #include <unordered_map>
 #include <map>
 #include <random>
-
-#include "clpp/detail/cl_function.hpp"
 
 namespace utility {
 	auto readFile(std::string const& filePath) -> std::string {

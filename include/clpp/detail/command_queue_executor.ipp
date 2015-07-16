@@ -10,6 +10,7 @@
 
 #include "clpp/utility/concepts.hpp"
 #include "clpp/utility/count_elements.hpp"
+#include "clpp/utility/to_underlying.hpp"
 
 #include "clpp/event.hpp"
 #include "clpp/command_queue.hpp"
