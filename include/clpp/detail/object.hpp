@@ -43,7 +43,7 @@ namespace cl {
 			//============================================================================
 			// Returns the underlying OpenCL data of the wrapped object.
 			//============================================================================
-			auto get() const -> cl_type;
+			auto get() const -> cl_type const&;
 		protected:
 			cl_type m_object;
 

@@ -16,7 +16,7 @@ namespace cl {
 	namespace detail {
 
 		template<typename CLType>
-		auto Object<CLType>::get() const -> Object<CLType>::cl_type {
+		auto Object<CLType>::get() const -> Object<CLType>::cl_type const& {
 			return m_object;
 		}
 
