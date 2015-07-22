@@ -47,8 +47,8 @@ namespace cl {
 	//================================================================================
 
 	template<typename T>
-	auto getInfo(
-		cl_uint index, cl_kernel_work_group_info info
+	auto KernelWorkGroup::getInfo(
+		cl_kernel_work_group_info infoId
 	) const -> T {
 		auto error = RetCode::getPreset();
 		auto info  = T{};
@@ -59,8 +59,8 @@ namespace cl {
 	}
 
 	template<typename T>
-	auto getInfoVector(
-		cl_uint index, cl_kernel_work_group_info info
+	auto KernelWorkGroup::getInfoVector(
+		cl_kernel_work_group_info infoId
 	) const -> std::vector<T> {
 		auto error = RetCode::getPreset();
 		auto bufferSize = size_t{0};
@@ -69,7 +69,7 @@ namespace cl {
 		detail::handleError(detail::CLFunction::clGetKernelWorkGroupInfo(), error);
 		auto countElems = bufferSize / sizeof(T);
 		auto info = std::vector<T>(countElems);
-		error = clGetKernelArgInfo(
+		error = clGetKernelWorkGroupInfo(
 			m_kernel.get(), m_device.get(), infoId, bufferSize, info.data(), nullptr);
 		detail::handleError(detail::CLFunction::clGetKernelWorkGroupInfo(), error);
 		return info;

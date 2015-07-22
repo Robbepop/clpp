@@ -42,6 +42,8 @@
 #include "clpp/execution_capabilities.ipp"
 #include "clpp/fp_config.ipp"
 #include "clpp/kernel.ipp"
+#include "clpp/kernel_arg.ipp"
+#include "clpp/kernel_work_group.ipp"
 #include "clpp/local_memory.ipp"
 #include "clpp/mapped_memory.ipp"
 #include "clpp/mem_object.ipp"

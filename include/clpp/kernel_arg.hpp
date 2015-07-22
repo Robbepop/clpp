@@ -36,28 +36,28 @@ namespace cl {
 		// Information retrival functions.
 		//================================================================================
 	public:
-		auto inline getArgAddressQualifier(cl_uint index) const -> AddressQualifier;
-		auto inline getArgAccessQualifier(cl_uint index) const  -> AccessQualifier;
-		auto inline getArgTypeName(cl_uint index) const         -> std::string;
-		auto inline getArgTypeQualifier(cl_uint index) const    -> TypeQualifier;
-		auto inline getArgName(cl_uint index) const             -> std::string;
+		auto inline getAddressQualifier() const -> AddressQualifier;
+		auto inline getAccessQualifier() const  -> AccessQualifier;
+		auto inline getTypeName() const         -> std::string;
+		auto inline getTypeQualifier() const    -> TypeQualifier;
+		auto inline getName() const             -> std::string;
 
 		//================================================================================
 		// Helper functions used to retrieve information.
 		//================================================================================
 	private:
 		template<typename T>
-		auto getArgInfo(
-			cl_uint index, cl_kernel_arg_info info
+		auto getInfo(
+			cl_kernel_arg_info info
 		) const -> T;
 
 		template<typename T>
-		auto getArgInfoVector(
-			cl_uint index, cl_kernel_arg_info info
+		auto getInfoVector(
+			cl_kernel_arg_info info
 		) const -> std::vector<T>;
 
-		auto inline getArgInfoString(
-			cl_uint index, cl_kernel_arg_info info
+		auto inline getInfoString(
+			cl_kernel_arg_info info
 		) const -> std::string;
 
 

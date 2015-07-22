@@ -53,12 +53,12 @@ namespace cl {
 	private:
 		template<typename T>
 		auto getInfo(
-			cl_uint index, cl_kernel_work_group_info info
+			cl_kernel_work_group_info info
 		) const -> T;
 
 		template<typename T>
 		auto getInfoVector(
-			cl_uint index, cl_kernel_work_group_info info
+			cl_kernel_work_group_info info
 		) const -> std::vector<T>;
 
 // not required right now
