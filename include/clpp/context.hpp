@@ -5,6 +5,7 @@
 #include "clpp/detail/object.hpp"
 #include "clpp/device.hpp"
 #include "clpp/command_queue.hpp"
+#include "clpp/command_queue_properties.hpp"
 #include "clpp/context_properties.hpp"
 #include "clpp/device_access.hpp"
 #include "clpp/host_access.hpp"
@@ -112,6 +113,18 @@ namespace cl {
 		//================================================================================
 
 		auto inline createCommandQueue(Device const& device) const -> CommandQueue;
+
+		auto inline createCommandQueue(
+			Device const& device,
+			CommandQueueFlags const& flags
+		) const -> CommandQueue;
+
+	#if defined(CL_VERSION_2_0)
+		auto inline createCommandQueue(
+			Device const& device,
+			CommandQueueProperties const& properties
+		) const -> CommandQueue;
+	#endif // defined(CL_VERSION_1_2)
 
 		//================================================================================
 		// Create Memory Objects

@@ -233,19 +233,55 @@ namespace cl {
 	//================================================================================
 
 	auto Context::createCommandQueue(Device const& device) const -> CommandQueue {
-		auto error   = RetCode::getPreset();
+		auto error = RetCode::getPreset();
 		#if defined(CL_VERSION_2_0)
 			auto queueId = clCreateCommandQueueWithProperties(
 				get(), device.get(), nullptr, error.data());
-			detail::handleError(detail::CLFunction::clCreateCommandQueueWithProperties(), error);
-			return {queueId};
+			detail::handleError(
+				detail::CLFunction::clCreateCommandQueueWithProperties(), error);
 		#else
 			auto queueId = clCreateCommandQueue(
 				get(), device.get(), CommandQueueFlags::null, error.data());
-			detail::handleError(detail::CLFunction::clCreateCommandQueue(), error);
-			return {queueId};
-		#endif
+			detail::handleError(
+				detail::CLFunction::clCreateCommandQueue(), error);
+		#endif // defined(CL_VERSION_2_0)
+		return {queueId};
 	}
+
+	auto Context::createCommandQueue(
+		Device const& device,
+		CommandQueueFlags const& flags
+	) const -> CommandQueue {
+		auto error = RetCode::getPreset();
+		#if defined(CL_VERSION_2_0)
+			auto props   = CommandQueueProperties{};
+			props.setCommandQueueFlags(flags);
+			auto queueId = clCreateCommandQueueWithProperties(
+				get(), device.get(), props.data().data(), error.data());
+			detail::handleError(
+				detail::CLFunction::clCreateCommandQueueWithProperties(), error);
+		#else
+			auto queueId = clCreateCommandQueue(
+				get(), device.get(), flags, error.data());
+			detail::handleError(
+				detail::CLFunction::clCreateCommandQueue(), error);
+		#endif // defined(CL_VERSION_2_0)
+		return {queueId};
+	}
+
+#if defined(CL_VERSION_2_0)
+	auto Context::createCommandQueue(
+		Device const& device,
+		CommandQueueProperties const& properties
+	) const -> CommandQueue {
+		auto error = RetCode::getPreset();
+		auto queueId = clCreateCommandQueueWithProperties(
+			get(), device.get(), properties.data().data(), error.data());
+		detail::handleError(
+			detail::CLFunction::clCreateCommandQueueWithProperties(), error);
+		return {queueId};
+	}
+#endif // defined(CL_VERSION_1_2)
 
 	//================================================================================
 	// Create Memory Objects
