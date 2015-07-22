@@ -45,6 +45,18 @@ namespace cl {
 	}
 
 	template<size_t N>
+	auto NDRange<N>::operator[](size_t index) -> size_t& {
+		assert(index <= N);
+		return m_data[index];
+	}
+
+	template<size_t N>
+	auto NDRange<N>::operator[](size_t index) const -> size_t const& {
+		assert(index <= N);
+		return m_data[index];
+	}
+
+	template<size_t N>
 	auto NDRange<N>::size() const -> size_t {
 		return m_data.size();
 	}

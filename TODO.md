@@ -1,9 +1,8 @@
 Improvements & Bug fixes:
-- Context Properties implementation uses ugly C-style casts in the get and set methods.
-- Add convenience methods for context creation as Context::createBest() etc. based on
-  the Context with the Device with the most compute units.
-- Add convenience methods for command queue creation as Context::createDefaultQueue() etc.
-- Context's constructor with callback still requires 'new' keyword with current implementation.
+- Property Lists implementation uses ugly C-style casts in the get and set methods.
+- After thinking about why I should add this:
+      -> Add convenience methods for command queue creation as Context::createDefaultQueue() etc.
+- Replace Context constructors with old and memory leaking wrappers around function callback.
 
 Experimental:
 - Maybe add a CompileOptions class for an improved experience setting the compile and link options.
@@ -12,14 +11,6 @@ Experimental:
 	-> (maybe) Partition constructor
 
 TODO:
-- Implement global error info table with the new exceptions.
-- Implementation of Context:
-    - replace current constructors with named constructors.
-    - add constructors without a properties parameter:
-        - Context::createForDevices(device1, device2, ...); // may also take only one argument
-        - Context::createForDevices(deviceRange);
-        - Context::createForType(deviceType);
-    - add Context::createDefault();
 - Implementation of CommandQueue:
     - read/write (rect) image functions
 	- add all possible operations for ranges building on top of their iterator based counterparts.

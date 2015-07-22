@@ -6,6 +6,9 @@
 #include "clpp/access_qualifier.hpp"
 #include "clpp/type_qualifier.hpp"
 
+#include "clpp/kernel_arg.hpp"
+#include "clpp/kernel_work_group.hpp"
+
 namespace cl {
 	namespace detail {
 		template<>
@@ -57,35 +60,15 @@ namespace cl {
 		// Used to retrieve information about kernel arguments.
 		//================================================================================
 	#if defined(CL_VERSION_1_2)
-	private:
-		template<typename T>
-		auto getArgInfo(
-			cl_uint index, cl_kernel_arg_info info
-		) const -> T;
-
-		template<typename T>
-		auto getArgInfoVector(
-			cl_uint index, cl_kernel_arg_info info
-		) const -> std::vector<T>;
-
-		auto inline getArgInfoString(
-			cl_uint index, cl_kernel_arg_info info
-		) const -> std::string;
-
 	public:
-		auto inline getArgAddressQualifier(cl_uint index) const -> AddressQualifier;
-		auto inline getArgAccessQualifier(cl_uint index) const -> AccessQualifier;
-		auto inline getArgTypeName(cl_uint index) const -> std::string;
-		auto inline getArgTypeQualifier(cl_uint index) const -> TypeQualifier;
-		auto inline getArgName(cl_uint index) const -> std::string;
-
+		auto inline getArg(cl_uint index) const -> KernelArg;
 	#endif // defined(CL_VERSION_1_2)
 
 		//================================================================================
 		// Used to retrieve information about kernel work groups.
 		//================================================================================
-
-//		auto getWorkGroup(Device const& device) const -> KernelWorkGroup;
+	public:
+		auto inline getWorkGroup(Device const& device) const -> KernelWorkGroup;
 
 		//================================================================================
 		// Information access profiling helper methods.
