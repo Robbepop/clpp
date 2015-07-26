@@ -12,8 +12,8 @@ namespace cl {
 		public:
 			using std::runtime_error::runtime_error;
 
-			virtual detail::CLFunction func() const noexcept = 0;
-			virtual RetCode code() const noexcept = 0;
+			virtual auto func() const noexcept -> detail::CLFunction = 0;
+			virtual auto code() const noexcept -> RetCode = 0;
 		};
 
 		template<RetCode::id_type retCode>

@@ -262,7 +262,7 @@ namespace cl {
 				detail::CLFunction::clCreateCommandQueueWithProperties(), error);
 		#else
 			auto queueId = clCreateCommandQueue(
-				get(), device.get(), flags, error.data());
+				get(), device.get(), flags.mask(), error.data());
 			detail::handleError(
 				detail::CLFunction::clCreateCommandQueue(), error);
 		#endif // defined(CL_VERSION_2_0)
