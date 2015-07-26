@@ -16,7 +16,8 @@ namespace cl {
 
 #if defined(CL_VERSION_1_2)
 	auto KernelWorkGroup::getGlobalWorkSize() const -> NDRange<3> {
-		auto range = getInfoVector<size_t>(CL_KERNEL_GLOBAL_WORK_SIZE);
+		// auto range = getInfoVector<size_t>(CL_KERNEL_GLOBAL_WORK_SIZE);
+		auto range = getInfo<std::array<size_t, 3>>(CL_KERNEL_GLOBAL_WORK_SIZE);
 		return {range[0], range[1], range[2]};
 	}
 #endif // defined(CL_VERSION_1_2)
@@ -26,7 +27,8 @@ namespace cl {
 	}
 
 	auto KernelWorkGroup::getCompileSize() const -> NDRange<3> {
-		auto range = getInfoVector<size_t>(CL_KERNEL_COMPILE_WORK_GROUP_SIZE);
+		// auto range = getInfoVector<size_t>(CL_KERNEL_COMPILE_WORK_GROUP_SIZE);
+		auto range = getInfo<std::array<size_t, 3>>(CL_KERNEL_COMPILE_WORK_GROUP_SIZE);
 		return {range[0], range[1], range[2]};
 	}
 
@@ -54,23 +56,6 @@ namespace cl {
 		auto info  = T{};
 		error      = clGetKernelWorkGroupInfo(
 			m_kernel.get(), m_device.get(), infoId, sizeof(T), std::addressof(info), nullptr);
-		detail::handleError(detail::CLFunction::clGetKernelWorkGroupInfo(), error);
-		return info;
-	}
-
-	template<typename T>
-	auto KernelWorkGroup::getInfoVector(
-		cl_kernel_work_group_info infoId
-	) const -> std::vector<T> {
-		auto error = RetCode::getPreset();
-		auto bufferSize = size_t{0};
-		error = clGetKernelWorkGroupInfo(
-			m_kernel.get(), m_device.get(), infoId, 0, nullptr, std::addressof(bufferSize));
-		detail::handleError(detail::CLFunction::clGetKernelWorkGroupInfo(), error);
-		auto countElems = bufferSize / sizeof(T);
-		auto info = std::vector<T>(countElems);
-		error = clGetKernelWorkGroupInfo(
-			m_kernel.get(), m_device.get(), infoId, bufferSize, info.data(), nullptr);
 		detail::handleError(detail::CLFunction::clGetKernelWorkGroupInfo(), error);
 		return info;
 	}

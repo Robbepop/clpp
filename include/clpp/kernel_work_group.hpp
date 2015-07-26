@@ -56,16 +56,6 @@ namespace cl {
 			cl_kernel_work_group_info info
 		) const -> T;
 
-		template<typename T>
-		auto getInfoVector(
-			cl_kernel_work_group_info info
-		) const -> std::vector<T>;
-
-// not required right now
-//		auto inline getInfoString(
-//			cl_uint index, cl_kernel_work_group_info info
-//		) const -> std::string;
-
 	private:
 		Kernel const& m_kernel;
 		Device const& m_device;
