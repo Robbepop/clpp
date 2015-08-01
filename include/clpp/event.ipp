@@ -26,10 +26,25 @@ namespace cl {
 		wait(utility::make_array<Event>(events...));
 	}
 
-	void Event::wait() const {
+	auto Event::wait() const& -> Event const& {
 		detail::handleError(
 			detail::CLFunction::clWaitForEvents(),
 			clWaitForEvents(1, reinterpret_cast<const cl_type*>(this)));
+		return *this;
+	}
+
+	auto Event::wait() & -> Event & {
+		detail::handleError(
+			detail::CLFunction::clWaitForEvents(),
+			clWaitForEvents(1, reinterpret_cast<const cl_type*>(this)));
+		return *this;
+	}
+
+	auto Event::wait() && -> Event && {
+		detail::handleError(
+			detail::CLFunction::clWaitForEvents(),
+			clWaitForEvents(1, reinterpret_cast<const cl_type*>(this)));
+		return std::move(*this);
 	}
 
 	auto Event::operator=(const Event & rhs) -> Event & {

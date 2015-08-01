@@ -25,8 +25,13 @@ namespace cl {
 				m_func{func}
 			{}
 
-			detail::CLFunction func() const noexcept override { return m_func; }
-			RetCode code() const noexcept override { return retCode; }
+			virtual auto func() const noexcept -> detail::CLFunction override {
+				return m_func;
+			}
+
+			virtual auto code() const noexcept -> RetCode override {
+				return retCode;
+			}
 
 		private:
 			detail::CLFunction m_func = detail::CLFunction::unknown();

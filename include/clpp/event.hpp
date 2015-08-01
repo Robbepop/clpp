@@ -29,7 +29,9 @@ namespace cl {
 		template<typename... Events>
 		static void wait(Events&&...);
 
-		void inline wait() const;
+		auto inline wait() const& -> Event const&;
+		auto inline wait() &      -> Event &;
+		auto inline wait() &&     -> Event &&;
 
 		//================================================================================
 		// Constructor and Assignment
