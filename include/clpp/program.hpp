@@ -18,6 +18,8 @@ namespace cl {
 		};
 	}
 
+	class Context;
+
 	class Program final : public detail::Object<cl_program> {
 		//================================================================================
 		// Constructor and Assignment
@@ -94,12 +96,14 @@ namespace cl {
 	public:
 
 		auto inline getReferenceCount() const -> cl_uint;
-		auto inline getContext() const        -> std::unique_ptr<Context>;
+		auto inline getContext() const        -> Context;
 		auto inline getNumDevices() const     -> cl_uint;
 		auto inline getDevices() const        -> std::vector<Device>;
 		auto inline getProgramSource() const  -> std::string;
 		auto inline getBinarySizes() const    -> std::vector<size_t>;
-//		auto inline getBinaries() const       -> std::vector<std::vector<unsigned char>>;
+
+		// auto inline getBinarySizes() const -> std::unordered_map<Device, size_t>;
+		// auto inline getBinaries() const       -> std::unordered_map<Device, std::vector<unsigned char>>;
 
 	#if defined(CL_VERSION_1_2)
 		auto inline getNumKernels() const     -> cl_uint;
@@ -111,12 +115,12 @@ namespace cl {
 		//================================================================================
 	public:
 
-		auto inline getBuildStatus(Device const& device) const                  -> BuildStatus;
-		auto inline getBuildOptions(Device const& device) const                 -> std::string;
-		auto inline getBuildLog(Device const& device) const                     -> std::string;
+		auto inline getBuildStatus(Device const& device) const  -> BuildStatus;
+		auto inline getBuildOptions(Device const& device) const -> std::string;
+		auto inline getBuildLog(Device const& device) const     -> std::string;
 
 	#if defined(CL_VERSION_1_2)
-		auto inline getBinaryType(Device const& device) const                   -> BinaryType;
+		auto inline getBinaryType(Device const& device) const   -> BinaryType;
 	#endif // defined(CL_VERSION_1_2)
 
 	#if defined(CL_VERSION_2_0)

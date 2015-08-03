@@ -119,8 +119,8 @@ namespace cl {
 		return getInfo<cl_uint>(CL_PROGRAM_REFERENCE_COUNT);
 	}
 
-	auto Program::getContext() const -> std::unique_ptr<Context> {
-		return std::make_unique<Context>(getInfo<cl_context>(CL_PROGRAM_CONTEXT));
+	auto Program::getContext() const -> Context {
+		return {getInfo<cl_context>(CL_PROGRAM_CONTEXT)};
 	}
 
 	auto Program::getNumDevices() const -> cl_uint {
@@ -140,9 +140,11 @@ namespace cl {
 		return getInfoVector<size_t>(CL_PROGRAM_BINARY_SIZES);
 	}
 
-//	auto Program::getBinaries() const -> std::vector<std::vector<unsigned char>> {
-//		 TODO
-//	}
+	// auto Program::getBinaries() const
+	// 	-> std::unordered_map<Device, std::vector<unsigned char>>
+	// {
+	// 	// TODO
+	// }
 
 #if defined(CL_VERSION_1_2)
 	auto Program::getNumKernels() const -> cl_uint {
