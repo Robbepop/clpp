@@ -4,16 +4,17 @@ A thin header-only wrapper around OpenCL 2.0+ for modern and highlevel C++.
 Note
 ----
 
-Although this wrapper mainly focusses on OpenCL 2.0+ it also supports usage
-of OpenCL 1.1 and 1.2 with minor adjustments to the interfaces.
+Supports OpenCL 1.1, 1.2 and 2.0.
+This does not include vendor specific extensions!
 
-Usage
------
 
-- As this is a header-only library, just fork this project and set an apropriate
-include path to its directory for compilation.
-- Keep in mind that this project requires a C++14 conform compiler.
-- Only include the root-level file "clpp.hpp" - this file controls the rest of the inclusion!
+How can I use this in my projects?
+----------------------------------
+
+- Clone this repo and only include the top-level "clpp.hpp" file into your project.
+- Set correct include paths of this header-only library while compiling.
+- Requires a C++14 standard conform compiler!
+
 
 Dependencies
 ------------
@@ -23,11 +24,13 @@ The only depencendies so far are some header-only libraries from boost, namely:
 - boost/algorithm/string/classification.hpp
 - boost/optional.hpp
 
-Errors & Exceptions
--------------------
+These dependencies might get removed in the future!
 
-- Besides OpenCL handling error recovery with return codes this library wraps
-these codes and has an exception type for every possible return code available
-which you can catch.
-- There is a super-exception type, namely cl::error::AnyError with which you can
-catch any exception which is thrown by this library.
+
+Error Handling
+--------------
+
+- This wrapper has a built-in exception type for every possible OpenCL error code
+and works entirely via C++ exception handling.
+- It is possible to catch any exception thrown by this library via cl::error::AnyError.
+- There is currently no other way of handling errors - this might change in the future!
