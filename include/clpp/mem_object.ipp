@@ -18,22 +18,16 @@ namespace cl {
 		return *this;
 	}
 
-	template<typename Function, typename T>
-	void MemObject::setDestructorCallback(Function callback, T&& data) const {
-		struct CallbackWrapper {
-			Function m_callback;
-			T&& m_data;
-		};
-		auto cbw   = new CallbackWrapper{callback, std::forward(data)};
-		auto error = cl_int{CL_INVALID_VALUE};
-		error = clSetMemObjectDestructorCallback(
+	template<typename Function>
+	void MemObject::setDestructorCallback(Function callback) const {
+		auto error = clSetMemObjectDestructorCallback(
 			get(),
 			[](cl_mem memobj, void* user_data) {
-				auto temp = reinterpret_cast<CallbackWrapper*>(user_data);
-				temp->callback({memobj}, temp->data);
-				delete temp;
+				const auto temp = reinterpret_cast<Function>(user_data);
+				temp({memobj});
 			},
-			std::addressof(cbw));
+			std::addressof(callback));
+		detail::handleError(detail::CLFunction::clSetMemObjectDestructorCallback(), error);
 	}
 
 	auto MemObject::getType() const -> MemObjectType {
@@ -60,16 +54,16 @@ namespace cl {
 		return getInfo<cl_uint>(CL_MEM_REFERENCE_COUNT);
 	}
 
-	auto MemObject::getContext() const -> std::unique_ptr<Context> {
-		return std::make_unique<Context>(getInfo<cl_context>(CL_MEM_CONTEXT));
+	auto MemObject::getContext() const -> Context {
+		return {getInfo<cl_context>(CL_MEM_CONTEXT)};
 	}
 
-	auto MemObject::getAssociatedMemObject() const -> boost::optional<std::unique_ptr<MemObject>> {
+	auto MemObject::getAssociatedMemObject() const -> boost::optional<MemObject> {
 		const auto memId = getInfo<cl_mem>(CL_MEM_ASSOCIATED_MEMOBJECT);
-		if (memId == nullptr) {
-			return {};
+		if (memId != nullptr) {
+			return boost::make_optional<MemObject>(memId);
 		}
-		return {std::make_unique<MemObject>(memId)};
+		return {};
 	}
 
 	auto MemObject::getOffset() const -> size_t {

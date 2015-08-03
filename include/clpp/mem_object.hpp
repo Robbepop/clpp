@@ -37,8 +37,8 @@ namespace cl {
 		// OpenCL API wrapper for setMemObjectDestructorCallback()
 		//================================================================================
 
-		template<typename Function, typename T>
-		void setDestructorCallback(Function callback, T&& data) const;
+		template<typename Function>
+		void setDestructorCallback(Function callback) const;
 
 		//================================================================================
 		// Information access helper methods.
@@ -51,8 +51,8 @@ namespace cl {
 		auto inline getHostPtr() const             -> void*;
 		auto inline getMapCount() const            -> cl_uint;
 		auto inline getReferenceCount() const      -> cl_uint;
-		auto inline getContext() const             -> std::unique_ptr<Context>;
-		auto inline getAssociatedMemObject() const -> boost::optional<std::unique_ptr<MemObject>>;
+		auto inline getContext() const             -> Context;
+		auto inline getAssociatedMemObject() const -> boost::optional<MemObject>;
 		auto inline getOffset() const              -> size_t;
 
 	#if defined(CL_VERSION_2_0)

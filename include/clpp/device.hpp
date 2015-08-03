@@ -208,10 +208,10 @@ namespace cl {
 	#if defined(CL_VERSION_2_0)
 		auto inline getQueueOnDeviceMaxSize() const           -> cl_uint;
 		auto inline getQueueOnDevicePreferredSize() const     -> cl_uint;
-		auto inline getQueueOnDeviceFlags() const        -> CommandQueueFlags;
-		auto inline getQueueOnHostFlags() const          -> CommandQueueFlags;
+		auto inline getQueueOnDeviceFlags() const             -> CommandQueueFlags;
+		auto inline getQueueOnHostFlags() const               -> CommandQueueFlags;
 	#else
-		auto inline getCommandQueueFlags() const                     -> CommandQueueFlags;
+		auto inline getCommandQueueFlags() const              -> CommandQueueFlags;
 	#endif // defined(CL_VERSION_2_0)
 
 	#if defined(CL_VERSION_1_2)
