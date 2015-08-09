@@ -26,7 +26,7 @@ namespace cl {
 		struct SetArgImpl final {
 			static auto setArg(Kernel const& kernel, cl_uint index, V&& arg) {
 				return clSetKernelArg(
-					kernel.get(), index, sizeof(V), std::addressof(std::forward<V>(arg)));
+					kernel.get(), index, sizeof(V), std::addressof(arg));
 			}
 		};
 
@@ -40,7 +40,7 @@ namespace cl {
 
 	template<typename T>
 	void Kernel::setArg(cl_uint index, T&& arg) const {
-		const auto error = detail::SetArgImpl<T>::setArg(*this, index, arg);
+		const auto error = detail::SetArgImpl<T>::setArg(*this, index, std::forward<T>(arg));
 		detail::handleError(detail::CLFunction::clSetKernelArg(), error);
 	}
 
@@ -56,8 +56,8 @@ namespace cl {
 	}
 
 	template<typename... Args>
-	void Kernel::setArgs(Args&&... tail) const {
-		setArgsHelper(0, std::forward<Args>(tail)...);
+	void Kernel::setArgs(Args&&... args) const {
+		setArgsHelper(0, std::forward<Args>(args)...);
 	}
 
 	//================================================================================
