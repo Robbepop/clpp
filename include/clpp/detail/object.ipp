@@ -141,6 +141,16 @@ namespace cl {
 		}
 
 		template<typename CLType>
+		auto operator==(const cl::detail::Object<CLType> & lhs, std::nullptr_t) -> bool {
+			return lhs.get() == nullptr;
+		}
+
+		template<typename CLType>
+		auto operator!=(const cl::detail::Object<CLType> & lhs, std::nullptr_t) -> bool {
+			return lhs.get() != nullptr;
+		}
+
+		template<typename CLType>
 		auto operator==(const cl::detail::Object<CLType> & lhs, const CLType & rhs) -> bool {
 			return lhs.get() == rhs;
 		}

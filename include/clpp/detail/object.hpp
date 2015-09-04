@@ -63,7 +63,7 @@ namespace cl {
 			//============================================================================
 			// Copy and move assignment operator overloadings
 			//============================================================================
-
+		protected:
 			auto operator=(const Object<CLType> &  rhs) -> Object<CLType> &;
 			auto operator=(      Object<CLType> && rhs) -> Object<CLType> & = default;
 
@@ -72,7 +72,7 @@ namespace cl {
 			//============================================================================
 			// Operators for checking if two objects are equal or unequal.
 			//============================================================================
-
+		public:
 			auto operator==(const Object<CLType> & rhs) const -> bool;
 			auto operator!=(const Object<CLType> & rhs) const -> bool;
 
@@ -81,7 +81,7 @@ namespace cl {
 			// object. Three forms to allow for best performance in
 			// each case and a clean API.
 			//============================================================================
-
+		protected:
 			template<typename InfoType>
 			auto getInfo(info_type p_info) const -> InfoType;
 
@@ -94,6 +94,14 @@ namespace cl {
 			void release();
 			void retain();
 		};
+
+		template<typename CLType>
+		auto operator==(
+			const cl::detail::Object<CLType> & lhs, std::nullptr_t rhs) -> bool;
+
+		template<typename CLType>
+		auto operator!=(
+			const cl::detail::Object<CLType> & lhs, std::nullptr_t rhs) -> bool;
 
 		template<typename CLType>
 		auto operator==(

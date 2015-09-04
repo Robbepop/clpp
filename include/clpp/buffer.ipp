@@ -12,6 +12,68 @@
 #include "clpp/detail/cl_function.hpp"
 
 namespace cl {
+
+	//=====================================================================
+	// Constructors
+	//=====================================================================
+
+	template<typename T>
+	Buffer<T>::Buffer(): MemObject{} {}
+
+	template<typename T>
+	Buffer<T>::Buffer(
+		Context context,
+		size_t size,
+		DeviceAccess deviceAccess,
+		HostAccess hostAccess
+	){
+		using namespace utility;
+		auto error = RetCode::getPreset();
+		auto flags = to_underlying(deviceAccess) | to_underlying(hostAccess);
+		auto sizeInBytes = size * sizeof(T);
+		auto id    = clCreateBuffer(context.get(), flags, sizeInBytes, nullptr, error.data());
+		detail::handleError(detail::CLFunction::clCreateBuffer(), error);
+		m_object = id;
+	}
+
+	template<typename T>
+	template<typename InputIterator>
+	Buffer<T>::Buffer(
+		Context context,
+		InputIterator first,
+		InputIterator last,
+		TransferMode transferMode,
+		DeviceAccess deviceAccess,
+		HostAccess hostAccess
+	){
+		using namespace utility;
+		auto error = RetCode::getPreset();
+		auto flags = to_underlying(transferMode)
+		           | to_underlying(deviceAccess)
+		           | to_underlying(hostAccess);
+		auto sizeInBytes = std::distance(first, last) * sizeof(T);
+		auto id    = clCreateBuffer(context.get(), flags, sizeInBytes, (void *) &*first, error.data());
+		detail::handleError(detail::CLFunction::clCreateBuffer(), error);
+		m_object = id;
+	}
+
+	template<typename T>
+	template<typename InputRange, typename>
+	Buffer<T>::Buffer(
+		Context context,
+		InputRange const& range,
+		TransferMode transferMode,
+		DeviceAccess deviceAccess,
+		HostAccess hostAccess
+	){
+		auto id = Buffer<T>{context, range.begin(), range.end(), transferMode, deviceAccess, hostAccess};
+		m_object = id;
+	}
+
+	//=====================================================================
+	// Wrapped OpenCL API
+	//=====================================================================
+
 	template<typename T>
 	auto Buffer<T>::operator=(Buffer<T> const& rhs) -> Buffer & {
 		if (this != &rhs) {

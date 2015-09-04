@@ -4,14 +4,54 @@
 #include "clpp/mem_object.hpp"
 #include "clpp/device_access.hpp"
 #include "clpp/host_access.hpp"
+#include "clpp/transfer_mode.hpp"
+#include "clpp/utility/concepts.hpp"
 
 namespace cl {
 	template<typename T>
 	class Buffer final : public MemObject {
 	public:
+		using value_type = T;
+
+		//=====================================================================
+		// Constructors
+		//=====================================================================
+	public:
+
 		using MemObject::MemObject;
 
-		using value_type = T;
+		Buffer();
+
+		Buffer(
+			Context context,
+			size_t size,
+			DeviceAccess deviceAccess = DeviceAccess::readWrite,
+			HostAccess hostAccess     = HostAccess::readWrite
+		);
+
+		template<typename InputIterator>
+		Buffer(
+			Context context,
+			InputIterator first,
+			InputIterator last,
+			TransferMode transferMode = TransferMode::copy,
+			DeviceAccess deviceAccess = DeviceAccess::readWrite,
+			HostAccess hostAccess     = HostAccess::readWrite
+		);
+
+		template<typename InputRange,
+			CLPP_REQUIRES(concept::is_range<InputRange>::value)>
+		Buffer(
+			Context context,
+			InputRange const& range,
+			TransferMode transferMode = TransferMode::copy,
+			DeviceAccess deviceAccess = DeviceAccess::readWrite,
+			HostAccess hostAccess     = HostAccess::readWrite
+		);
+
+		//=====================================================================
+		// Wrapped OpenCL API
+		//=====================================================================
 
 		auto operator=(Buffer const& rhs) -> Buffer &;
 
