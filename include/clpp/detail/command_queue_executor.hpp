@@ -318,6 +318,14 @@ namespace cl {
 				NDRange<N> const& localWorkSize
 			) const -> Event;
 
+			template<size_t N,
+				CLPP_REQUIRES(N >= 1)>
+			auto executeNDRange(
+				Kernel const& kernel,
+				NDRange<N> const& globalWorkSize,
+				NDRange<N> const& localWorkSize
+			) const -> Event;
+
 			//============================================================================
 			// Wait (for events), Marker & Barrier and When for async calls
 			//============================================================================

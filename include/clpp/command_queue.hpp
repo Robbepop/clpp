@@ -269,6 +269,13 @@ namespace cl {
 			NDRange<N> const& localWorkSize
 		) const -> Event;
 
+		template<size_t N>
+		auto executeNDRange(
+			Kernel const& kernel,
+			NDRange<N> const& globalWorkSize,
+			NDRange<N> const& localWorkSize
+		) const -> Event;
+
 		//================================================================================
 		// When API for async calls
 		//================================================================================

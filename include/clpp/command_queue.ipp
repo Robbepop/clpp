@@ -322,6 +322,17 @@ namespace cl {
 			kernel, globalWorkOffset, globalWorkSize, localWorkSize);
 	}
 
+	template<size_t N>
+	auto CommandQueue::executeNDRange(
+		Kernel const& kernel,
+		NDRange<N> const& globalWorkSize,
+		NDRange<N> const& localWorkSize
+	) const -> Event {
+		std::cout << "CommandQueue::executeNDRange\n";
+		return getExecutor().executeNDRange<N>(
+			kernel, NDRange<N>::null(), globalWorkSize, localWorkSize);
+	}
+
 	//================================================================================
 	// When API for async calls
 	//================================================================================

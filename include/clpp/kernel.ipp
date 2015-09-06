@@ -33,7 +33,9 @@ namespace cl {
 		template<typename V>
 		struct SetArgImpl<LocalMemory<V>> final {
 			static auto setArg(Kernel const& kernel, cl_uint index, LocalMemory<V> const& arg) {
-				return clSetKernelArg(kernel.get(), index, arg.getSizeInBytes(), nullptr);
+				std::cout << "SetArgImpl<LocalMemory>::arg.getSizeInBytes() = " << arg.getSizeInBytes() << '\n';
+				return clSetKernelArg(kernel.get(), index, arg.getSizeInBytes(), NULL);
+				std::cout << "SetArgImpl<LocalMemory>::done";
 			}
 		};
 	}
