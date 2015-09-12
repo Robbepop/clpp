@@ -541,9 +541,7 @@ namespace cl {
 			NDRange<N> const& globalWorkSize,
 			NDRange<N> const& localWorkSize
 		) const -> Event {
-			std::cout << "CommandQueue::executeNDRange 0\n";
 			auto eventId = cl_event{nullptr};
-			std::cout << "CommandQueue::executeNDRange 1\n";
 			auto error   = clEnqueueNDRangeKernel(
 				getQueueId(), kernel.get(), N,
 				globalWorkOffset.data(),
@@ -552,9 +550,7 @@ namespace cl {
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId)
 			);
-			std::cout << "CommandQueue::executeNDRange 2\n";
 			detail::handleError(CLFunction::clEnqueueNDRangeKernel(), error);
-			std::cout << "CommandQueue::executeNDRange 3\n";
 			return {eventId};
 		}
 
@@ -564,7 +560,6 @@ namespace cl {
 			NDRange<N> const& globalWorkSize,
 			NDRange<N> const& localWorkSize
 		) const -> Event {
-			std::cout << "CommandQueue::executeNDRange\n";
 			return executeNDRange<N>(kernel, NDRange<N>::null(), globalWorkSize, localWorkSize);
 		}
 
