@@ -27,7 +27,6 @@ namespace cl {
 
 		template<typename V>
 		auto setArg(Kernel const& kernel, cl_uint index, const V& arg) {
-			std::cout << "detail::setArg(" << index << ", " << "const V&)\n";
 			return clSetKernelArg(
 				kernel.get(), index, sizeof(V), std::addressof(arg));
 		}
@@ -35,7 +34,6 @@ namespace cl {
 
 		template<typename V>
 		auto setArg(Kernel const& kernel, cl_uint index, LocalMemory<V> const& arg) {
-			std::cout << "detail::setArg(" << index << ", " << "const LocalMemory<T>&)\n";
 			return clSetKernelArg(kernel.get(), index, arg.getSizeInBytes(), NULL);
 		}
 	}
