@@ -5,7 +5,7 @@ project (CLPP)
 #-----------------------------------------------------------------------------------------
 # Compiler Flags
 #-----------------------------------------------------------------------------------------
-set (CMAKE_CXX_FLAGS "-g -Wall -Wextra -pedantic -std=c++14 -fdiagnostics-color=auto")
+set (CMAKE_CXX_FLAGS "-g -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -std=c++14 -fdiagnostics-color=auto")
 
 # -ferror-limit=5
 

@@ -8,6 +8,8 @@
 	#include "clpp/kernel.hpp"
 #endif
 
+#include <type_traits>
+
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 
@@ -22,42 +24,37 @@ namespace cl {
 	}
 
 	namespace detail {
-		template<typename V>
-		struct SetArgImpl final {
-			static auto setArg(Kernel const& kernel, cl_uint index, V&& arg) {
-				return clSetKernelArg(
-					kernel.get(), index, sizeof(V), std::addressof(arg));
-			}
-		};
 
 		template<typename V>
-		struct SetArgImpl<LocalMemory<V>> final {
-			static auto setArg(Kernel const& kernel, cl_uint index, LocalMemory<V> const& arg) {
-				return clSetKernelArg(kernel.get(), index, arg.getSizeInBytes(), NULL);
-			}
-		};
+		auto setArg(Kernel const& kernel, cl_uint index, const V& arg) {
+			std::cout << "detail::setArg(" << index << ", " << "const V&)\n";
+			return clSetKernelArg(
+				kernel.get(), index, sizeof(V), std::addressof(arg));
+		}
+	
+
+		template<typename V>
+		auto setArg(Kernel const& kernel, cl_uint index, LocalMemory<V> const& arg) {
+			std::cout << "detail::setArg(" << index << ", " << "const LocalMemory<T>&)\n";
+			return clSetKernelArg(kernel.get(), index, arg.getSizeInBytes(), NULL);
+		}
 	}
 
 	template<typename T>
-	void Kernel::setArg(cl_uint index, T&& arg) const {
-		const auto error = detail::SetArgImpl<T>::setArg(*this, index, std::forward<T>(arg));
+	void Kernel::setArg(cl_uint index, T const& arg) const {
+		const auto error = detail::setArg(*this, index, arg);
 		detail::handleError(detail::CLFunction::clSetKernelArg(), error);
 	}
 
-	template<typename T>
-	void Kernel::setArgsHelper(cl_uint index, T&& head) const {
-		setArg(index, std::forward<T>(head));
-	}
-
-	template<typename T, typename... Args>
-	void Kernel::setArgsHelper(cl_uint index, T&& head, Args&&... tail) const {
-		setArg(index, std::forward<T>(head));
-		setArgsHelper(index + 1, std::forward<Args>(tail)...);
+	template<cl_uint...Indeces, typename... Args>
+	void Kernel::setArgsHelper(std::integer_sequence<cl_uint, Indeces...>, Args const&... args) const {
+		const auto call_all = [](std::initializer_list<int>){};
+		call_all({(setArg(Indeces, args),0)...});
 	}
 
 	template<typename... Args>
-	void Kernel::setArgs(Args&&... args) const {
-		setArgsHelper(0, std::forward<Args>(args)...);
+	void Kernel::setArgs(Args const&... args) const {
+		setArgsHelper(std::make_integer_sequence<cl_uint, sizeof...(args)>{}, args...);
 	}
 
 	//================================================================================

@@ -67,7 +67,7 @@ namespace cl {
 		const auto deviceIt = reinterpret_cast<const cl_device_id*>(
 			std::addressof(*firstDevice));
 		auto error = clBuildProgram(
-			get(), std::distance(firstDevice, lastDevice), deviceIt,
+			get(), static_cast<cl_uint>(std::distance(firstDevice, lastDevice)), deviceIt,
 			nullptr, nullptr, nullptr);
 		detail::handleError(detail::CLFunction::clBuildProgram(), error);
 	}

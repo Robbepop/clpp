@@ -344,7 +344,7 @@ namespace cl {
 		private:
 			CommandQueue const& m_queue;
 			Event const*        m_first_event;
-			size_t              m_count_events;
+			cl_uint             m_count_events;
 		};
 	}
 }

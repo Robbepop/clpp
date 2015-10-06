@@ -42,7 +42,7 @@ namespace cl {
 		auto error     = RetCode::getPreset();
 		auto contextId = clCreateContext(
 			nullptr,
-			utility::count_elements(first, last),
+			static_cast<cl_uint>(std::distance(first, last)),
 			reinterpret_cast<cl_device_id*>(std::addressof(*first)),
 			nullptr, nullptr,
 			error.data()
@@ -180,7 +180,7 @@ namespace cl {
 		auto error  = RetCode::getPreset();
 		auto contex = clCreateContext(
 			properties.data().data(),
-			ids.size(), ids.data(),
+			static_cast<cl_uint>(ids.size()), ids.data(),
 			nullptr, nullptr,
 			error.data()
 		);

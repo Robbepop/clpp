@@ -43,18 +43,19 @@ namespace cl {
 	public:
 
 		template<typename T>
-		void setArg(cl_uint index, T&& arg) const;
+		void setArg(cl_uint index, T const& arg) const;
 
 	private:
 		template<typename T>
-		void setArgsHelper(cl_uint index, T&& head) const;
+		void setArgsHelper(cl_uint index, T const& head) const;
 
-		template<typename T, typename... Args>
-		void setArgsHelper(cl_uint index, T&& head, Args&&... tail) const;
+
+		template<cl_uint...Indeces, typename... Args>
+		void setArgsHelper(std::integer_sequence<cl_uint, Indeces...>, Args const&... args) const;
 
 	public:
 		template<typename... Args>
-		void setArgs(Args&&... tail) const;
+		void setArgs(Args const&... tail) const;
 
 		//================================================================================
 		// Used to retrieve information about kernel arguments.

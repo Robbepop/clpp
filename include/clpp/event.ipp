@@ -116,28 +116,28 @@ namespace cl {
 
 	auto Event::getProfilingQueued() const -> cl_ulong {
 		return detail::utility::getInfo<cl_ulong>(
-			get(), CL_PROFILING_COMMAND_QUEUED, clGetEventProfilingInfo);
+			get(), cl_uint{CL_PROFILING_COMMAND_QUEUED}, clGetEventProfilingInfo);
 	}
 
 	auto Event::getProfilingSubmit() const -> cl_ulong {
 		return detail::utility::getInfo<cl_ulong>(
-			get(), CL_PROFILING_COMMAND_SUBMIT, clGetEventProfilingInfo);
+			get(), cl_uint{CL_PROFILING_COMMAND_SUBMIT}, clGetEventProfilingInfo);
 	}
 
 	auto Event::getProfilingStart() const -> cl_ulong {
 		return detail::utility::getInfo<cl_ulong>(
-			get(), CL_PROFILING_COMMAND_START, clGetEventProfilingInfo);
+			get(), cl_uint{CL_PROFILING_COMMAND_START}, clGetEventProfilingInfo);
 	}
 
 	auto Event::getProfilingEnd() const -> cl_ulong {
 		return detail::utility::getInfo<cl_ulong>(
-			get(), CL_PROFILING_COMMAND_END, clGetEventProfilingInfo);
+			get(), cl_uint{CL_PROFILING_COMMAND_END}, clGetEventProfilingInfo);
 	}
 
 #if defined(CL_VERSION_2_0)
 	auto Event::getProfilingComplete() const -> cl_ulong {
 		return detail::utility::getInfo<cl_ulong>(
-			get(), CL_PROFILING_COMMAND_COMPLETE, clGetEventProfilingInfo);
+			get(), cl_uint{CL_PROFILING_COMMAND_COMPLETE}, clGetEventProfilingInfo);
 	}
 #endif // defined(CL_VERSION_2_0)
 }

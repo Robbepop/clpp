@@ -45,7 +45,7 @@ namespace cl {
 		auto PropertyListWrapper<ListType>::data() const -> std::vector<ListType> {
 			auto size = m_properties.size();
 			auto list = std::vector<ListType>();
-			list.reserve(size + 1);
+			list.reserve(2 * size + 1);
 			for (auto&& property : m_properties) {
 				list.push_back(property.first);
 				list.push_back(property.second);
