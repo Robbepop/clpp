@@ -12,6 +12,7 @@
 
 #include <algorithm>
 #include <type_traits>
+#include <iterator>
 
 namespace cl {
 	template<size_t N>
@@ -19,17 +20,8 @@ namespace cl {
 
 	// generic constructor which checks T+Args length against N
 	template<size_t N>
-	template<typename... Args, typename>
-	NDRange<N>::NDRange(Args&&... tail) {
-		static_assert(N == sizeof...(tail),
-			"NDRange element count does not fit");
-		m_data = utility::make_array<size_t>(std::forward<Args>(tail)...);
-	}
-
-//	template<size_t N>
-//	NDRange<N>::NDRange(NDRange<N> const& rhs):
-//		m_data{std::move(rhs.m_data)}
-//	{}
+	template<typename... T, typename>
+	NDRange<N>::NDRange(T... args): m_data{{args...}} {}
 
 	// singleton for the NullRange
 	template<size_t N>
@@ -57,18 +49,82 @@ namespace cl {
 	}
 
 	template<size_t N>
-	auto NDRange<N>::size() const -> size_t {
+	auto NDRange<N>::size() const -> size_type {
 		return m_data.size();
 	}
 
 	template<size_t N>
-	auto NDRange<N>::data() -> size_t* {
+	auto NDRange<N>::data() -> pointer {
 		return m_data.data();
 	}
 
 	template<size_t N>
-	auto NDRange<N>::data() const -> const size_t* {
+	auto NDRange<N>::data() const -> const_pointer {
 		return m_data.data();
+	}
+
+	//============================================================================
+	// Iterator interface for NDRange mapping to its underlying std::array.
+	//============================================================================
+
+	template<size_t N>
+	auto NDRange<N>::begin() -> iterator {
+		return m_data.begin();
+	}
+
+	template<size_t N>
+	auto NDRange<N>::begin() const -> const_iterator {
+		return m_data.begin();
+	}
+
+	template<size_t N>
+	auto NDRange<N>::cbegin() const -> const_iterator {
+		return m_data.cbegin();
+	}
+
+	template<size_t N>
+	auto NDRange<N>::end() -> iterator {
+		return m_data.end();
+	}
+
+	template<size_t N>
+	auto NDRange<N>::end() const -> const_iterator {
+		return m_data.end();
+	}
+
+	template<size_t N>
+	auto NDRange<N>::cend() const -> const_iterator {
+		return m_data.cend();
+	}
+
+	template<size_t N>
+	auto NDRange<N>::rbegin() -> std::reverse_iterator<iterator> {
+		return m_data.rbegin();
+	}
+
+	template<size_t N>
+	auto NDRange<N>::rbegin() const -> std::reverse_iterator<const_iterator> {
+		return m_data.rbegin();
+	}
+
+	template<size_t N>
+	auto NDRange<N>::crbegin() -> std::reverse_iterator<const_iterator> {
+		return m_data.crbegin();
+	}
+
+	template<size_t N>
+	auto NDRange<N>::rend() -> std::reverse_iterator<iterator> {
+		return m_data.rend();
+	}
+
+	template<size_t N>
+	auto NDRange<N>::rend() const -> std::reverse_iterator<const_iterator> {
+		return m_data.rend();
+	}
+
+	template<size_t N>
+	auto NDRange<N>::crend() const -> std::reverse_iterator<const_iterator> {
+		return m_data.crend();
 	}
 }
 
