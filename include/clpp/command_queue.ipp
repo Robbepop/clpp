@@ -328,7 +328,6 @@ namespace cl {
 		NDRange<N> const& globalWorkSize,
 		NDRange<N> const& localWorkSize
 	) const -> Event {
-		std::cout << "CommandQueue::executeNDRange\n";
 		return getExecutor().executeNDRange<N>(
 			kernel, NDRange<N>::null(), globalWorkSize, localWorkSize);
 	}
