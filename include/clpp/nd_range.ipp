@@ -108,7 +108,7 @@ namespace cl {
 	}
 
 	template<size_t N>
-	auto NDRange<N>::crbegin() -> std::reverse_iterator<const_iterator> {
+	auto NDRange<N>::crbegin() const -> std::reverse_iterator<const_iterator> {
 		return m_data.crbegin();
 	}
 

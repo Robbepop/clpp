@@ -62,7 +62,7 @@ namespace cl {
 
 		auto  rbegin()       -> std::reverse_iterator<iterator>;
 		auto  rbegin() const -> std::reverse_iterator<const_iterator>;
-		auto crbegin()       -> std::reverse_iterator<const_iterator>;
+		auto crbegin() const -> std::reverse_iterator<const_iterator>;
 
 		auto  rend()       -> std::reverse_iterator<iterator>;
 		auto  rend() const -> std::reverse_iterator<const_iterator>;
