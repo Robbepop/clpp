@@ -29,21 +29,24 @@ namespace cl {
 	auto Event::wait() const& -> Event const& {
 		detail::handleError(
 			detail::CLFunction::clWaitForEvents(),
-			clWaitForEvents(1, reinterpret_cast<const cl_type*>(this)));
+			clWaitForEvents(1, std::addressof(get()))
+		);
 		return *this;
 	}
 
 	auto Event::wait() & -> Event & {
 		detail::handleError(
 			detail::CLFunction::clWaitForEvents(),
-			clWaitForEvents(1, reinterpret_cast<const cl_type*>(this)));
+			clWaitForEvents(1, std::addressof(get()))
+		);
 		return *this;
 	}
 
 	auto Event::wait() && -> Event && {
 		detail::handleError(
 			detail::CLFunction::clWaitForEvents(),
-			clWaitForEvents(1, reinterpret_cast<const cl_type*>(this)));
+			clWaitForEvents(1, std::addressof(get()))
+		);
 		return std::move(*this);
 	}
 

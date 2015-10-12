@@ -476,9 +476,38 @@ namespace cl {
 
 	#endif // defined(CL_VERSION_1_2)
 
-		//============================================================================
+		//============================================================================bei uns
 		// ND Range Kernel Execution
 		//============================================================================
+
+		namespace util {
+			template<typename R, typename T>
+			auto getCeilDivisibleByDivisor(
+				T current, T divisor
+			)
+				-> R
+			{
+				const auto dc = static_cast<double>(current);
+				const auto dd = static_cast<double>(divisor);
+				return static_cast<R>(std::ceil(dc / dd) * dd);
+			}
+
+			template<size_t N>
+			auto getDivisibleNDRange(
+				NDRange<N> const& globalWorkSizes,
+				NDRange<N> const& localWorkSizes
+			)
+				-> NDRange<N>
+			{
+				NDRange<N> result;
+				std::transform(
+					std::begin(globalWorkSizes), std::end(globalWorkSizes),
+					std::begin(localWorkSizes), std::begin(result),
+					[](auto global, auto local) { return getCeilDivisibleByDivisor<size_t>(global, local); }
+				);
+				return std::move(result);
+			}
+		}
 
 		auto CommandQueueExecutor::execute1DRange(
 			Kernel const& kernel,
@@ -487,10 +516,12 @@ namespace cl {
 			size_t localWorkSize
 		) const -> Event {
 			auto eventId = cl_event{nullptr};
+			auto divisibleGlobalRange = util::getCeilDivisibleByDivisor<size_t>(
+				globalWorkSize, localWorkSize);
 			auto error   = clEnqueueNDRangeKernel(
 				getQueueId(), kernel.get(), 1,
 				std::addressof(globalWorkOffset),
-				std::addressof(globalWorkSize),
+				std::addressof(divisibleGlobalRange),
 				std::addressof(localWorkSize),
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId)
@@ -505,10 +536,12 @@ namespace cl {
 			size_t localWorkSize
 		) const -> Event {
 			auto eventId = cl_event{nullptr};
+			auto divisibleGlobalRange = util::getCeilDivisibleByDivisor<size_t>(
+				globalWorkSize, localWorkSize);
 			auto error   = clEnqueueNDRangeKernel(
 				getQueueId(), kernel.get(), 1,
 				nullptr,
-				std::addressof(globalWorkSize),
+				std::addressof(divisibleGlobalRange),
 				std::addressof(localWorkSize),
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId)
@@ -542,10 +575,12 @@ namespace cl {
 			NDRange<N> const& localWorkSize
 		) const -> Event {
 			auto eventId = cl_event{nullptr};
+			auto divisibleGlobalRange = util::getDivisibleNDRange<N>(
+				globalWorkSize, localWorkSize);
 			auto error   = clEnqueueNDRangeKernel(
 				getQueueId(), kernel.get(), N,
 				globalWorkOffset.data(),
-				globalWorkSize.data(),
+				divisibleGlobalRange.data(),
 				localWorkSize.data(),
 				getWaitListSize(), getWaitListData(),
 				std::addressof(eventId)
