@@ -26,11 +26,16 @@ namespace cl {
 	namespace detail {
 
 		template<typename V>
-		auto setArg(Kernel const& kernel, cl_uint index, const V& arg) {
+		auto setArg(Kernel const& kernel, cl_uint index, V const& arg) {
 			return clSetKernelArg(
 				kernel.get(), index, sizeof(V), std::addressof(arg));
 		}
-	
+
+		template<typename V>
+		auto setArg(Kernel const& kernel, cl_uint index, Buffer<V> const& arg) {
+			return clSetKernelArg(
+				kernel.get(), index, sizeof(cl_mem), std::addressof(arg.get()));
+		}
 
 		template<typename V>
 		auto setArg(Kernel const& kernel, cl_uint index, LocalMemory<V> const& arg) {
