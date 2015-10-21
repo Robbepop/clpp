@@ -48,8 +48,15 @@ namespace cl {
 	//================================================================================
 
 	void Program::build(Device const& device) const {
-		const auto deviceIt = std::addressof(device);
-		build(deviceIt, deviceIt + 1);
+		auto error = clBuildProgram(
+			get(), 1u, std::addressof(device.get()), nullptr, nullptr, nullptr);
+		detail::handleError(detail::CLFunction::clBuildProgram(), error);
+	}
+
+	void Program::build(Device const& device, std::string const& options) const {
+		auto error = clBuildProgram(
+			get(), 1u, std::addressof(device.get()), options.c_str(), nullptr, nullptr);
+		detail::handleError(detail::CLFunction::clBuildProgram(), error);
 	}
 
 	template<typename DeviceRange>
@@ -70,45 +77,6 @@ namespace cl {
 			get(), static_cast<cl_uint>(std::distance(firstDevice, lastDevice)), deviceIt,
 			nullptr, nullptr, nullptr);
 		detail::handleError(detail::CLFunction::clBuildProgram(), error);
-	}
-
-	template<typename Function, typename T>
-	void Program::build(
-		Device const& device,
-		Function callback, T&& data
-	) const {
-		const auto deviceId = device.get();
-		const auto deviceIt = std::addressof(deviceId);
-		build(deviceIt, deviceIt + 1, callback, std::forward(data));
-	}
-
-	template<typename DeviceRange, typename Function, typename T>
-	void Program::build(
-		DeviceRange const& devices,
-		Function callback, T&& data
-	) const {
-		build(devices.begin(), devices.end(), callback, std::forward(data));
-	}
-
-	template<typename DeviceIterator, typename Function, typename T>
-	void Program::build(
-		DeviceIterator firstDevice,
-		DeviceIterator lastDevice,
-		Function callback, T&& data
-	) const {
-		struct CallbackWrapper {
-			Function callback;
-			T&& data;
-		};
-		const auto cbw   = new CallbackWrapper{callback, std::forward(data)};
-		const auto error = clBuildProgram(
-			get(), std::distance(firstDevice, lastDevice),
-			std::addressof(*firstDevice), nullptr,
-			[](cl_program programId, void* user_data) {
-				auto cbw = reinterpret_cast<CallbackWrapper*>(user_data);
-				cbw->callback({programId}, cbw->data);
-				delete cbw;
-			}, cbw);
 	}
 
 	//================================================================================

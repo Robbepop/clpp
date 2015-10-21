@@ -43,11 +43,21 @@ namespace cl {
 		//================================================================================
 	public:
 
-		void inline build(Device const& device) const;
+		void inline
+		build(Device const& device) const;
+
+		void inline
+		build(Device const& device, std::string const& options) const;
 
 		template<typename DeviceRange>
 		void build(
 			DeviceRange const& devices
+		) const;
+
+		template<typename DeviceRange>
+		void build(
+			DeviceRange const& devices,
+			std::string const& options
 		) const;
 
 		template<typename DeviceIterator>
@@ -56,23 +66,11 @@ namespace cl {
 			DeviceIterator lastDevice
 		) const;
 
-		template<typename Function, typename T>
-		void build(
-			Device const& device,
-			Function callback, T&& data
-		) const;
-
-		template<typename DeviceRange, typename Function, typename T>
-		void build(
-			DeviceRange const& devices,
-			Function callback, T&& data
-		) const;
-
-		template<typename DeviceIterator, typename Function, typename T>
+		template<typename DeviceIterator>
 		void build(
 			DeviceIterator firstDevice,
 			DeviceIterator lastDevice,
-			Function callback, T&& data
+			std::string const& options
 		) const;
 
 		//================================================================================
