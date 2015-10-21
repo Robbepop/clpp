@@ -466,7 +466,8 @@ void test_01() {
 	auto programSource = utility::readFile("../test/kernel_add.cl");
 	auto program = context.createProgramWithSource(programSource);
 
-	program.build(defaultDevice);
+	// program.build(defaultDevice);
+	program.build(std::vector<cl::Device>{defaultDevice, defaultDevice});
 
 	auto kernel = program.createKernel("vectorAdd");
 

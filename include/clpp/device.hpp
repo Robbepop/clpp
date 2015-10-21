@@ -48,6 +48,7 @@ namespace cl {
 
 	class Device final : public detail::Object<cl_device_id> {
 	public:
+		using cl_type = cl_device_id;
 
 		//================================================================================
 		// Constructor and Assignment

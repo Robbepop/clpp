@@ -8,6 +8,11 @@
 	#include "clpp/program.hpp"
 #endif
 
+#include <iterator>
+
+#include "clpp/detail/to_internal_data_vector.hpp"
+#include "clpp/utility/count_elements.hpp"
+
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 
@@ -66,16 +71,34 @@ namespace cl {
 		build(devices.begin(), devices.end());
 	}
 
+	template<typename DeviceRange>
+	void Program::build(
+		DeviceRange const& devices,
+		std::string const& options
+	) const {
+		build(devices.begin(), devices.end(), options);
+	}
+
 	template<typename DeviceIterator>
 	void Program::build(
 		DeviceIterator firstDevice,
 		DeviceIterator lastDevice
 	) const {
-		const auto deviceIt = reinterpret_cast<const cl_device_id*>(
-			std::addressof(*firstDevice));
-		auto error = clBuildProgram(
-			get(), static_cast<cl_uint>(std::distance(firstDevice, lastDevice)), deviceIt,
-			nullptr, nullptr, nullptr);
+		const auto devices = detail::util::to_internal_data_vector(firstDevice, lastDevice);
+		const auto error = clBuildProgram(
+			get(), static_cast<cl_uint>(devices.size()), devices.data(), nullptr, nullptr, nullptr);
+		detail::handleError(detail::CLFunction::clBuildProgram(), error);
+	}
+
+	template<typename DeviceIterator>
+	void Program::build(
+		DeviceIterator firstDevice,
+		DeviceIterator lastDevice,
+		std::string const& options
+	) const {
+		const auto devices = detail::util::to_internal_data_vector(firstDevice, lastDevice);
+		const auto error = clBuildProgram(
+			get(), static_cast<cl_uint>(devices.size()), devices.data(), options.c_str(), nullptr, nullptr);
 		detail::handleError(detail::CLFunction::clBuildProgram(), error);
 	}
 
