@@ -19,9 +19,10 @@ namespace cl {
 				InputIterator first, InputIterator last
 			){
 				using value_type = typename InputIterator::value_type;
-				using cl_type = typename std::decay_t<
+				using cl_type    = typename std::decay_t<
 					decltype(std::declval<value_type>().get())>;
 				std::vector<cl_type> result;
+				result.reserve(::utility::count_elements(first, last));
 				std::transform(first, last, std::back_inserter(result),
 					[](auto obj) { return obj.get(); }
 				);
