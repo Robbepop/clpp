@@ -18,7 +18,7 @@ namespace cl {
 			auto to_internal_data_vector(
 				InputIterator first, InputIterator last
 			){
-				using value_type = typename InputIterator::value_type;
+				using value_type = typename std::iterator_traits<InputIterator>::value_type;
 				using cl_type    = typename std::decay_t<
 					decltype(std::declval<value_type>().get())>;
 				std::vector<cl_type> result;
