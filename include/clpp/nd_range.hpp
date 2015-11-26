@@ -19,20 +19,14 @@ namespace cl {
 		using const_iterator  = const_pointer;
 
 		//============================================================================
-		// Singleton for the NullRange
-		//============================================================================
-
-		static auto null() -> NDRange<N> const&;
-
-		//============================================================================
 		// NDRange<N> constructors.
 		//============================================================================
 
-		NDRange();
+		constexpr NDRange();
 
 		template<typename... T,
 			CLPP_REQUIRES(sizeof...(T) == N)>
-		NDRange(T... args);
+		constexpr NDRange(T... args);
 
 		//============================================================================
 		// Convenient helper operators and methods.
@@ -43,7 +37,7 @@ namespace cl {
 		auto operator[](size_t index)       -> reference;
 		auto operator[](size_t index) const -> const_reference;
 
-		auto size() const -> size_type;
+		constexpr auto size() const -> size_type;
 
 		auto data()       -> pointer;
 		auto data() const -> const_pointer;

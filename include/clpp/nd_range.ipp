@@ -16,19 +16,12 @@
 
 namespace cl {
 	template<size_t N>
-	NDRange<N>::NDRange() {}
+	constexpr NDRange<N>::NDRange() {}
 
 	// generic constructor which checks T+Args length against N
 	template<size_t N>
 	template<typename... T, typename>
-	NDRange<N>::NDRange(T... args): m_data{{args...}} {}
-
-	// singleton for the NullRange
-	template<size_t N>
-	auto NDRange<N>::null() -> NDRange<N> const& {
-		static const auto nullRange = NDRange{};
-		return nullRange;
-	}
+	constexpr NDRange<N>::NDRange(T... args): m_data{{args...}} {}
 
 	template<size_t N>
 	auto NDRange<N>::operator=(NDRange<N> const& rhs) -> NDRange& {
@@ -49,7 +42,7 @@ namespace cl {
 	}
 
 	template<size_t N>
-	auto NDRange<N>::size() const -> size_type {
+	constexpr auto NDRange<N>::size() const -> size_type {
 		return m_data.size();
 	}
 
