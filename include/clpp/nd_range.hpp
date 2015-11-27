@@ -62,9 +62,21 @@ namespace cl {
 		auto  rend() const -> std::reverse_iterator<const_iterator>;
 		auto crend() const -> std::reverse_iterator<const_iterator>;
 
+		template<size_t M>
+		friend bool operator==(NDRange<M> const& lhs, NDRange<M> const& rhs);
+
+		template<size_t M>
+		friend bool operator!=(NDRange<M> const& lhs, NDRange<M> const& rhs);
+
 	private:
 		std::array<size_t, N> m_data;
 	};
+
+	template<size_t N>
+	bool operator==(NDRange<N> const& lhs, NDRange<N> const& rhs);
+
+	template<size_t N>
+	bool operator!=(NDRange<N> const& lhs, NDRange<N> const& rhs);
 }
 
 #endif

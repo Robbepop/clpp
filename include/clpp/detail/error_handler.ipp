@@ -25,7 +25,9 @@ namespace cl {
 					+ func.getCLName().to_string();
 
 				switch (code.getCLId()) {
-					default: assert(false);
+					default:
+						std::cout << msg;
+						assert(false);
 
 					case CL_DEVICE_NOT_FOUND:
 						throw DeviceNotFound{func, msg};

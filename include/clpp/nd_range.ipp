@@ -119,6 +119,16 @@ namespace cl {
 	auto NDRange<N>::crend() const -> std::reverse_iterator<const_iterator> {
 		return m_data.crend();
 	}
+
+	template<size_t N>
+	bool operator==(NDRange<N> const& lhs, NDRange<N> const& rhs) {
+		return lhs.m_data == rhs.m_data;
+	}
+
+	template<size_t N>
+	bool operator!=(NDRange<N> const& lhs, NDRange<N> const& rhs) {
+		return !(lhs == rhs);
+	}
 }
 
 #endif
