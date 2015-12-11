@@ -595,7 +595,20 @@ namespace cl {
 			NDRange<N> const& globalWorkSize,
 			NDRange<N> const& localWorkSize
 		) const -> Event {
-			return executeNDRange<N>(kernel, NDRange<N>::null(), globalWorkSize, localWorkSize);
+			auto eventId = cl_event{nullptr};
+			auto divisibleGlobalRange = util::getDivisibleNDRange<N>(
+				globalWorkSize, localWorkSize);
+			auto error   = clEnqueueNDRangeKernel(
+				getQueueId(), kernel.get(), N,
+				nullptr,
+				divisibleGlobalRange.data(),
+				localWorkSize.data(),
+				getWaitListSize(), getWaitListData(),
+				std::addressof(eventId)
+			);
+			detail::handleError(CLFunction::clEnqueueNDRangeKernel(), error);
+			return {eventId};
+			// return executeNDRange<N>(kernel, NDRange<N>::null(), globalWorkSize, localWorkSize);
 		}
 
 		//============================================================================

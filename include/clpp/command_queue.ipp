@@ -329,7 +329,7 @@ namespace cl {
 		NDRange<N> const& localWorkSize
 	) const -> Event {
 		return getExecutor().executeNDRange<N>(
-			kernel, NDRange<N>{}, globalWorkSize, localWorkSize);
+			kernel, globalWorkSize, localWorkSize);
 			//kernel, NDRange<N>::null(), globalWorkSize, localWorkSize);
 	}
 
